@@ -1,5 +1,4 @@
-from ast import Str
-
+from .post import Post
 
 class User:
 
@@ -11,8 +10,6 @@ class User:
     def checkPass(self, userPass):
         return self.__password == userPass
 
-    def addPost(self, text):
-        key = self.userName.slice[3] + str(len(self.__posts) + 1)
-        self.__posts.update({key : text})
-
-        
+    def addPost(self, post):
+        id = self.userName[:2] + str(len(self.__posts) + 1)
+        self.__posts.update({id : post})

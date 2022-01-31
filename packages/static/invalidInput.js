@@ -49,3 +49,9 @@ function DifferentPass()
        document.getElementById("pwd2").style.backgroundColor = "red";
    }
 }
+
+function EnterTab()
+{
+
+  
+}

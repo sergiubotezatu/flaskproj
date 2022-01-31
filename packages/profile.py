@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from packages.user import User
 from packages.registered import Registered
+from packages.post import Post
+from packages.posts import allPosts
 
 profile = Blueprint("profile", __name__)
 
@@ -20,6 +22,8 @@ def log():
               flash("Incorrect Password. Please try again", "error")
               return redirect(url_for(".log"))
 
+         session.permanent = True
+         session["profile"] = username
          return redirect(url_for(".userProfile", name = str(username)))              
 
      return render_template("login.html")
@@ -30,6 +34,7 @@ def sign():
          username = request.form.get("username")
          password = request.form.get("pwd")
          if createAccount(User(username, password)):
+               session["profile"] = username
                flash(("Welcome, {}!\n/This is your profile page. Here you can see all of your posts "
                "Click on [Create Post] button to add a new post".format(username)), "info")
                return redirect(url_for(".userProfile", name = str(username)))
@@ -40,10 +45,24 @@ def sign():
     
     return render_template("signUp.html")
 
+@profile.route("/log_out")
+def logOut():
+     session.pop("profile", None)
+     return redirect(url_for("posts.home"))
+
 @profile.route("/user=<name>")
 def userProfile(name):
-     return render_template("user.html", user="{}'s profile".format(name))
+     if "profile" in session and session["profile"] == name:
+          return render_template("user.html", user="{}'s profile".format(name))
+     else:
+          return redirect(url_for(".log"))
 
+@profile.route("/create", methods = ["Get", "Post"])
+def createPost():
+     if request.method == "POST":
+         registerPost()
+         return redirect(url_for("posts.home"))
+     return render_template("write.html")
 
 def createAccount(newUser):
      if allAccounts.searchUser(newUser.userName):
@@ -51,3 +70,12 @@ def createAccount(newUser):
      else:
           allAccounts.register(newUser)
           return True
+
+def registerPost():
+     title = request.form.get("title")
+     description = request.form.get("description")
+     content = request.form.get("post")
+     author = session["profile"]
+     post = Post(title, description, content, author)
+     allAccounts.getUserByName(author).addPost(post)
+     allPosts.insert(0, post)

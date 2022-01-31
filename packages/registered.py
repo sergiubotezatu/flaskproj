@@ -11,7 +11,7 @@ class Registered:
     def searchUser(self, userName):
         for user in self.__users:
             if user.userName == userName:
-                return True                
+                return True          
         return False
 
     def getUserByName(self, userName):

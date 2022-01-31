@@ -1,3 +1,7 @@
 {%extends "base.html"%}
 {%block title%}{{user}}{%endblock%}
-{%block log1%}<li><a class = "option" href="/log_in">Log out</a></li>{%endblock%}
+{%block log1%}<li><a class = "option" href="/log_out">Log out</a></li>{%endblock%}
+{%block log2%}<li><a class = "option" href="/log_out">Log out</a></li>{%endblock%}
+{%block content%}
+<button id = "create" type="button" onclick=window.location.href="/create">Create Post</button>
+{%endblock%}

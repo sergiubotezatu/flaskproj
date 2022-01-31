@@ -15,7 +15,9 @@
 
         <ul class = "largerScreen">
             <li><a class = "option" href="/">Home</a></li>
-            <li><a class = "option" href="/posts">My Profile</a></li>
+            {%block profile1%}
+            <li><a class = "option" href="/user=.">My Profile</a></li>
+            {%endblock%}
             {%block log1%}
             <li><a class = "option" href="/log_in">Log in</a></li>
             {%endblock%}
@@ -31,7 +33,9 @@
                 </a>              
                 <div class="dropdown-content">
                 <a class = "option" href="/">Home</a>
-                <a class = "option" href="/posts">My profile</a>
+                {%block profile2%}
+                <a class = "option" href="/user=.">My profile</a>
+                {%endblock%}
                 {%block log2%}
                 <a class = "option" href="/login">Log in</a>
                 {%endblock%}
