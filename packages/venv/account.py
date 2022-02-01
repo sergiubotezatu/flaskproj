@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from packages.user import User
-from packages.registered import Registered
-from packages.post import Post
-from packages.posts import allPosts
+from user import User
+from registered import Registered
+from post import Post
+from posts import allPosts
 
 profile = Blueprint("profile", __name__)
 
@@ -52,8 +52,8 @@ def logOut():
 
 @profile.route("/user=<name>")
 def userProfile(name):
-     if "profile" in session and session["profile"] == name:
-          return render_template("user.html", user="{}'s profile".format(name))
+     if "profile" in session:
+          return render_template("user.html", user="{}'s profile".format(session["profile"]))
      else:
           return redirect(url_for(".log"))
 
@@ -77,5 +77,6 @@ def registerPost():
      content = request.form.get("post")
      author = session["profile"]
      post = Post(title, description, content, author)
-     allAccounts.getUserByName(author).addPost(post)
+     allAccounts.getUserByName(session["profile"]).addPost(post)
      allPosts.insert(0, post)
+     

@@ -1,4 +1,4 @@
-from packages import createBlog
+from __init__ import createBlog
 
 blog = createBlog()
 blog.secret_key = "FlaskBlog"

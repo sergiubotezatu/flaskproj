@@ -1,4 +1,4 @@
-from packages.user import User
+from user import User
 
 class Registered:
 
@@ -17,4 +17,4 @@ class Registered:
     def getUserByName(self, userName):
         for user in self.__users:
             if user.userName == userName:
-                return user
+                return user      

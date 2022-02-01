@@ -1,4 +1,4 @@
-from .post import Post
+from post import Post
 
 class User:
 
@@ -13,3 +13,4 @@ class User:
     def addPost(self, post):
         id = self.userName[:2] + str(len(self.__posts) + 1)
         self.__posts.update({id : post})
+        

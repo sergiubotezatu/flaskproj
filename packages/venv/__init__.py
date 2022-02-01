@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Blueprint
 from datetime import timedelta
 
 def createBlog():
@@ -6,10 +6,10 @@ def createBlog():
     blog.config["Secret_key"]= "FlaskBlog"
     blog.permanent_session_lifetime= timedelta(hours = 1)
 
-    from .posts import posts
+    from posts import posts
     blog.register_blueprint(posts, url_prefix="/")
 
-    from .profile import profile
+    from account import profile
     blog.register_blueprint(profile, url_prefix="/")
 
     return blog
