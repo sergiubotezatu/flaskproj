@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {%block css%}    
+        <link rel="stylesheet" type ="text/css" href ="../static/main.css">
+        {%endblock%}
+        <script src="../static/invalidInputs.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{%block title%}{%endblock%}</title>
+    </head>
+
+    <body>
+        <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
+
+        <ul class = "largerScreen">
+            <li><a class = "option" href="/">Home</a></li>
+            {%block create1%}
+            <li><a class = "option" href="/post/create">Create new Post</a></li>
+            {%endblock%}            
+        </ul>
+
+        <ul class = "smallerScreen">
+            <li class="dropMenu">
+                <a href="javascript:void(0)" class="dropbtn"> 
+                    <div class ="line"></div>
+                    <div class ="line"></div>
+                    <div class ="line"></div>
+                    <span>Menu</span>
+                </a>              
+                <div class="dropdown-content">
+                <a class = "option" href="/">Home</a>
+                {%block create2%}
+                <a class = "option" href="/post/create">Create new Post</a>
+                {%endblock%}
+                </div>              
+            </li>
+        </ul>
+        <br id ="space">
+        {%block content%}
+        <div class="row">
+            <div class="column">
+              <a href="/" style ="color:black; text-decoration:none">
+               <div class="post" title ="Click to Read More">
+                 <h3 style ="text-align:center;">Post</h3>
+                 <h4 clas ="higlight">Post info</h4>
+                 <p>Cine trece in valea seaca cu hangerul fara teaca si cu pieptul dezvelit?
+                  Andri Popa, cel vestit, cahlamabara lalalalala[...]
+                 </p>
+                     <p id ="date">date</p>
+                </div>
+              </a>
+            </div>
+        </div>
+        {%endblock%}           
+    </body>
+</html>
