@@ -6,11 +6,12 @@
 {%block create1%}{%endblock%}
 {%block create2%}{%endblock%}
 {%block content%}
-<div class="column">
-  <div class="post" title ="Click to Read More">
-    <h3 style ="text-align:center;">{{postTitle}}</h3>
-    <h4 clas ="higlight">Written by:{{postAuth}}</h4>
-    <p>{{postCnt}}</p>
+<div class="readPost">
+  <div class="read">
+    <br>
+    <h2 style ="text-align: center">{{title}}</h3>
+    <h4 class ="higlight">Written by:{{author}}</h4>
+    <p>{{content}}</p>
       <p id ="date">created: {{date}}</p>
   </div>
 </div>

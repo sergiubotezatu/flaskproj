@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from models.collection import Collection
+from models.collection import blogPosts
 from models.post import Post
 
 post = Blueprint("posts", __name__)
-blogPosts = Collection()
 
 @post.route("/create", methods = ["Get", "Post"])
 def create():
@@ -16,9 +15,9 @@ def create():
 @post.route("/read/id=<postId>")
 def read(postId):
     post = blogPosts.getPost(postId)
-    return render_template("read.html",postTitle = post.title, postAuth = post.auth, postCnt = post.content)
+    return render_template("read.html",title = post.title, author = post.auth, content = post.content)
 
-@post.route("/read/id=<postId>")
+@post.route("/edit")
 def edit():
     return render_template("home.html")
 

@@ -1,2 +1,24 @@
 {%extends "base.html"%}
 {%block title%}Home{%endblock%}
+{%block content%}
+{% for item in allposts %}
+<div class="row">
+    <div class="column">
+      {%if item[0] == "Ch1"%}
+      <a href= "/post/create" style ="color:black; text-decoration:none; ">
+      {%else%}
+      {%set id = item[0]%}
+      <a href="{{ '/post/read/id=%s'%id|urlencode }}" style ="color:black; text-decoration:none; ">
+      {%endif%}
+        <div class="post" title ="Click to Read More">
+         <h3 style ="text-align:center;">{{item[1].title}}</h3>
+         <h4 clas ="higlight">by {{item[1].auth}}</h4>
+         <p>{{item[1].getPreviewd()}}[...]
+        </p>
+             <p id ="date">{{date}}</p>
+        </div>
+      </a>
+    </div>
+</div>
+{%endfor%}
+{%endblock%}

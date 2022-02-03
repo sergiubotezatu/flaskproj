@@ -136,7 +136,7 @@ li .option:hover, .dropbtn:hover
 .column 
 {
     float: left;
-    width: 50%;
+    width: 40%;
     padding: 0 10px;
 }
 
@@ -161,11 +161,21 @@ li .option:hover, .dropbtn:hover
 }              
 
 .post {
-    padding: 16px;
+    padding: 0px 8px 100px 40px;
     text-align: left;
+    font-family:cursive;
+    padding-top: 0;
+    margin-top:0;
+    height: 400px;
     background-image: radial-gradient(rgba(224, 221, 16, 1),rgba(184, 151, 97, 0));  
-    white-space: normal;
+    white-space: pre-wrap;
     transition-duration: 1s;
+}
+
+.post > h4, p
+{
+    position: relative;
+    top: -50px;
 }
 
 .post:hover
@@ -180,7 +190,8 @@ li .option:hover, .dropbtn:hover
 
 #create{
     display: block;
-    float: right;
+    position:relative;
+    float:right;
     width: 120px;
     height: 80px;
     padding: 15px 32px;
@@ -188,7 +199,7 @@ li .option:hover, .dropbtn:hover
     color: white;
     text-decoration: none;
     margin-right: 20%;
-    margin-bottom: 40px;
+    top: -300px;
     }
  
  #create:hover
@@ -198,7 +209,7 @@ li .option:hover, .dropbtn:hover
     font-size: 30px;
     padding: 0;  
     background-color: white;
-    box-shadow: 5px 5px 5px 5px white;
+    box-shadow: 7px 4px 5px 5px white;
     transition: all 0.3s ease-out;    
     
  }
@@ -218,3 +229,47 @@ li .option:hover, .dropbtn:hover
     background-color:rgb(226, 226, 128);
     transition: all 0.3s ease-out;;
  }
+
+ .read{
+    font-family:cursive;
+    color:black;
+    font-size: 22px;
+    text-align: left;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    position: relative;
+    right: -100px;
+    top:-100px;
+    white-space: pre-wrap;
+ }
+
+ .read > h2
+ {
+    position:relative;
+    bottom: -50px;
+    left:-150px;
+ }
+
+ .readPost
+ {
+    background-color: #e0c9a6de;
+ }
+
+ @media screen and (max-width: 600px)
+{
+    .readPost {
+       width: 100%;
+    }
+
+    .read{
+        font-size: 15px;
+        margin-left:2px;
+    }
+
+    .read > h2
+    {
+        left:-50px;
+    }
+}              
