@@ -1,18 +1,46 @@
 {%extends "base.html"%}
-{%block title%}Create_Post{%endblock%}
-{%block css%}
+{%block statics%}
 <link rel="stylesheet" type ="text/css" href ="/static/main.css">
+<script src="/static/invalidInputs.js"></script>
+{%endblock%}
+{%block title%}{{title}}{%endblock%}
+{%block smallerEdit%}
+<li class="dropMenu">
+  <a href="javascript:void(0)" class="dropbtn"> 
+      <div class ="line"></div>
+      <div class ="line"></div>
+      <div class ="line"></div>
+      <span>Edit post</span>
+  </a>              
+  <div class="dropdown-content">
+  <a class = "option" href= "/post/create" >Edit content </a>
+  <div class = "option" id ="smallDel" onclick="MessOn()">Delete post</a>
+  </div>                        
+</li>
 {%endblock%}
 {%block create1%}{%endblock%}
 {%block create2%}{%endblock%}
 {%block content%}
-<div class="readPost">
+<div class ="editDel">
+  <a href= "{{ '/post/edit/id=%s'%editable|urlencode }}"><button class="edit">EDIT CONTENT</a>
+  <button type ="button" class ="edit" id = "del" onclick="MessOn()">DELETE POST</button>
+</div>
+<div id="overlay" onclick="MessOff()">
+  <div id="box">
+  <p id ="mess">Are you sure you want to delete this post?</p>
+  <form id = "requestDel" method = "Post">  
+    <input type="hidden" id="actId" name="action" value={{editable}}>
+    <input type="submit" onclick="alert('Your post has been deleted')" id ="yes" value="Yes">
+    <input type="button" id = "no" value ="No" onclick="MessOff">
+  </form>  
+  </div>
+</div>
+<div class="readPost">  
   <div class="read">
-    <br>
     <h2 style ="text-align: center">{{title}}</h3>
-    <h4 class ="higlight">Written by:{{author}}</h4>
+    <h4 class ="higlight">Written by:{{auth}}</h4>
     <p>{{content}}</p>
       <p id ="date">created: {{date}}</p>
-  </div>
+  </div>  
 </div>
 {%endblock%}

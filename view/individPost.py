@@ -12,18 +12,24 @@ def create():
 
     return render_template("writePost.html")
 
-@post.route("/read/id=<postId>")
+@post.route("/read/id=<postId>",methods = ["Get", "Post"])
 def read(postId):
+    if request.method == "POST":
+        toDelete = request.form.get("action")
+        blogPosts.remove(toDelete)
+        return redirect(url_for("allPosts.home"))
+    else:
+        post = blogPosts.getPost(postId)
+        return render_template("read.html",editable = postId, title = post.title, auth = post.auth, content = post.content)
+
+@post.route("/edit/id=<postId>", methods = ["Get", "Post"])
+def edit(postId):
     post = blogPosts.getPost(postId)
-    return render_template("read.html",title = post.title, author = post.auth, content = post.content)
-
-@post.route("/edit")
-def edit():
-    return render_template("home.html")
-
-@post.route("")
-def RouteId(postId):
-    return render_template("writePost.html")
+    post.title = getPlaceHolder(post.title)
+    if request.method == "POST":
+        editPost(postId)
+        return redirect("/post/read/id={}".format(postId))
+    return render_template("edit.html", auth = post.auth, title = post.title, current = post.content)
 
 def createNewPost():
     author = request.form.get("author")
@@ -31,3 +37,16 @@ def createNewPost():
     title = "" if temp == "no title..." else temp
     content = request.form.get("post")
     blogPosts.addPost(Post(author, title, content))
+
+def editPost(id):
+    author = request.form.get("author")
+    temp = request.form.get("title")
+    title = "" if temp == "no title..." else temp
+    content = request.form.get("post")
+    editted = Post(author, title, content)
+    blogPosts.replace(id, editted)
+
+def getPlaceHolder(tempTitle):
+    if tempTitle == "":
+        return "no title..."
+    return tempTitle

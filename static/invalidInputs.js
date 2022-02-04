@@ -8,5 +8,15 @@ function InvalidAlert()
     {
        document.getElementById("invalid").innerHTML = "Letters & numbers only!";
        document.getElementById("auth").style.backgroundColor = "rgba(201, 37, 22, 0.7)";
-    }    
+    }
+}
+
+function MessOn()
+{
+    document.getElementById("overlay").style.display = "block";
+}
+
+function MessOff()
+{
+    document.getElementById("overlay").style.display = "none";
 }

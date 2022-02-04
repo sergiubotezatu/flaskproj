@@ -34,6 +34,12 @@ class Collection:
     def __iter__(self):
         return postsEnumerator(self.__posts)
 
+    def remove(self, id):
+        self.__posts.pop(id)
+
+    def replace(self, id, post):
+        self.__posts[id] = post
+
 blogPosts = Collection()
 placeholder = Collection()
 placeholder.addPost(example)
