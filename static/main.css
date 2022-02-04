@@ -68,7 +68,7 @@ li .option:hover, .dropbtn:hover
 {
     display:none;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 1) ,rgba(80, 59, 218, 1));
-    margin-right: 0px;                 
+    margin-right: 0px;                  
 }
 
 #smallDel
@@ -80,6 +80,7 @@ li .option:hover, .dropbtn:hover
     text-decoration: none;
     transition: 0.5s all;
     width:180px;
+    cursor: pointer;
 }
 
 .line
@@ -152,33 +153,20 @@ li .option:hover, .dropbtn:hover
 
 .column 
 {
-    float: left;
-    width: 40%;
-    padding: 0 10px;
+    padding: 10px;
+    margin-left: 10px;    
+}
+
+.row { 
+    display:grid;
+    grid-template-columns: auto auto ;
+    grid-column-gap: 10px;
+    padding: 10px;
 }
 
 
-.row {margin: 0 -5px;}
-
-
-.row:after 
-{
-    content: "";
-    display:table;
-    clear: both;
-}              
-
-@media screen and (max-width: 900px)
-{
-    .column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-    }    
-}              
-
 .post {
-    padding: 0px 8px 100px 40px;
+    padding: 0px 8px 10px 40px;
     text-align: left;
     font-family:cursive;
     padding-top: 0;
@@ -195,6 +183,10 @@ li .option:hover, .dropbtn:hover
     top: -50px;
 }
 
+#date{
+    text-align: right;
+}
+
 .post:hover
 {
     box-shadow: 10px 10px 10px 0px rgba(255, 255, 255, 1);
@@ -202,8 +194,13 @@ li .option:hover, .dropbtn:hover
     cursor: pointer;
 }
 
-#date{
-    text-align: right;
+@media screen and (max-width: 900px)
+{
+    .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+    }    
 }
 
 #create{

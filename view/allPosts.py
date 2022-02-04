@@ -6,7 +6,8 @@ allPosts = Blueprint("allPosts", __name__)
 
 @allPosts.route("/")
 def home():
-    if len(blogPosts) == 0:
+    rows = len(blogPosts)
+    if rows == 0:
         return render_template("home.html", allposts = placeholder)
-
+    
     return render_template("home.html", allposts = blogPosts)
