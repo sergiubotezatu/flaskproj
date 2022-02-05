@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from models.collection import blogPosts
+from postRepo.blogPosts import blogPosts
 from models.post import Post
 
 post = Blueprint("posts", __name__)
@@ -17,10 +17,16 @@ def read(postId):
     if request.method == "POST":
         toDelete = request.form.get("action")
         blogPosts.remove(toDelete)
-        return redirect(url_for("allPosts.home"))
+        return redirect(url_for("Home.home"))
     else:
         post = blogPosts.getPost(postId)
-        return render_template("read.html",editable = postId, title = post.title, auth = post.auth, content = post.content)
+        return render_template(
+            "read.html",
+            editable = postId,
+            title = post.title,
+            auth = post.auth,
+            content = post.content,
+            date = post.date)
 
 @post.route("/edit/id=<postId>", methods = ["Get", "Post"])
 def edit(postId):
@@ -29,7 +35,12 @@ def edit(postId):
     if request.method == "POST":
         editPost(postId)
         return redirect("/post/read/id={}".format(postId))
-    return render_template("edit.html", auth = post.auth, title = post.title, current = post.content)
+    return render_template(
+        "edit.html",
+        auth = post.auth,
+        title = post.title,
+        current = post.content,
+        date = post.date)
 
 def createNewPost():
     author = request.form.get("author")

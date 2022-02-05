@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, url_for
-from models.collection import blogPosts, placeholder
+from postRepo.blogPosts import blogPosts, placeholder
 from models.post import example
 
-allPosts = Blueprint("allPosts", __name__)
+home = Blueprint("allPosts", __name__)
 
-@allPosts.route("/")
+@home.route("/")
 def home():
     rows = len(blogPosts)
     if rows == 0:
