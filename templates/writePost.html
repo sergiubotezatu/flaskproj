@@ -3,7 +3,7 @@
 {%block create1%}{%endblock%}
 {%block create2%}{%endblock%}
 {%block content%}
-<form style="text-align:center" method = "Post">
+<form class = "write" style="text-align:center" method = "Post">
     <label for="author">Author</label><br><br>
      <input id ="auth"
       class="field"
@@ -27,13 +27,15 @@
       class="field"
       type="text"
       name="title"
-      rows="2" 
+      rows="1" 
       cols="30"
       wrap="hard"
       text-align: left
       title="Title can be 50 characters long"
       maxlength="50"
-      required>no title...</textarea>
+      minlength = "4"
+      placeholder = "no title..."
+      required></textarea>
     <br><br>
     <strong><label for="post">What's on your mind?</label></strong><br><br>
     <textarea id ="postBox"

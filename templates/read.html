@@ -15,7 +15,7 @@
   <div class="dropdown-content">
   <a class = "option" href= "/post/create" >Edit content </a>
   <div class = "option" id ="smallDel" onclick="MessOn()">Delete post</a>
-  </div>                        
+  </div>
 </li>
 {%endblock%}
 {%block create1%}{%endblock%}
@@ -39,8 +39,8 @@
   <div class="read">
     <h2 style ="text-align: center">{{title}}</h3>
     <h4 class ="higlight">Written by:{{auth}}</h4>
-    <p>{{content}}</p>
-      <p id ="date">created: {{date}}</p>
+    <p style ="text-align:justify;">{{content}}</p>
+      <p id ="date">{{status}}: {{date}}</p>
   </div>  
 </div>
 {%endblock%}

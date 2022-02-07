@@ -38,5 +38,6 @@ class allPosts:
         self.__posts.pop(id)
 
     def replace(self, id, post):
+        post.wasEditted()
         self.__posts[id] = post
-
+    

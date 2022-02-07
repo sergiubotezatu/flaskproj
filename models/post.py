@@ -1,18 +1,22 @@
-from flask import flask
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class Post:
     def __init__(self, auth, title, content):
         self.auth = auth
         self.title = title
-        self.content = content 
-        self.date = self.dateCreated()     
-
-    def getPreviewd(self):
-        preview = self.content[:150]
-        return preview
+        self.content = content
+        self.status = "created"
+        self.date = self.dateCreated()    
 
     def dateCreated(self):
-        utc = datetime.datetime.now()
-        extraZones = datetime.timedelta(hours = 2)
-        return utc + extraZones 
+        return datetime.now().strftime("%d/%b/%y %H:%M:%S")
+
+    def wasEditted(self):
+        self.status = "editted"        
+
+class Preview(Post):
+    def __init__(self, auth, title, content):
+        self.auth = auth
+        self.title = title
+        self.content = content[:150] + "[...]"
+        self.date = self.dateCreated()

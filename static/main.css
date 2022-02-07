@@ -183,10 +183,6 @@ li .option:hover, .dropbtn:hover
     top: -50px;
 }
 
-#date{
-    text-align: right;
-}
-
 .post:hover
 {
     box-shadow: 10px 10px 10px 0px rgba(255, 255, 255, 1);
@@ -206,6 +202,7 @@ li .option:hover, .dropbtn:hover
 #create{
     display: block;
     position:relative;
+    border-radius: 5px;
     float:right;
     width: 120px;
     height: 80px;
@@ -229,11 +226,6 @@ li .option:hover, .dropbtn:hover
     cursor: pointer;
  }
 
- #postBox
- {
-    background-color:rgba(54, 235, 69, 0.363);
- }
-
  #postBox::-webkit-scrollbar-thumb {
     background-color: rgb(24, 148, 80);
     outline: 1px solid slategrey;
@@ -244,6 +236,13 @@ li .option:hover, .dropbtn:hover
     background-color:rgb(226, 226, 128);
     transition: all 0.3s ease-out;
  }
+
+ @media screen and (max-width: 900px)
+{
+   .write{
+       text-align:left
+    }
+}
 
  .read{
     font-family:cursive;
@@ -293,7 +292,7 @@ li .option:hover, .dropbtn:hover
         background-color: rgba(255, 255, 255, 0.74);
         border: 1px solid rgba(68, 26, 165, 0.76);
         border-bottom: rgb(167, 118, 29);
-        border-radius: 5px;;
+        border-radius: 5px;
         align-self: start;
         padding: 30px 30px;
         margin-top:0px;
@@ -368,38 +367,41 @@ li .option:hover, .dropbtn:hover
     #yes
     {
     display:inline;
+    font-weight: bold;
+    font-family: cursive;
     width:50px;
     height:50px;
     background-color: white;
-    border:3px solid rgb(47, 29, 161);
-    border-radius: 25px;
+    border: 3px solid rgba(68, 26, 165, 0.76);
+    border-radius: 5px;
     }
 
     #no
     {   
-    
+    font-family: cursive;
+    font-weight: bold;
     display:inline-block;
     width:50px;
     height:50px;
     background-color: white;
-    border:3px solid rgb(47, 29, 161);
-    border-radius: 25px;
+    border:3px solid rgba(68, 26, 165, 0.76);
+    border-radius: 5px;
     }
 
     #yes:hover{
         transform: scale(1.2);
         box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
         transition: all 0.3s ease-out;
-        color:white;
-        background-color: rgb(7, 7, 48);
+        background-color: orangered;
+        color:blue;
         cursor: pointer; 
     }
 
     #no:hover{
         transform: scale(1.2);
         box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
-        color:white;
-        background-color: rgb(7, 7, 48);
+        background-color: orangered;
+        color:blue;
         transition: all 0.3s ease-out;   
         cursor: pointer;        
     }
@@ -426,4 +428,10 @@ li .option:hover, .dropbtn:hover
     margin-right:auto;
     margin-left:auto;
     margin-bottom:30px;
+    }
+
+    .item
+    {
+        width: -moz-fit-content;
+        width: fit-content;
     }
