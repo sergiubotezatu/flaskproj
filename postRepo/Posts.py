@@ -1,4 +1,4 @@
-from models.post import Post
+from .post import Post
 
 class postsEnumerator:
     def __init__(self, posts):
@@ -14,7 +14,7 @@ class postsEnumerator:
         raise StopIteration
 
 
-class allPosts:
+class Posts:
     def __init__(self):
         self.__posts = {}
 

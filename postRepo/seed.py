@@ -1,13 +1,13 @@
-from models.post import Post
-from models.allPosts import allPosts
+from .post import Post
+from .Posts import Posts
 
-blogPosts = allPosts()
-blogPreviews = allPosts()
+blogPosts = Posts()
+blogPreviews = Posts()
 
 author = "Chandler Bing"
 title = "Bath time"
 content = ("It's so hard to care when you are this relaxed...but maybe you could post something.\n"
-"Click me and start writting.")
+"Click me and start writing.")
 example = Post(author, title, content)
-placeholder = allPosts()
+placeholder = Posts()
 placeholder.addPost(example)

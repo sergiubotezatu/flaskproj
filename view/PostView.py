@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from postRepo.blogPosts import blogPosts, blogPreviews
-from models.post import Post, Preview
+from postRepo.seed import blogPosts, blogPreviews
+from postRepo.post import Post, Preview
 
 post = Blueprint("posts", __name__)
 
@@ -18,6 +18,7 @@ def read(postId):
         toDelete = request.form.get("action")
         blogPosts.remove(toDelete)
         blogPreviews.remove(toDelete)
+        flash("Your post has been successfully removed.", "info")
         return redirect(url_for("home.frontPage"))
     else:
         post = blogPosts.getPost(postId)
@@ -58,4 +59,4 @@ def editPost(id):
     content = request.form.get("post")
     editted = Post(author, title, content)
     blogPosts.replace(id, editted)
-    blogPreviews.replace(id, Post(author, title, editted.getPreviewd()))
+    blogPreviews.replace(id, Preview(author, title, content))

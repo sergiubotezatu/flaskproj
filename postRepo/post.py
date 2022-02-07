@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 class Post:
     def __init__(self, auth, title, content):

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, url_for
-from postRepo.blogPosts import blogPosts, placeholder, blogPreviews
+from postRepo.seed import blogPosts, placeholder, blogPreviews
 
 home = Blueprint("home", __name__)
 
