@@ -20,6 +20,9 @@ class test_BlogRequests(unittest.TestCase):
         self.assertEqual(testCreate.status_code, 200)
 
 class test_CreatePost(unittest.TestCase):
+    def setUp(self):
+        blog.blog.testing = True
+        self.app = blog.blog.test_client()
     CREATE_URL = "http://127.0.0.1:5000/post/create"
     POST = {
         "auth" : "John Doe",
@@ -28,7 +31,7 @@ class test_CreatePost(unittest.TestCase):
     }
 
     def test_CreateNewPost(self):
-        testPost = requests.post(self.CREATE_URL, data = self.POST)
+        testPost = self.app.post(self.CREATE_URL, data = self.POST)
         self.assertEqual(testPost.status_code, 201)
 
 if __name__ == "__main__":

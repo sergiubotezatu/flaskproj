@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, url_for
-from postRepo.seed import blogPosts, placeholder, blogPreviews
+from postRepo.seed import blogPosts, placeholder
 
 home = Blueprint("home", __name__)
 
@@ -9,4 +9,4 @@ def frontPage():
     if rows == 0:
         return render_template("home.html", allposts = placeholder)
     
-    return render_template("home.html", allposts = blogPreviews)
+    return render_template("home.html", allposts = blogPosts.getPreview())

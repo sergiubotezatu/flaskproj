@@ -1,4 +1,4 @@
-from .post import Post
+from models.post import Preview
 
 class postsEnumerator:
     def __init__(self, posts):
@@ -38,6 +38,9 @@ class Posts:
         self.__posts.pop(id)
 
     def replace(self, id, post):
-        post.wasEditted()
-        self.__posts[id] = post
+        self.__posts[id].edit(post)
+
+    def getPreview(self):
+        for posts in self:
+            yield (posts[0], Preview(posts[1]))
     
