@@ -46,8 +46,7 @@ def edit(postId):
 
 def createNewPost():
     author = request.form.get("author")
-    temp = request.form.get("title")
-    title = "" if temp == "no title..." else temp
+    title = request.form.get("title")
     content = request.form.get("post")
     blogPosts.addPost(Post(author, title, content))
     blogPreviews.addPost(Preview(author, title, content))
