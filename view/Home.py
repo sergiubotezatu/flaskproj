@@ -7,6 +7,6 @@ home = Blueprint("home", __name__)
 def frontPage():
     rows = len(blogPosts)
     if rows == 0:
-        return render_template("home.html", allposts = placeholder)
+        return render_template("home.html", allposts = placeholder.getPreview())
     
     return render_template("home.html", allposts = blogPosts.getPreview())

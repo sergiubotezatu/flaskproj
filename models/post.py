@@ -18,12 +18,17 @@ class Post:
         self.content = editted.content
         self.date = (self.date[0], ("modified: " + editted.date[0]))
 
-class Preview(Post):
+class Preview():
     def __init__(self, post):
         self.auth = post.auth
         self.title = post.title
-        self.content = post.content[:150] + "[...]"
+        self.content = self.truncate(post.content)
         self.date = self.displayDate(post.date[0], post.date[1])
 
     def displayDate(self, created, modified):
         return created if modified == "" else modified[10:]
+    
+    def truncate(self, content):
+        linesCount = content[:150].count("\n")
+        chunk = 150 - (linesCount * 3)
+        return content[:chunk] + "[...]"
