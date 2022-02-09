@@ -1,12 +1,12 @@
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template
 from postRepo.seed import blogPosts, placeholder
 
 home = Blueprint("home", __name__)
 
 @home.route("/")
-def frontPage():
+def front_page():
     rows = len(blogPosts)
     if rows == 0:
-        return render_template("home.html", allposts = placeholder.getPreview())
-    
-    return render_template("home.html", allposts = blogPosts.getPreview())
+        return render_template("home.html", allposts = placeholder.get_preview())
+
+    return render_template("home.html", allposts = blogPosts.get_preview())

@@ -1,11 +1,11 @@
 from models.post import Post
-from .Posts import Posts
+from postRepo.posts import Posts
 
 blogPosts = Posts()
 
-author = "Chandler Bing"
-title = "Relaxi-cab"
-content = ("It's so hard to care when you are this relaxed...but maybe you could post something.\n"
+AUTHOR = "Chandler Bing"
+TITLE = "Relaxi-cab"
+CONTENT = ("It's so hard to care when you are this relaxed...but maybe you could post something.\n"
 "Click me and start writing.")
 placeholder = Posts()
-placeholder.addPost(Post(author, title, content))
+placeholder.add_post(Post(AUTHOR, TITLE, CONTENT))

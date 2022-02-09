@@ -1,17 +1,16 @@
 from datetime import datetime
-from pickletools import read_bytes4
 
 class Post:
     def __init__(self, auth, title, content):
         self.auth = auth
         self.title = title
         self.content = content
-        self.date = self.dateCreated()
+        self.date = self.date_created()
 
-    def dateCreated(self):
-        createdOn = datetime.now().strftime("%d/%b/%y %H:%M:%S")
-        return (createdOn, "")
-    
+    def date_created(self):
+        created_on = datetime.now().strftime("%d/%b/%y %H:%M:%S")
+        return (created_on, "")
+
     def edit(self, editted):
         self.auth = editted.auth
         self.title = editted.title
@@ -23,12 +22,13 @@ class Preview():
         self.auth = post.auth
         self.title = post.title
         self.content = self.truncate(post.content)
-        self.date = self.displayDate(post.date[0], post.date[1])
+        self.date = self.display_date(post.date[0], post.date[1])
 
-    def displayDate(self, created, modified):
+    def display_date(self, created, modified):
         return created if modified == "" else modified[10:]
-    
+
     def truncate(self, content):
-        linesCount = content[:150].count("\n")
-        chunk = 150 - (linesCount * 3)
+        lines_count = content[:150].count("\n")
+        chunk = 150 - (lines_count * 3)
         return content[:chunk] + "[...]"
+        

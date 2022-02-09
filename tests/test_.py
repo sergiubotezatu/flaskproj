@@ -1,7 +1,6 @@
-import blog
 import unittest
-from flask import request, jsonify
 import requests
+import blog
 
 class test_BlogRequests(unittest.TestCase):
     def setUp(self):
@@ -9,7 +8,7 @@ class test_BlogRequests(unittest.TestCase):
         self.app = blog.blog.test_client()
 
     HOME_URL = "http://127.0.0.1:5000/"
-    CREATE_URL = "http://127.0.0.1:5000/post/create" 
+    CREATE_URL = "http://127.0.0.1:5000/post/create"
 
     def test_HomeRequest(self):
         testHome = requests.get(self.HOME_URL)

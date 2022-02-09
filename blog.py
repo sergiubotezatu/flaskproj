@@ -1,6 +1,6 @@
-from __init__ import createBlog
+from __init__ import create_blog
 
-blog = createBlog()
+blog = create_blog()
 blog.secret_key = "FlaskBlog"
 
 if __name__ == ("__main__"):

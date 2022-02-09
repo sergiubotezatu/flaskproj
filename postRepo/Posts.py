@@ -1,6 +1,6 @@
 from models.post import Preview
 
-class postsEnumerator:
+class PostsEnumerator:
     def __init__(self, posts):
         self.posts = list(posts.items())
         self.counter = -1
@@ -18,29 +18,29 @@ class Posts:
     def __init__(self):
         self.__posts = {}
 
-    def addPost(self, post):
-        id = post.auth[:2] + str(len(self.__posts) + 1)
-        self.__posts.update({id : post})
+    def add_post(self, post):
+        post_id = post.auth[:2] + str(len(self.__posts) + 1)
+        self.__posts.update({post_id : post})
 
-    def getPost(self, id):
-        return self.__posts[id]
-    
-    def getIds(self):
+    def get_post(self, post_id):
+        return self.__posts[post_id]
+
+    def get_ids(self):
         return list(self.__posts.keys())
 
     def __len__(self):
         return len(self.__posts)
 
     def __iter__(self):
-        return postsEnumerator(self.__posts)
+        return PostsEnumerator(self.__posts)
 
-    def remove(self, id):
-        self.__posts.pop(id)
+    def remove(self, post_id):
+        self.__posts.pop(post_id)
 
-    def replace(self, id, post):
-        self.__posts[id].edit(post)
+    def replace(self, post_id, post):
+        self.__posts[post_id].edit(post)
 
-    def getPreview(self):
+    def get_preview(self):
         for posts in self:
             yield (posts[0], Preview(posts[1]))
     
