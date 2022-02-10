@@ -2,14 +2,21 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        ".",
+        "./tests",
         "-p",
-        "test_*.py"
+        "*test*.py"
     ],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
-    "python.linting.pylintArgs": ["--disable=C0111", "--disable=R0201", "--disable=F0401", "--disable=W0403", "--disable=R0903"],
+    "python.linting.pylintArgs": [
+        "--disable=C0111",
+        "--disable=R0201",
+        "--disable=F0401",
+        "--disable=W0403",
+        "--disable=R0903",
+        "--disable=W0231",
+        "--disable=W0201"],
     "python.linting.pylintPath": "C:\\Users\\Cristina\\Desktop\\flaskBlog\\venv\\Scripts\\pylint.exe"
 }

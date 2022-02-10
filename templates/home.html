@@ -18,7 +18,7 @@
       <a href= "/post/create" style ="color:black; text-decoration:none; ">
       {%else%}
       {%set id = item[0]%}
-      <a href="{{ '/post/read/post_id=%s'%id|urlencode }}" style ="color:black; text-decoration:none; ">
+      <a href="{{ '/post/read/post_id_%s'%id|urlencode }}" style ="color:black; text-decoration:none; ">
       {%endif%}
         <div class="post" title ="Click to Read More">
          <h3 class = "item" style ="margin-left:auto;margin-right:auto;">{{item[1].title}}</h3>

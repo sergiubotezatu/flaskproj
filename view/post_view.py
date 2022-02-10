@@ -8,11 +8,11 @@ post = Blueprint("posts", __name__)
 def create():
     if request.method == "POST":
         create_new_post()
-        return redirect(f"/post/read/post_id={blogPosts.get_ids()[-1]}")
+        return redirect(f"/post/read/post_id_{blogPosts.get_ids()[-1]}")
 
     return render_template("writePost.html")
 
-@post.route("/read/post_id=<post_id>",methods = ["Get", "Post"])
+@post.route("/read/post_id_<post_id>",methods = ["Get", "Post"])
 def read(post_id):
     if request.method == "POST":
         to_delete = request.form.get("action")
@@ -29,12 +29,12 @@ def read(post_id):
             content = selected_post.content,
             date = selected_post.date)
 
-@post.route("/edit/post_id=<post_id>", methods = ["Get", "Post"])
+@post.route("/edit/post_id_<post_id>", methods = ["Get", "Post"])
 def edit(post_id):
     selected_post = blogPosts.get_post(post_id)
     if request.method == "POST":
         edit_post(post_id)
-        return redirect(f"/post/read/post_id={post_id}")
+        return redirect(f"/post/read/post_id_{post_id}")
     return render_template(
         "edit.html",
         auth = selected_post.auth,
