@@ -15,7 +15,7 @@ def create():
 @post.route("/read/post_id_<post_id>",methods = ["Get", "Post"])
 def read(post_id):
     if request.method == "POST":
-        to_delete = request.form.get("action")
+        to_delete = request.form.get("postID")
         blogPosts.remove(to_delete)
         flash("Your post has been successfully removed.", "info")
         return redirect(url_for("home.front_page"))

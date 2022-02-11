@@ -8,7 +8,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "/Users/Cristina/Desktop/flaskBlog/tests/test_.py",
             "console": "integratedTerminal"
         }
     ]
