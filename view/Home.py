@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, current_app, render_template
 from postRepo.seed import blogPosts, placeholder
 
 home = Blueprint("home", __name__)

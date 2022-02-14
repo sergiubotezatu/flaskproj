@@ -44,3 +44,6 @@ class Posts:
         for posts in self:
             yield (posts[0], Preview(posts[1]))
     
+    def delete_all(self):
+        self.__posts = {}
+    

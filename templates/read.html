@@ -22,7 +22,7 @@
 {%block create2%}{%endblock%}
 {%block content%}
 <div class ="editDel">
-  <a href= "{{ '/post/edit/post_id_%s'%editable|urlencode }}"><button class="edit">EDIT CONTENT</a>
+  <a href= "{{ '/post/edit/%s'%editable|urlencode }}"><button class="edit">EDIT CONTENT</a>
   <button type ="button" class ="edit" id = "del" onclick="MessOn()">DELETE POST</button>
 </div>
 <div id="overlay" onclick="MessOff()">
