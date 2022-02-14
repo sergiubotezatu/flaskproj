@@ -16,8 +16,8 @@ class BlogTests(unittest.TestCase):
     def tearDown(self) -> None:
         blogPosts.delete_all()
 
-    BASE =  "http://127.0.0.1:5000/"
-    BASE_POST = "http://127.0.0.1:5000/post/"
+    BASE =  "/"
+    BASE_POST = "/post/"
 
     def test_home(self):
         result = self.test_app.get(self.BASE)
