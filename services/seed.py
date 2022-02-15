@@ -1,5 +1,5 @@
+from services.posts import Posts
 from models.post import Post
-from postRepo.posts import Posts
 
 blogPosts = Posts()
 

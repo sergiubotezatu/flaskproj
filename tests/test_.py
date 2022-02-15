@@ -1,14 +1,12 @@
 import unittest
 from flask import url_for, current_app
-from __init__ import create_blog
-from postRepo.seed import blogPosts
+from __initblog__ import create_blog
+from services.seed import blogPosts
 
 
 class BlogTests(unittest.TestCase):
+    blog = create_blog(is_test_app = True)
     def setUp(self):
-        self.blog = create_blog()
-        self.blog.config["TESTING"] = True
-        self.blog.secret_key = "FlaskBlog"
         with self.blog.test_request_context() as self.ctx:
             self.test_app = current_app.test_client()
             self.ctx.push()

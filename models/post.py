@@ -6,7 +6,7 @@ class Post:
         self.title = title
         self.content = content
         self.date = self.date_created()
-
+        
     def date_created(self):
         created_on = datetime.now().strftime("%d/%b/%y %H:%M:%S")
         return (created_on, "")
