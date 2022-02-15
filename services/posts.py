@@ -1,7 +1,7 @@
 from models.post import Preview
 from services.data_source import ISource
 
-class PostsEnumerator(ISource):
+class PostsEnumerator():
     def __init__(self, posts):
         self.posts = list(posts.items())
         self.counter = -1
@@ -15,7 +15,7 @@ class PostsEnumerator(ISource):
         raise StopIteration
 
 
-class Posts:
+class Posts(ISource):
     def __init__(self):
         self.__posts = {}
 
