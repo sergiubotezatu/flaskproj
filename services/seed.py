@@ -2,6 +2,7 @@ from services.posts import Posts
 from models.post import Post
 
 blogPosts = Posts()
+source_factory = None
 
 AUTHOR = "Chandler Bing"
 TITLE = "Relaxi-cab"

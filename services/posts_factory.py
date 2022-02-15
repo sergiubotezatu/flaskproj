@@ -6,6 +6,6 @@ class Create:
         self.is_testing_env = is_testing_env
 
     def create_source(self):
-        if (self.is_testing_env):
+        if (self.is_testing_env == "FlaskTest"):
             return Posts()
         return PostsTable()

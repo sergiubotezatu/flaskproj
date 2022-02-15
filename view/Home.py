@@ -1,10 +1,8 @@
 from flask import Blueprint, render_template, current_app
-from services import seed, posts_factory
-import blog
+from services import seed
 
 home = Blueprint("home", __name__)
-source_factory = posts_factory.Create()
-blogPosts = source_factory.create_source(current_app.config["testing"])
+blogPosts = seed.source_factory.create_source()
 
 @home.route("/")
 def front_page():
