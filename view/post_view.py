@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from services.seed import blogPosts
+from view.home import blogPosts
 from models.post import Post
 
 

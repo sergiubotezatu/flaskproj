@@ -18,7 +18,7 @@ class PostsEnumerator():
 class Posts(ISource):
     def __init__(self):
         self.__posts = {}
-
+        
     def add_post(self, post):
         post_id = post.auth[:2] + str(len(self.__posts) + 1)
         self.__posts.update({post_id : post})

@@ -12,10 +12,10 @@
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
         "--disable=C0111",
-        "--disable=R0201",
-        "--disable=F0401",
+        "--disable=R0201",        
         "--disable=W0403",
         "--disable=R0903",
+        "--disable=C0304",
         "--disable=W0231",
         "--disable=W0201"],
     "python.linting.pylintPath": "C:\\Users\\Cristina\\Desktop\\flaskBlog\\venv\\Scripts\\pylint.exe"
