@@ -1,8 +1,7 @@
 import unittest
 from flask import url_for, current_app
-from __initblog__ import create_blog
-from services.seed import blogPosts
-
+from view.__initblog__ import create_blog
+from view import home
 
 class BlogTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)
@@ -12,7 +11,7 @@ class BlogTests(unittest.TestCase):
             self.ctx.push()
 
     def tearDown(self) -> None:
-        blogPosts.delete_all()
+        home.blogPosts.delete_all()
 
     BASE =  "/"
     BASE_POST = "/post/"

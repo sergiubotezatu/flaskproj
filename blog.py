@@ -1,4 +1,4 @@
-from __initblog__ import create_blog
+from view.__initblog__ import create_blog
 
 blog = create_blog()
 

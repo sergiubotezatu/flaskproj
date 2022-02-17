@@ -1,8 +1,8 @@
 from flask import Flask
 from view.home import home
 from view.post_view import post
-from services import seed
-from services import posts_factory
+import services.seed as seed
+import services.posts_factory as posts_factory
 
 def create_blog(is_test_app = False):
     blog = Flask(__name__)

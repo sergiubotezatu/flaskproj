@@ -18,5 +18,8 @@
         "--disable=C0304",
         "--disable=W0231",
         "--disable=W0201"],
-    "python.linting.pylintPath": "C:\\Users\\Cristina\\Desktop\\flaskBlog\\venv\\Scripts\\pylint.exe"
+    "python.linting.pylintPath": "C:\\Users\\Cristina\\Desktop\\flaskBlog\\venv\\Scripts\\pylint.exe",
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Users\\Cristina\\Desktop\\flaskBlog"
+      }
 }
