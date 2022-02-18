@@ -1,11 +1,11 @@
-from services.posts import Posts
 from services.posts_table import PostsTable
+from services.seed import blogPosts
 
 class Create:
-    def __init__(self, is_testing_env):
-        self.is_testing_env = is_testing_env
-
+    def __init__(self, is_test):
+        self.is_test = is_test
+        
     def create_source(self):
-        if (self.is_testing_env == "FlaskTest"):
-            return Posts()
-        return PostsTable()
+        if (self.is_test):
+            return blogPosts
+        return PostsTable

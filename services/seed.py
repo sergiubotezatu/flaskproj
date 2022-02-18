@@ -1,8 +1,7 @@
 from services.posts import Posts
-from services import posts_factory
 from models.post import Post
 
-source_factory = posts_factory.Create("Default")
+blogPosts = Posts()
 
 AUTHOR = "Chandler Bing"
 TITLE = "Relaxi-cab"
