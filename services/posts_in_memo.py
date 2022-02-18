@@ -1,5 +1,5 @@
 from models.post import Preview
-from services.data_source import ISource
+from services.ipost_repo import IPostRepo
 
 class PostsEnumerator():
     def __init__(self, posts):
@@ -15,7 +15,7 @@ class PostsEnumerator():
         raise StopIteration
 
 
-class Posts(ISource):
+class Posts(IPostRepo):
     def __init__(self):
         self.__posts = {}
         

@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-class ISource(metaclass = ABCMeta):
+class IPostRepo(metaclass = ABCMeta):
     
     @abstractmethod
     def add_post(self, post):

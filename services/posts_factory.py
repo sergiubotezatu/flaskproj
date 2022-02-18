@@ -1,4 +1,4 @@
-from services.posts_table import PostsTable
+from services.posts_db_repo import PostsDb
 from services.seed import blogPosts
 
 class Create:
@@ -8,4 +8,4 @@ class Create:
     def create_source(self):
         if (self.is_test):
             return blogPosts
-        return PostsTable
+        return PostsDb

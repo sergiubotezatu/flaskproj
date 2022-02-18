@@ -1,7 +1,7 @@
 from psycopg2 import connect, DatabaseError
-from services.data_source import ISource
+from services.ipost_repo import IPostRepo
 
-class PostsTable(ISource):
+class PostsDb(IPostRepo):
     def __init__(self):
         self.conn = None
         self.register_table()
