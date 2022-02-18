@@ -13,3 +13,11 @@ class IPostRepo(metaclass = ABCMeta):
     @abstractmethod
     def remove(self, post_id):
         pass
+
+    @abstractmethod
+    def get_post(self, post_id):
+        pass
+
+    @abstractmethod
+    def get_preview(self, post_id):
+        pass

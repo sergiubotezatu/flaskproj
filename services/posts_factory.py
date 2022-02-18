@@ -8,4 +8,4 @@ class Create:
     def create_source(self):
         if (self.is_test):
             return blogPosts
-        return PostsDb
+        return PostsDb()

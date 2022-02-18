@@ -1,10 +1,11 @@
 from psycopg2 import connect, DatabaseError
 from services.ipost_repo import IPostRepo
+from models.post import Post, Preview
+from services.posts_db_actions import CurAction
 
 class PostsDb(IPostRepo):
     def __init__(self):
-        self.conn = None
-        self.register_table()
+        self.db = 
         self.count = 0
 
     def __len__(self):
@@ -30,6 +31,26 @@ class PostsDb(IPostRepo):
 
     def remove(self, id):
         self.access_db(self.delete_post(id))
+        self.count -= 1
+
+    def get_post(self, id):
+        result = None
+        try:
+            self.conn = self.init_connect()
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                SELECT * FROM blog_posts
+                WHERE PostID = %s;
+            """, (id)
+            )
+            row = cursor.fetchone()
+            result = Post(row[1], row[2], row[3], row[4])
+            cursor.close()
+        except (Exception, DatabaseError) as error:
+            print(error)
+        self.conn.close()
+        return result
 
     def access_db(self, operation):
         try:
@@ -66,10 +87,28 @@ class PostsDb(IPostRepo):
         """, (post.auth, post.title, post.content, post.date, id)
 
     def delete_post(self, id):
-         return """
+        return """
             DELETE FROM blog_posts
             WHERE PostID = %s;
         """, (id)
     
     def create_id(self, name):
-        return name[:2] + str(self.count + 1)
+        return name[:2] + str(self.count + 1)  
+
+    def get_preview(self):
+        try:
+            self.conn = self.init_connect()
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+            SELECT * FROM blog_posts
+            """
+            )
+            row = cursor.fetchone()
+            while row is not None:
+                yield (row[0], Preview(row[1], row[2], row[3], row[4]))            
+            
+            cursor.close()
+        except (Exception, DatabaseError) as error:
+            print(error)
+        self.conn.close()

@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, current_app
 from services.seed import placeholder
-from services.posts_factory import Create
 
 class Home:
     def __init__(self, factory):
