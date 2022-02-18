@@ -9,7 +9,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "/Users/Cristina/Desktop/flaskBlog/tests/test_.py",     
+            "program": "/Users/Cristina/Desktop/flaskBlog/tests/test_posts.py",     
             "env": {"PYTHONPATH": "C:\\Users\\Cristina\\Desktop\\flaskBlog"},
             "console": "integratedTerminal"
         }

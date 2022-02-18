@@ -1,5 +1,5 @@
-from configparser import ConfigParser, DatabaseError
-from psycopg2 import connect
+from configparser import ConfigParser 
+from psycopg2 import connect, DatabaseError
 from models.post import Preview, Post
 
 class PostsDbWork:

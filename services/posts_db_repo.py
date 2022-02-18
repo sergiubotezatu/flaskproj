@@ -1,7 +1,7 @@
 from psycopg2 import connect, DatabaseError
-from ipost_repo import IPostRepo
+from services.ipost_repo import IPostRepo
 from models.post import Post
-from posts_db_actions import PostsDbWork
+from services.posts_db_actions import PostsDbWork
 
 class PostsDb(IPostRepo):
     def __init__(self):
