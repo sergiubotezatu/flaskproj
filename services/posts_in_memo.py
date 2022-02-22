@@ -41,7 +41,7 @@ class Posts(IPostRepo):
     def replace(self, post_id, post):
         self.__posts[post_id].edit(post)
 
-    def get_preview(self):
+    def get_all(self):
         for posts in self:
             yield (posts[0], Preview(posts[1]))
     
