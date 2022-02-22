@@ -1,0 +1,55 @@
+{%extends "base.html"%}
+{%block title%}Create_Post{%endblock%}
+{%block create1%}{%endblock%}
+{%block create2%}{%endblock%}
+{%block content%}
+<form class = "write" style="text-align:center" method = "Post">
+    <label for="host">HOST</label><br><br>
+     <input id ="DbHost"
+      class="field"
+      style ="width:200px;"
+      type="text"
+      name="host"
+      placeholder="localhost"
+      maxlength="15"
+      minlength ="4"
+      autofocus
+      required>
+    <label for="database">Data Base</label><br><br>
+        <input id ="db"
+        class="field"
+        style ="width:200px;"
+        type="text"
+        name="databse"
+        maxlength="15"
+        minlength ="4"
+        required>
+    <label for="user">User</label><br><br>
+        <input id ="usr"
+        class="field"
+        style ="width:200px;"
+        type="text"
+        name="user"
+        maxlength="15"
+        minlength ="4"
+        required>
+    <label for="password">Password</label><br><br>
+        <input id ="pass"
+        class="field"
+        style ="width:200px;"
+        type="text"
+        name="password"
+        maxlength="15"
+        minlength ="4"
+        required>
+        <label for="section">Section</label><br><br>
+    <input id ="sect"
+        class="field"
+        style ="width:200px;"
+        type="text"
+        name="section"
+        maxlength="15"
+        minlength ="4"
+        required>
+</form>
+{%endblock%}

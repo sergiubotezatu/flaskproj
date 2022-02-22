@@ -15,5 +15,6 @@ class Home:
                 return render_template("home.html", allposts = placeholder.get_all())
 
             return render_template("home.html", allposts = self.blogPosts.get_all())
+            
         return home
     

@@ -9,10 +9,10 @@ def create_blog(is_test_app = False):
     repo = PostsFactory.create(is_test_app)
         
     from view.home import Home
-    front_page = Home(repo)
-    blog.register_blueprint(front_page.bp, url_prefix="/")
+    blog.register_blueprint(Home(repo).bp, url_prefix="/")
     from view.post_view import PostPage
-    post_page = PostPage(repo)
-    blog.register_blueprint(post_page.bp, url_prefix="/post")
+    blog.register_blueprint(PostPage(repo).bp, url_prefix="/post")
+    from view.db_setup import DbSetUp
+    blog.register_blueprint(DbSetUp(repo).bp, url_prefix = "/")
 
     return blog
