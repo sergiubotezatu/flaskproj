@@ -4,16 +4,17 @@ from models.post import Preview, Post
 
 class PostsDbWork:
     def __init__(self, request):
+        self.conn = self.db_connect()
         self.request = request
         self.generate_table = self.edit_table(request)
 
     def edit_table(self, *args):
         execution = self.get_all_options()[self.request]
         try:
-            conn = self.db_connect()
-            cursor = conn.cursor()
+            self.conn = self.db_connect()
+            cursor = self.conn.cursor()
             cursor.execute(execution, args)
-            conn.commit()
+            self.conn.commit()
             cursor.close()
         except (Exception, DatabaseError) as error:
             print(error)
@@ -33,8 +34,7 @@ class PostsDbWork:
         else:
             raise Exception(f"Section {section} not found in the {filename} file")
 
-        return db      
-
+        return db   
     def get_all_options(self):
         return {
         "creation" : self.table_creation(),
