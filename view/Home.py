@@ -3,7 +3,7 @@ from services.seed import placeholder
 
 class Home:
     def __init__(self, factory):
-        self.blogPosts = factory.create_source()
+        self.blogPosts = factory
         self.bp = self.create_bp()
     
     def create_bp(self):
@@ -12,8 +12,8 @@ class Home:
         def front_page():
             rows = len(self.blogPosts)
             if rows == 0:
-                return render_template("home.html", allposts = placeholder.get_preview())
+                return render_template("home.html", allposts = placeholder.get_all())
 
-            return render_template("home.html", allposts = self.blogPosts.get_preview())
+            return render_template("home.html", allposts = self.blogPosts.get_all())
         return home
     

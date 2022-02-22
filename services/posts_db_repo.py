@@ -1,4 +1,4 @@
-from psycopg2 import connect, DatabaseError, cursor
+from psycopg2 import connect, DatabaseError
 from services.ipost_repo import IPostRepo
 from models.post import Post
 from services.database import DataBase
