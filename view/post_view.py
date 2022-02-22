@@ -5,10 +5,15 @@ from models.post import Post
 class PostPage:
     def __init__(self, allPosts):
         self.blogPosts = allPosts
-        self.bp = self.create_bp()
+        self.bp = self.create_bp()           
                 
     def create_bp(self):
         post = Blueprint("posts", __name__)
+        @post.before_request
+        def goto_db_setup():
+            if str(type(self.blogPosts)).find("PostsDb") != -1 and self.blogPosts.db.current_config == None:
+                return redirect(url_for("db_setup.set_database"))
+
         @post.route("/create", methods = ["Get", "Post"])
         def create():
             if request.method == "POST":

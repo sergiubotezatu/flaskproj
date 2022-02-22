@@ -43,9 +43,9 @@ class PostsDb(IPostRepo):
             cursor.execute(execution, args)
             conn.commit()
             cursor.close()
+            conn.close()
         except (Exception, DatabaseError) as error:
-            print(error)
-        conn.close()
+            print(error)       
 
     def get_all_options(self):
         return {

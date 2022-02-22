@@ -7,3 +7,4 @@ class PostsFactory:
         if (is_test):
             return blogPosts
         return PostsDb()
+    
