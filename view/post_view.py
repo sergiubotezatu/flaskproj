@@ -15,7 +15,7 @@ class PostPage:
 
     def goto_db_setup(self):
         if str(type(self.blogPosts)).find("PostsDb") != -1 and self.blogPosts.db.current_config == None:
-            return redirect(url_for("db_setup.set_database", db_repo = self.blogPosts))
+            return redirect(url_for("db_setup.set_database"))
 
     def create(self):
         if request.method == "POST":
