@@ -19,8 +19,8 @@ class PostsDb(IPostRepo):
         self.db.perform_query("edit", post.auth, post.title, post.content, post.date, id)
 
     def remove(self, id):
-        self.db.perform_query("deletion", id)
         self.count -= 1
+        self.db.perform_query("deletion", id)        
     
     def get_post(self, id):
         self.read(id)
