@@ -10,7 +10,7 @@ class DbSetUp:
         if self.db_repo.db.current_config != None:
             return redirect(url_for("home.front_page"))             
         if request.method == "POST":
-            self.db_repo.add_new_config(self.get_items(), request.form.get("section"))
+            self.db_repo.db.add_new_config(self.get_items(), request.form.get("section"))
         return render_template("db_setup.html")             
     
     def get_items(self):

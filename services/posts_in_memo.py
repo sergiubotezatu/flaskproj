@@ -22,12 +22,10 @@ class Posts(IPostRepo):
     def add_post(self, post):
         post_id = post.auth[:2] + str(len(self.__posts) + 1)
         self.__posts.update({post_id : post})
+        return post_id
 
     def get_post(self, post_id):
         return self.__posts[post_id]
-
-    def get_ids(self):
-        return list(self.__posts.keys())
 
     def __len__(self):
         return len(self.__posts)

@@ -19,8 +19,7 @@ class PostPage:
 
     def create(self):
         if request.method == "POST":
-            self.create_new_post()
-            return redirect(f"/post/read/{self.blogPosts.get_ids()[-1]}")
+            return redirect(f"/post/read/{self.create_new_post()}")
 
         return render_template("writePost.html")
 
@@ -56,7 +55,7 @@ class PostPage:
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
-        self.blogPosts.add_post(Post(author, title, content))
+        return self.blogPosts.add_post(Post(author, title, content))
 
     def edit_post(self, post_id):
         author = request.form.get("author")

@@ -18,18 +18,22 @@ class DataBase:
         self.perform_query("creation")
 
     def perform_query(self, request, *args):
-        execution = self.queries()[request]
+        id = -1
+        execution = self.edit_queries()[request]
         try:
             conn = self.connection()
             cursor = conn.cursor()
             cursor.execute(execution, args)
+            got_id = cursor.fetchone()[0]
+            id = got_id if got_id != None else id
             conn.commit()
             cursor.close()
             conn.close()
         except (Exception, DatabaseError) as error:
             print(error)
+            return id
 
-    def queries(self):
+    def edit_queries(self):
         return {
         "creation" : self.table_creation(),
         "insertion" : self.insertion,
@@ -51,7 +55,8 @@ class DataBase:
     def insertion(self):
         return """
             INSERT INTO blog_posts       
-            VALUES (%s, %s, %s, %s);
+            VALUES (%s, %s, %s, %s)
+            RETURNING PostID;
             """
 
     def update(self):
@@ -65,4 +70,4 @@ class DataBase:
         return """
             DELETE FROM blog_posts
             WHERE PostID = %s;
-            """ 
+            """
