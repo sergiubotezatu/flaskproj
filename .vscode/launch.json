@@ -3,14 +3,15 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
-        
+    "configurations": [    
         {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "/Users/Cristina/Desktop/flaskBlog/tests/test_posts.py",     
-            "env": {"PYTHONPATH": "C:\\Users\\Cristina\\Desktop\\flaskBlog"},
+            "program": "/Users/Cristina/Desktop/flaskBlog/blog.py",              
+            "env": {
+                "FLASK_APP": "blog.py",
+                "PYTHONPATH": "C:\\Users\\Cristina\\Desktop\\flaskBlog"},
             "console": "integratedTerminal"
         }
     ]
