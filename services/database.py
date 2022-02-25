@@ -6,14 +6,13 @@ from models.post import Post
 class DataBase:
     def __init__(self):
         self.config = DataBaseConfig()
-        self.parser = ConfigParser()
         self.current_config = None
 
     def connection(self):
         return connect(self.current_config)
 
-    def add_new_config(self, settings, section):
-        self.config.save_config(settings, section)
+    def add_new_config(self, section, settings):
+        self.config.save_config(section, settings)
         self.current_config = self.config.load_config(section)
         self.perform_query("creation")
 
@@ -23,15 +22,15 @@ class DataBase:
         try:
             conn = self.connection()
             cursor = conn.cursor()
-            cursor.execute(execution, args)
-            got_id = cursor.fetchone()[0]
-            id = got_id if got_id != None else id
+            cursor.execute(execution, *args)
+            got_id = cursor.fetchone()
+            id = got_id[0] if got_id != None else id
             conn.commit()
             cursor.close()
             conn.close()
         except (Exception, DatabaseError) as error:
             print(error)
-            return id
+        return id
 
     def edit_queries(self):
         return {
@@ -43,13 +42,12 @@ class DataBase:
 
     def table_creation(self):
         return """        
-            CREATE TABLE [IF NOT EXISTS] blog_posts (
+            CREATE TABLE IF NOT EXISTS blog_posts(
             PostID SERIAL PRIMARY KEY,
             Author varchar(30),
             Title varchar(200),
             Content varchar(3000),
-            Date varchar(20)
-        );
+            Date varchar(20));        
         """
     
     def insertion(self):

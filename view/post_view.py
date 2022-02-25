@@ -34,8 +34,8 @@ class PostPage:
         return render_template(
             "read.html",
             editable = post_id,
-            title = selected_post.title,
             auth = selected_post.auth,
+            title = selected_post.title,
             content = selected_post.content,
             date = selected_post.date)
 

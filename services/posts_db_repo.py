@@ -23,10 +23,10 @@ class PostsDb(IPostRepo):
         self.db.perform_query("deletion", id)        
     
     def get_post(self, id):
-        self.read(id)
+        return self.read(id)
 
     def get_all(self):
-        self.read()
+        return self.read()
 
     def read(self, id = ""):
         result = None
@@ -35,14 +35,13 @@ class PostsDb(IPostRepo):
             cursor = conn.cursor()
             if id == "":
                 result = []
-                result.append(self.fetch_to_display(cursor, self.read_all))
+                result.append(self.fetch_to_display(cursor, self.read_all()))
             else:
                 result = self.fetch_to_display(cursor, self.read_post(id))
             conn.close()
             cursor.close()
         except (Exception, DatabaseError) as error:
             print(error)
-        conn.close()
         return result
 
     def fetch_to_display(self, cursor, func_read):
@@ -63,7 +62,7 @@ class PostsDb(IPostRepo):
             SELECT p.*,
             CASE
             WHEN CHAR_LENGTH(p.Content) > 150 THEN SUBSTRING(p.Content, 1, 150)
-            ELSE C.Content
+            ELSE p.Content
             END AS Preview  
             FROM blog_posts AS p
             ORDER BY p.PostID DESC;

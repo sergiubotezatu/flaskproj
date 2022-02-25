@@ -4,8 +4,9 @@ class DataBaseConfig:
     def __init__(self):
         self.config_options = ["host","database", "user","password"]
         self.parser = ConfigParser()
-    
+            
     def load_config(self, section, filename = "database.ini"):
+        self.parser.read(filename)
         db = {}
         if self.parser.has_section(section):
             params = self.parser.items(section)
@@ -16,10 +17,10 @@ class DataBaseConfig:
 
         return db
 
-    def save_config(self, items, section, filename = "database.ini"):
+    def save_config(self, section, items, filename = "database.ini"):
         if not self.parser.has_section(section):
             self.parser.add_section(section)
             for options in self.config_options:
                 i = 0
                 self.parser.set(section, options, items[i])
-                i += 1    
+                i += 1 
