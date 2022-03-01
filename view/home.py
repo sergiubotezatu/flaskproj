@@ -9,7 +9,7 @@ class Home:
         self.home = self.bp.route("/", )(self.front_page)
 
     def goto_db_setup(self):
-        if str(type(self.blogPosts)).find("PostsDb") != -1 and self.blogPosts.db.current_config == None:
+        if str(type(self.blogPosts)).find("PostsDb") != -1 and self.blogPosts.db == None:
             return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):
