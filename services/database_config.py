@@ -1,12 +1,11 @@
 from configparser import ConfigParser
-import encodings
 from models.db_settings import DBSettings
 
 class DataBaseConfig:
     def __init__(self):
         self.settings = None
         self.current_config = None
-        self.setting_options = ["host", "databse", "user", "password"]
+        self.setting_options = ["host", "database", "user", "password"]
         self.CONFIGFILE = "db_file"
         self.parser = ConfigParser()        
 
@@ -14,7 +13,7 @@ class DataBaseConfig:
         self.settings = settings
                     
     def load(self):
-        section = self.settings[0]
+        section = self.settings.section
         self.parser.read(self.CONFIGFILE)
         db = {}
         if self.parser.has_section(section):
@@ -27,9 +26,9 @@ class DataBaseConfig:
         self.current_config = db
 
     def save(self):
-        section = self.settings[0]
-        params = section
+        section = self.settings.section
+        params = f"[{section}]"
         for options in self.setting_options:
             params += f"{options} = {getattr(self.settings, options)}\n"
-        with open(self.CONFIGFILE, "w", encodings = "cp1251") as writer:
+        with open(self.CONFIGFILE, "w", encoding = "cp1251") as writer:
             writer.write(params)    

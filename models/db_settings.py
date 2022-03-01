@@ -1,6 +1,6 @@
 
 class DBSettings:
-    def __ini__(self, settings):
+    def __init__(self, settings):
         self.section = settings[0]
         self.host = settings[1]
         self.database = settings[2]

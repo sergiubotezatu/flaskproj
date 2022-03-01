@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, url_for, redirect
 from services.ipost_repo import IPostRepo
 from models.db_settings import DBSettings
 from services.database import DataBase
-from services.database_config import DataBaseConfig
 
 class DbSetUp:
     def __init__(self, db_repo : IPostRepo):
@@ -14,8 +13,9 @@ class DbSetUp:
     def set_database(self):
         if self.database.config.current_config != None:
             return redirect(url_for("home.front_page"))             
-        if request.method == "POST":            
-            self.database.config.add_settings(self.get_items())
+        if request.method == "POST":
+            settings = DBSettings(self.get_items())        
+            self.database.config.add_settings(settings)
             self.database.config.save()
             self.database.config.load()
             self.database.create_database()
