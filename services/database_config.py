@@ -28,7 +28,7 @@ class DataBaseConfig:
 
     def save(self):
         section = self.settings[0]
-        params = "section\n"
+        params = section
         for options in self.setting_options:
             params += f"{options} = {getattr(self.settings, options)}\n"
         with open(self.CONFIGFILE, "w", encodings = "cp1251") as writer:

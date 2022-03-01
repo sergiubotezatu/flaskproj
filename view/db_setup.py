@@ -7,16 +7,17 @@ from services.database_config import DataBaseConfig
 class DbSetUp:
     def __init__(self, db_repo : IPostRepo):
         self.database = DataBase()
-        self.configuration = DataBaseConfig()
         self.db_repo = db_repo
         self.bp = Blueprint("db_setup", __name__)
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
     
     def set_database(self):
-        if self.configuration.current_config != None:
+        if self.database.config.current_config != None:
             return redirect(url_for("home.front_page"))             
         if request.method == "POST":            
-            self.configuration.add_settings(self.get_items())
+            self.database.config.add_settings(self.get_items())
+            self.database.config.save()
+            self.database.config.load()
             self.database.create_database()
             self.db_repo.attach_db(self.database)
             return redirect(url_for("home.front_page"))

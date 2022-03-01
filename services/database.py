@@ -1,7 +1,6 @@
 from configparser import ConfigParser 
 from psycopg2 import connect, DatabaseError
 from services.database_config import DataBaseConfig
-from models.post import Post
 
 class DataBase:
     def __init__(self):
@@ -10,7 +9,7 @@ class DataBase:
         self.cursor = None
 
     def connection(self):
-        return connect(self.config.current_config) 
+        return connect(self.config.current_config)    
 
     def create_database(self):
         try:
