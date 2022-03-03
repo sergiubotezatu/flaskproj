@@ -1,5 +1,6 @@
 from models.post import Preview
 from services.ipost_repo import IPostRepo
+from models.post import Post
 
 class PostsEnumerator():
     def __init__(self, posts):
@@ -24,7 +25,7 @@ class Posts(IPostRepo):
         self.__posts.update({post_id : post})
         return post_id
 
-    def get_post(self, post_id):
+    def get_post(self, post_id) -> Post:
         return self.__posts[post_id]
 
     def __len__(self):

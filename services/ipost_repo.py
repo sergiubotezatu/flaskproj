@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from models.post import Post
 
 class IPostRepo(metaclass = ABCMeta):
     
@@ -15,7 +16,7 @@ class IPostRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_post(self, post_id):
+    def get_post(self, post_id) -> Post:
         pass
 
     @abstractmethod

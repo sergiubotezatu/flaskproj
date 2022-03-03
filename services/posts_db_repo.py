@@ -14,19 +14,19 @@ class PostsDb(IPostRepo):
     def __len__(self):
         return self.count
     
-    def add_post(self, post):
+    def add_post(self, post : Post):
         self.count += 1
         return self.perform_query("insertion", post.auth, post.title, post.content, post.date)        
 
-    def replace(self, post, id):
+    def replace(self, post : Post, id):
         self.perform_query("edit", post.auth, post.title, post.content, post.date, id)
 
     def remove(self, id):
         self.count -= 1
         self.perform_query("deletion", id)        
     
-    def get_post(self, id):
-        return self.read(id)
+    def get_post(self, id) -> Post:
+        return self.read(id)        
 
     def get_all(self):
         return self.read()    
@@ -36,7 +36,7 @@ class PostsDb(IPostRepo):
         execution = self.editing_queries()[request]
         try:
             self.db.db_connect()
-            self.db.cursor.execute(execution, *args)
+            self.db.cursor.execute(execution, args)
             got_id = self.db.cursor.fetchone()
             id = got_id[0] if got_id != None else id
             self.db.commit_and_close()
@@ -46,35 +46,37 @@ class PostsDb(IPostRepo):
 
     def editing_queries(self):
         return {
-        "insertion" : self.insertion,
+        "insertion" : self.insertion(),
         "edit" : self.update(),
         "deletion" : self.delete()
         }
 
-    def read(self, id = ""):
+    def read(self, id = "") -> Post:
         result = None
         try:
             self.db.db_connect()
             if id == "":
                 result = []
-                result.append(self.fetch_to_display(self.db.cursor, self.read_all()))
+                result.append(self.fetch_to_display(self.read_all()))
             else:
-                result = self.fetch_to_display(self.db.cursor, self.read_post(id))
+                for post in self.fetch_to_display(self.read_post(id)):
+                    result = Post(post[0], post[1], post[2])                
             self.db.commit_and_close()
         except (Exception, DatabaseError) as error:
             print(error)
         return result
 
-    def fetch_to_display(self, cursor, func_read):
-        cursor.execute(func_read)
-        row = cursor.fetchone()
+    def fetch_to_display(self, func_read):
+        self.db.cursor.execute(func_read)
+        row = self.db.cursor.fetchone()
         while row is not None:
-            yield Post(row[0], row[1], row[2], self.cut_poem_newlines(row[5]), row[4])
-            row = cursor.fetchone()
+            yield row
+            row = self.db.cursor.fetchone()
 
     def read_post(self, id):
         return f"""
-                SELECT * FROM blog_posts
+                SELECT Author, Title, Content, Date
+                FROM blog_posts
                 WHERE PostID = {id};
             """
 
@@ -92,7 +94,7 @@ class PostsDb(IPostRepo):
     def insertion(self):
         return """
         INSERT INTO blog_posts       
-        VALUES (%s, %s, %s, %s)
+        VALUES (DEFAULT, %s, %s, %s, %s)
         RETURNING PostID;
         """
 

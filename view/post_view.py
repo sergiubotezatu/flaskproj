@@ -1,14 +1,15 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.post import Post
+from services.ipost_repo import IPostRepo
 
 class PostPage:
-    def __init__(self, allPosts):
+    def __init__(self, allPosts : IPostRepo):
         self.blogPosts = allPosts
         self.bp = Blueprint("posts", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.creation = self.register("/create",self.create)
         self.reading = self.register("/read/<post_id>", self.read)
-        self.update = self.register("/edit/<post_id>", self.edit)     
+        self.update = self.register("/edit/<post_id>", self.edit)
 
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
