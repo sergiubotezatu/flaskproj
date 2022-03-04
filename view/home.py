@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, current_app, url_for, redirect, request
 from services.seed import placeholder
+from services.database import DataBase
 
 class Home:
     def __init__(self, factory):
@@ -9,7 +10,7 @@ class Home:
         self.home = self.bp.route("/", )(self.front_page)
 
     def goto_db_setup(self):
-        if str(type(self.blogPosts)).find("PostsDb") != -1 and self.blogPosts.db == None:
+        if str(type(self.blogPosts)).find("PostsDb") != -1 and DataBase.config.current_config == None:
             return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):

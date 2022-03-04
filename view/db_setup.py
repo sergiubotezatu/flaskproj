@@ -16,10 +16,8 @@ class DbSetUp:
         if request.method == "POST":
             settings = DBSettings(self.get_items())        
             self.database.config.add_settings(settings)
-            self.database.config.save()
-            self.database.config.load()
+            self.database.initialize_db()
             self.database.create_database()
-            self.db_repo.attach_db(self.database)
             return redirect(url_for("home.front_page"))
         return render_template("db_setup.html")             
     

@@ -7,7 +7,7 @@ class DataBaseConfig:
         self.current_config = None
         self.setting_options = ["dbname", "user", "password", "host"]
         self.CONFIGFILE = "db_file"
-        self.parser = ConfigParser()      
+        self.parser = ConfigParser()
 
     def add_settings(self, settings : DBSettings):
         self.settings = settings
@@ -29,4 +29,5 @@ class DataBaseConfig:
         for options in self.setting_options:
             params += f"{options} = {getattr(self.settings, options)}\n"
         with open(self.CONFIGFILE, "w") as writer:
-            writer.write(params)  
+            writer.write(params)    
+    

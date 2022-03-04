@@ -1,41 +1,56 @@
-from psycopg2 import connect, DatabaseError
+from psycopg2 import DatabaseError
 from services.ipost_repo import IPostRepo
-from models.post import Post
 from services.database import DataBase
+from models.post import Post
 
 class PostsDb(IPostRepo):
     def __init__(self):
-        self.count = 0
-        self.db = None
+        self.__count = -1
+        self.query = QueryPosts(DataBase())
+   
+    @property
+    def count(self):
+        if self.__count == -1:
+            return self.query.perform("count")
+        return self.__count
 
-    def attach_db(self, db : DataBase):
-        self.db = db
+    @count.setter
+    def count(self, value):
+        self.__count = value
                 
     def __len__(self):
         return self.count
     
     def add_post(self, post : Post):
         self.count += 1
-        return self.perform_query("insertion", post.auth, post.title, post.content, post.date)        
+        return self.query.perform("insertion", post.auth, post.title, post.content, post.date)        
 
-    def replace(self, post : Post, id):
-        self.perform_query("edit", post.auth, post.title, post.content, post.date, id)
+    def replace(self, id, post : Post):
+        self.query.perform("edit", post.auth, post.title, post.content, post.date, id)
 
     def remove(self, id):
         self.count -= 1
-        self.perform_query("deletion", id)        
+        self.query.perform("deletion", id)   
     
     def get_post(self, id) -> Post:
-        return self.read(id)        
+        return self.query.perform_read(id)     
 
     def get_all(self):
-        return self.read()    
+        return self.query.perform_read()
 
-    def perform_query(self, request, *args):
-        id = -1
-        execution = self.editing_queries()[request]
+
+class QueryPosts:
+    def __init__(self, db):
+        self.db = db
+
+    def attach(self, db):
+        self.db = db
+    
+    def perform(self, request, *args):
+        id = 0
+        execution = self.__queries()[request]
         try:
-            self.db.db_connect()
+            self.db.connect()
             self.db.cursor.execute(execution, args)
             got_id = self.db.cursor.fetchone()
             id = got_id[0] if got_id != None else id
@@ -43,44 +58,57 @@ class PostsDb(IPostRepo):
         except (Exception, DatabaseError) as error:
             print(error)
         return id
-
-    def editing_queries(self):
+    
+    def __queries(self):
         return {
-        "insertion" : self.insertion(),
-        "edit" : self.update(),
-        "deletion" : self.delete()
+        "insertion" : self.__insertion(),
+        "edit" : self.__update(),
+        "deletion" : self.__delete(),
+        "count" : self.__count_rows()
         }
-
-    def read(self, id = "") -> Post:
+    
+    def perform_read(self, id = "") -> Post:
         result = None
         try:
-            self.db.db_connect()
-            if id == "":
-                result = []
-                result.append(self.fetch_to_display(self.read_all()))
-            else:
-                for post in self.fetch_to_display(self.read_post(id)):
-                    result = Post(post[0], post[1], post[2])                
+            self.db.connect()
+            result = self.__fetch_all_posts(
+                self.__read_all()) if id == "" else self.__fetch_post(self.__read_post(id))               
             self.db.commit_and_close()
         except (Exception, DatabaseError) as error:
             print(error)
         return result
 
-    def fetch_to_display(self, func_read):
-        self.db.cursor.execute(func_read)
-        row = self.db.cursor.fetchone()
-        while row is not None:
-            yield row
-            row = self.db.cursor.fetchone()
+    def __fetch_post(self, query):
+        self.db.cursor.execute(query)
+        post = self.db.cursor.fetchone()
+        return Post(post[0], post[1], post[2], post[3])
 
-    def read_post(self, id):
+    def __fetch_all_posts(self, query):
+        self.db.cursor.execute(query)
+        nextPost = self.db.cursor.fetchone()
+        result = []
+        while nextPost is not None:
+            result.append(
+            (nextPost[0], 
+            Post
+            (
+            nextPost[1],
+            nextPost[2],
+            self.__cut_poem_newlines(nextPost[5]),
+            nextPost[4])
+            )
+            )
+            nextPost = self.db.cursor.fetchone()
+        return result
+
+    def __read_post(self, id):
         return f"""
                 SELECT Author, Title, Content, Date
                 FROM blog_posts
                 WHERE PostID = {id};
             """
 
-    def read_all(self):
+    def __read_all(self):
         return"""
             SELECT p.*,
             CASE
@@ -91,27 +119,34 @@ class PostsDb(IPostRepo):
             ORDER BY p.PostID DESC;
             """
 
-    def insertion(self):
+    def __insertion(self):
         return """
         INSERT INTO blog_posts       
         VALUES (DEFAULT, %s, %s, %s, %s)
         RETURNING PostID;
         """
 
-    def update(self):
+    def __update(self):
         return """
             UPDATE blog_posts
             SET Author = %s, Title= %s, Content = %s, Date = %s
             WHERE PostID = %s;
         """
 
-    def delete(self):
+    def __delete(self):
         return """
             DELETE FROM blog_posts
             WHERE PostID = %s;
             """
 
-    def cut_poem_newlines(self, content):
+    def __count_rows(self):
+        return """
+            SELECT
+            COUNT(Content)
+            FROM blog_posts;
+            """
+
+    def __cut_poem_newlines(self, content):
         lines_count = content.count("\n")
         if lines_count > 0:
             chunk = lines_count * 3

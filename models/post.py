@@ -1,14 +1,16 @@
 from datetime import datetime
 
 class Post:
-    def __init__(self, auth, title, content):
+    def __init__(self, auth, title, content, date = None):
         self.auth = auth
         self.title = title
         self.content = content
-        self.date = self.date_created()
+        self.date = self.date_created(date)
         
-    def date_created(self):
-        created_on = datetime.now().strftime("%d/%b/%y %H:%M:%S")
+    def date_created(self, date):
+        created_on = date
+        if created_on == None:
+            created_on = datetime.now().strftime("%d/%b/%y %H:%M:%S")
         return (created_on, "")
 
     def edit(self, editted):

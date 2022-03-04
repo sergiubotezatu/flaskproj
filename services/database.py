@@ -1,26 +1,27 @@
-from configparser import ConfigParser 
-from psycopg2 import connect, DatabaseError
+import psycopg2
 from services.database_config import DataBaseConfig
 
 class DataBase:
-    def __init__(self):
-        self.config = DataBaseConfig()
+    config = DataBaseConfig()
+    def __init__(self):        
         self.conn = None
         self.cursor = None
 
-    def connection(self):
-        return connect(**self.config.current_config)
+    @classmethod
+    def initialize_db(cls):
+        cls.config.save()
+        cls.config.load()
 
     def create_database(self):
         try:
-            self.db_connect()
+            self.connect()
             self.cursor.execute(self.table_creation())
             self.commit_and_close()
-        except (Exception, DatabaseError) as error:
+        except (Exception, psycopg2.DatabaseError) as error:
             print(error)
 
-    def db_connect(self):
-        self.conn = self.connection()
+    def connect(self):
+        self.conn = psycopg2.connect(**self.config.current_config)
         self.cursor = self.conn.cursor()
 
     def commit_and_close(self):
@@ -35,5 +36,5 @@ class DataBase:
             Author varchar(30),
             Title varchar(200),
             Content varchar(3000),
-            Date varchar(100));   
+            Date varchar(100));
         """
