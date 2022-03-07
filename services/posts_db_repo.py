@@ -26,12 +26,10 @@ class PostsDb(IPostRepo):
         return self.query.perform("insertion", post.auth, post.title, post.content, post.date)        
 
     def replace(self, id, post : Post):
-        print(id)
         self.query.perform("edit", post.auth, post.title, post.content, post.date, id)
 
     def remove(self, id):
         self.count -= 1
-        print(id)
         self.query.perform("deletion", id)   
     
     def get_post(self, id) -> Post:
@@ -55,7 +53,6 @@ class QueryPosts:
             self.db.connect()
             self.db.cursor.execute(execution, args)
             retrieved = self.__fetch_if_needed(request)
-            print("ALERTA", self.db.cursor.rowcount)
             self.db.commit_and_close()
         except (Exception, DatabaseError) as error:
             print(error)
