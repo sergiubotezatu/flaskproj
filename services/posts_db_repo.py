@@ -26,10 +26,12 @@ class PostsDb(IPostRepo):
         return self.query.perform("insertion", post.auth, post.title, post.content, post.date)        
 
     def replace(self, id, post : Post):
+        print(id)
         self.query.perform("edit", post.auth, post.title, post.content, post.date, id)
 
     def remove(self, id):
         self.count -= 1
+        print(id)
         self.query.perform("deletion", id)   
     
     def get_post(self, id) -> Post:
@@ -47,17 +49,17 @@ class QueryPosts:
         self.db = db
     
     def perform(self, request, *args):
-        id = 0
+        retrieved = 0
         execution = self.__queries()[request]
         try:
             self.db.connect()
             self.db.cursor.execute(execution, args)
-            got_id = self.db.cursor.fetchone()
-            id = got_id[0] if got_id != None else id
+            retrieved = self.__fetch_if_needed(request)
+            print("ALERTA", self.db.cursor.rowcount)
             self.db.commit_and_close()
         except (Exception, DatabaseError) as error:
             print(error)
-        return id
+        return retrieved
     
     def __queries(self):
         return {
@@ -152,3 +154,8 @@ class QueryPosts:
             chunk = lines_count * 3
             return content[:-chunk] + "[...]"
         return content + "[...]"
+
+    def __fetch_if_needed(self, request):
+        if request == "insertion" or request == "count":
+            return self.db.cursor.fetchone()[0]
+        return 0
