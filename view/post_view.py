@@ -39,7 +39,8 @@ class PostPage:
             auth = selected_post.auth,
             title = selected_post.title,
             content = selected_post.content,
-            date = selected_post.date)
+            created = selected_post.created,
+            modified = selected_post.modified)
 
     def edit(self, post_id):
         selected_post = self.blogPosts.get_post(post_id)
@@ -50,8 +51,8 @@ class PostPage:
             "edit.html",
             auth = selected_post.auth,
             title = selected_post.title,
-            current = selected_post.content,
-            date = selected_post.date)  
+            current = selected_post.content
+            )  
 
     def create_new_post(self):
         author = request.form.get("author")

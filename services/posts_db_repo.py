@@ -23,17 +23,20 @@ class PostsDb(IPostRepo):
     
     def add_post(self, post : Post):
         self.count += 1
-        return self.query.perform("insertion", post.auth, post.title, post.content, post.date)        
+        return self.query.perform("insertion", post.auth, post.title, post.content, post.created)        
 
     def replace(self, id, post : Post):
-        self.query.perform("edit", post.auth, post.title, post.content, post.date, id)
+        self.query.perform("edit", post.auth, post.title, post.content, post.created, id)
 
     def remove(self, id):
         self.count -= 1
         self.query.perform("deletion", id)   
     
     def get_post(self, id) -> Post:
-        return self.query.perform_read(id)     
+        displayed = self.query.perform_read(id)
+        post = Post(displayed[0], displayed[1], displayed[2], displayed[3])
+        post.modified = displayed[4]
+        return post
 
     def get_all(self):
         return self.query.perform_read()
@@ -79,8 +82,7 @@ class QueryPosts:
 
     def __fetch_post(self, query):
         self.db.cursor.execute(query)
-        post = self.db.cursor.fetchone()
-        return Post(post[0], post[1], post[2], post[3])
+        return self.db.cursor.fetchone()        
 
     def __fetch_all_posts(self, query):
         self.db.cursor.execute(query)
@@ -93,7 +95,7 @@ class QueryPosts:
             (
             nextPost[1],
             nextPost[2],
-            self.__cut_poem_newlines(nextPost[5]),
+            self.__cut_poem_newlines(nextPost[6]),
             nextPost[4])
             )
             )
@@ -102,7 +104,7 @@ class QueryPosts:
 
     def __read_post(self, id):
         return f"""
-                SELECT Author, Title, Content, Date
+                SELECT Author, Title, Content, Date, Date_modified
                 FROM blog_posts
                 WHERE PostID = {id};
             """
@@ -128,7 +130,7 @@ class QueryPosts:
     def __update(self):
         return """
             UPDATE blog_posts
-            SET Author = %s, Title= %s, Content = %s, Date = %s
+            SET Author = %s, Title= %s, Content = %s, Date_modified = %s
             WHERE PostID = %s;
         """
 

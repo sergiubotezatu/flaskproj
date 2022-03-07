@@ -35,6 +35,7 @@ class DataBase:
             PostID SERIAL PRIMARY KEY,
             Author varchar(30),
             Title varchar(200),
-            Content varchar(3000),
-            Date varchar(100));
+            Content varchar(5000),
+            Date varchar(50),
+            Date_modified varchar(50));
         """
