@@ -6,8 +6,8 @@ from services.services import Services
 
 class PostPage:
     @Services.get
-    def __init__(self, allPosts : IPostRepo):
-        self.blogPosts = allPosts
+    def __init__(self, repo : IPostRepo):
+        self.blogPosts = repo
         self.bp = Blueprint("posts", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.creation = self.register("/create",self.create)

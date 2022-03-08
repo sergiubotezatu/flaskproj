@@ -6,8 +6,8 @@ from services.services import Services
 
 class Home:
     @Services.get
-    def __init__(self, factory : IPostRepo):
-        self.blogPosts = factory
+    def __init__(self, repo : IPostRepo):
+        self.blogPosts = repo
         self.bp = Blueprint("home", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.home = self.bp.route("/", )(self.front_page)

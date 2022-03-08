@@ -1,14 +1,15 @@
 import psycopg2
 from services.database_config import DataBaseConfig
+from services.idata_base import IDataBase
 
-class DataBase:
+class DataBase(IDataBase):
     config = DataBaseConfig()
     def __init__(self):        
         self.conn = None
         self.cursor = None
-
-    @classmethod
-    def initialize_db(cls):
+    
+    def initialize_db(cls, settings):
+        cls.config.add_settings(settings)
         cls.config.save()
         cls.config.load()
 
