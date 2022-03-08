@@ -1,9 +1,12 @@
 from flask import Blueprint, render_template, current_app, url_for, redirect, request
+from services.ipost_repo import IPostRepo
 from services.seed import placeholder
 from services.database import DataBase
+from services.services import Services
 
 class Home:
-    def __init__(self, factory):
+    @Services.get
+    def __init__(self, factory : IPostRepo):
         self.blogPosts = factory
         self.bp = Blueprint("home", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)

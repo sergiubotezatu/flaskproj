@@ -2,8 +2,10 @@ from flask import Blueprint, render_template, request, url_for, redirect
 from services.ipost_repo import IPostRepo
 from models.db_settings import DBSettings
 from services.database import DataBase
+from services.services import Services
 
 class DbSetUp:
+    @Services.get
     def __init__(self, db_repo : IPostRepo):
         self.database = DataBase()
         self.db_repo = db_repo

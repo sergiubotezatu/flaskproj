@@ -2,8 +2,10 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.post import Post
 from services.database import DataBase
 from services.ipost_repo import IPostRepo
+from services.services import Services
 
 class PostPage:
+    @Services.get
     def __init__(self, allPosts : IPostRepo):
         self.blogPosts = allPosts
         self.bp = Blueprint("posts", __name__)

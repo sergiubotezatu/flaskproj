@@ -40,7 +40,8 @@
     <h2 style ="text-align: center">{{title}}</h3>
     <h4 class ="higlight">Written by:{{auth}}</h4>
     <p>{{content}}</p>
-      <p style ="float:right">created: {{created}}<br>{%if modified != ""%}updated: {{modified}}{%endif%}</p>
+      <p style ="float:right">
+        created: {{created}}<br>{%if modified != "" and modified != None%}updated: {{modified}}{%endif%}</p>
   </div>
 </div>
 {%endblock%}

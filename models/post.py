@@ -17,7 +17,7 @@ class Post:
         self.auth = editted.auth
         self.title = editted.title
         self.content = editted.content
-        self.modified = editted.date
+        self.modified = editted.created
 
 class Preview():
     def __init__(self, post):
