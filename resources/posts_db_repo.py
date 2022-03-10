@@ -1,13 +1,14 @@
 from psycopg2 import DatabaseError
-from services.ipost_repo import IPostRepo
-from services.idata_base import IDataBase
+from resources.ipost_repo import IPostRepo
+from resources.idata_base import IDataBase
 from models.post import Post
-from services.services import Services
+from resources.services import Services
 
 class PostsDb(IPostRepo):
-    def __init__(self):
+    def __init__(self, db : IDataBase):
         self.__count = -1
-        self.query = QueryPosts(IDataBase)
+        self.db = db
+        self.query = QueryPosts(self.db)
    
     @property
     def count(self):

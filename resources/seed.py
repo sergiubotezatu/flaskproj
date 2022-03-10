@@ -1,4 +1,4 @@
-from services.posts_in_memo import Posts
+from resources.posts_in_memo import Posts
 from models.post import Post
 
 blogPosts = Posts()

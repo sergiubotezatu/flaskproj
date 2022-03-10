@@ -1,6 +1,7 @@
 from models.post import Preview
-from services.ipost_repo import IPostRepo
+from resources.ipost_repo import IPostRepo
 from models.post import Post
+from resources.services import Services
 
 class PostsEnumerator():
     def __init__(self, posts):
@@ -15,8 +16,17 @@ class PostsEnumerator():
             return result
         raise StopIteration
 
+def singleton(cls):
+    __instances = {}
+    def wrapper(*args, **kwargs):
+        if cls not in __instances:
+            __instances[cls] = cls(*args, **kwargs)
+        return __instances[cls]
+    return wrapper
 
+@singleton
 class Posts(IPostRepo):
+    @Services.get
     def __init__(self):
         self.__posts = {}
         

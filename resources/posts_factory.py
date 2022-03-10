@@ -1,6 +1,6 @@
-from services.posts_db_repo import PostsDb
-from services.seed import blogPosts
-from services.ipost_repo import IPostRepo
+from resources.posts_db_repo import PostsDb
+from resources.seed import blogPosts
+from resources.ipost_repo import IPostRepo
 
 class PostsFactory:
     @staticmethod

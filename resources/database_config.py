@@ -1,7 +1,12 @@
 from configparser import ConfigParser
 from models.db_settings import DBSettings
+from resources.idatabase_config import IDataBaseConfig
+from resources.services import Services
 
-class DataBaseConfig:
+class DataBaseConfig(IDataBaseConfig):
+    is_configured = False
+
+    @Services.get
     def __init__(self):
         self.settings = None
         self.current_config = None
@@ -13,7 +18,7 @@ class DataBaseConfig:
         self.settings = settings
                     
     def load(self):
-        section = self.settings.section
+        section = self.settings.SECTION
         self.parser.read(self.CONFIGFILE)
         self.current_config = {}
         if self.parser.has_section(section):
@@ -22,15 +27,16 @@ class DataBaseConfig:
                 self.current_config[param[0]] = param[1]
         else:
             raise Exception(f"Section {section} not found in the {self.CONFIGFILE} file")
+        self.edit_config_status()
 
     def save(self):
-        section = self.settings.section
+        section = self.settings.SECTION
         params = f"[{section}]\n"
         for options in self.setting_options:
             params += f"{options} = {getattr(self.settings, options)}\n"
         with open(self.CONFIGFILE, "w") as writer:
             writer.write(params)
 
-    def isConfigured(self):
-        return self.current_config != None
-    
+    @classmethod
+    def edit_config_status(cls):
+        cls.is_configured = True

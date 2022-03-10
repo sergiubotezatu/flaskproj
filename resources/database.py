@@ -1,10 +1,14 @@
 import psycopg2
-from services.database_config import DataBaseConfig
-from services.idata_base import IDataBase
+from resources.idata_base import IDataBase
+from resources.idatabase_config import IDataBaseConfig
+from resources.services import Services
 
 class DataBase(IDataBase):
-    config = DataBaseConfig()
-    def __init__(self):     
+    config = None
+
+    @Services.get
+    def __init__(self, config : IDataBaseConfig):
+        DataBase.config = config
         self.conn = None
         self.cursor = None
     

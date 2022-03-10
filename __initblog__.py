@@ -1,8 +1,8 @@
 from flask import Flask
-from services.idata_base import IDataBase
-from services.services import Services
+from resources.idata_base import IDataBase
+from resources.services import Services
 from models.container import Container
-from services.ipost_repo import IPostRepo
+from resources.ipost_repo import IPostRepo
 
 
 def create_blog(is_test_app = False):
@@ -10,7 +10,7 @@ def create_blog(is_test_app = False):
     blog.config["TESTING"] = is_test_app
     blog.secret_key = "FlaskTest" if is_test_app else "FlaskBlog"
     Services.container = Container().get(is_test_app)
-
+    Services.DEPENDENCIES = Container.DEPENDENCIES
     from view.home import Home
     blog.register_blueprint(Home(IPostRepo).bp, url_prefix="/")
     from view.post_view import PostPage
