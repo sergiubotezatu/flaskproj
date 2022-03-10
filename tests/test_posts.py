@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from flask import url_for, current_app
 from __initblog__ import create_blog
 
@@ -12,9 +13,17 @@ class BlogTests(unittest.TestCase):
         
     BASE =  "/"
     BASE_POST = "/post/"
+    CONFIG_PAGE = "/config"
+    CONFIG = {
+        "host" : "localhost",
+        "database" : "flaskproj",
+        "user" : "postgres",
+        "password" : "sergiu"
+        }
 
     def test_home(self):
-        result = self.test_app.get(self.BASE)
+        som = self.test_app.get(self.BASE)
+        result = self.test_app.post(self.CONFIG_PAGE, data = self.CONFIG, follow_redirects=True)
         self.assertEqual(result.status_code, 200)
 
     def test_create_request(self):

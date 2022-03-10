@@ -10,10 +10,10 @@
       style ="width:200px;"
       type="text"
       name="host"
-      placeholder="localhost"
       maxlength="15"
-      minlength ="4"
+      minlength="4"
       autofocus
+      value="localhost"
       required><br><br>
     <label for="database">Data Base</label><br><br>
      <input id ="db"
@@ -37,21 +37,11 @@
      <input id ="pass"
         class="field"
         style ="width:200px;"
-        type="text"
+        type="password"
         name="password"
         maxlength="15"
         minlength ="4"
         required><br><br>
-        <label for="section">Section</label><br><br>
-        <input id ="sect"
-        class="field"
-        style ="width:200px;"
-        type="text"
-        name="section"
-        maxlength="15"
-        minlength ="4"
-        required>
-        <br><br>
     <input style = "transform: translateY(50%);"class ="submitCreate" id="create" type="submit" value="Config">
 </form>
 {%endblock%}

@@ -13,10 +13,12 @@ class Home:
         self.home = self.bp.route("/", )(self.front_page)
 
     def goto_db_setup(self):
-        if str(type(self.blogPosts)).find("PostsDb") != -1 and DataBase.config.current_config == None:
+        if not DataBase.config.isConfigured():
             return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):
         rows = len(self.blogPosts)
         posts = self.blogPosts if rows > 0 else placeholder
+        for x in posts:
+            print(x)
         return render_template("home.html", allposts = posts.get_all())

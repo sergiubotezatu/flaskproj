@@ -11,7 +11,7 @@ class DbSetUp:
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
     
     def set_database(self):
-        if self.database.config.current_config != None:
+        if self.database.config.isConfigured():
             return redirect(url_for("home.front_page"))             
         if request.method == "POST":
             settings = DBSettings(self.get_items())        
@@ -22,7 +22,6 @@ class DbSetUp:
     
     def get_items(self):
         return [
-            request.form.get("section"),
             request.form.get("host"),
             request.form.get("database"),
             request.form.get("user"),

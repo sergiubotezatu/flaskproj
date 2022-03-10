@@ -1,5 +1,4 @@
 from psycopg2 import DatabaseError
-from services.database import DataBase
 from services.ipost_repo import IPostRepo
 from services.idata_base import IDataBase
 from models.post import Post

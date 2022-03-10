@@ -4,10 +4,11 @@ from services.idata_base import IDataBase
 
 class DataBase(IDataBase):
     config = DataBaseConfig()
-    def __init__(self):        
+    def __init__(self):     
         self.conn = None
         self.cursor = None
     
+    @classmethod
     def initialize_db(cls, settings):
         cls.config.add_settings(settings)
         cls.config.save()

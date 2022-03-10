@@ -18,7 +18,7 @@ class PostPage:
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
     def goto_db_setup(self):
-        if str(type(self.blogPosts)).find("PostsDb") != -1 and DataBase.config.current_config == None:
+        if not DataBase.config.isConfigured():
             return redirect(url_for("db_setup.set_database"))
 
     def create(self):

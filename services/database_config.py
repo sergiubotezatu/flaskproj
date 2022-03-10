@@ -29,5 +29,8 @@ class DataBaseConfig:
         for options in self.setting_options:
             params += f"{options} = {getattr(self.settings, options)}\n"
         with open(self.CONFIGFILE, "w") as writer:
-            writer.write(params)    
+            writer.write(params)
+
+    def isConfigured(self):
+        return self.current_config != None
     

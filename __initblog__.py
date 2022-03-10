@@ -15,8 +15,7 @@ def create_blog(is_test_app = False):
     blog.register_blueprint(Home(IPostRepo).bp, url_prefix="/")
     from view.post_view import PostPage
     blog.register_blueprint(PostPage(IPostRepo).bp, url_prefix="/post")
-    if not is_test_app:
-        from view.db_setup import DbSetUp
-        blog.register_blueprint(DbSetUp(IDataBase).bp)
+    from view.db_setup import DbSetUp
+    blog.register_blueprint(DbSetUp(IDataBase).bp)
 
     return blog
