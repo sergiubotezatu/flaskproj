@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from models.db_settings import DBSettings
 from resources.idata_base import IDataBase
-from resources.database_config import DataBaseConfig
 from resources.services import Services
 
 class DbSetUp:
@@ -12,7 +11,7 @@ class DbSetUp:
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
     
     def set_database(self):
-        if DataBaseConfig.is_configured:
+        if self.database.config.is_configured:
             return redirect(url_for("home.front_page"))             
         if request.method == "POST":
             settings = DBSettings(self.get_items())        

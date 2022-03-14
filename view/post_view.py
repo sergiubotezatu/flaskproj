@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.post import Post
-from resources.database_config import DataBaseConfig
+from resources.database import DataBase
 from resources.ipost_repo import IPostRepo
 from resources.services import Services
 
@@ -18,7 +18,7 @@ class PostPage:
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
     def goto_db_setup(self):
-        if not DataBaseConfig.is_configured:
+        if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
 
     def create(self):

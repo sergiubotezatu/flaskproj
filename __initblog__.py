@@ -9,7 +9,7 @@ def create_blog(is_test_app = False):
     blog = Flask(__name__)
     blog.config["TESTING"] = is_test_app
     blog.secret_key = "FlaskTest" if is_test_app else "FlaskBlog"
-    Services.container = Container().get(is_test_app)
+    Services.container = Container(is_test_app).items
     Services.DEPENDENCIES = Container.DEPENDENCIES
     from view.home import Home
     blog.register_blueprint(Home(IPostRepo).bp, url_prefix="/")

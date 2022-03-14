@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, current_app, url_for, redirect, request
 from resources.ipost_repo import IPostRepo
 from resources.seed import placeholder
-from resources.database_config import DataBaseConfig
 from resources.services import Services
+from resources.database import DataBase
 
 class Home:
     @Services.get
@@ -13,7 +13,7 @@ class Home:
         self.home = self.bp.route("/", )(self.front_page)
 
     def goto_db_setup(self):
-        if not DataBaseConfig.is_configured:
+        if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):
