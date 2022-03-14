@@ -4,6 +4,14 @@ from flask import url_for, current_app
 from __initblog__ import create_blog
 from resources.database import DataBase
 
+def configure(is_config = True):
+    def decorator(test_func):
+        def wrapper(self):
+            DataBase.config.is_configured = is_config
+            test_func(self)
+        return wrapper
+    return decorator
+
 class BlogTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)
     
@@ -14,17 +22,29 @@ class BlogTests(unittest.TestCase):
         
     BASE =  "/"
     BASE_POST = "/post/"
-    CONFIG_PAGE = "/config"
+    CONFIG_PAGE = "/config"    
     
-    def test_home(self):
-        DataBase.config.is_configured = True
+    @configure(False)
+    def test_not_configured_redirects(self):
         result = self.test_app.get(self.BASE, follow_redirects = False)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.status_code, 302)
 
-    def test_create_request(self):
+    @configure
+    def test_setuppage_redirects_if_configured(self):
+        result = self.test_app.get(self.CONFIG_PAGE, follow_redirects = False)
+        self.assertEqual(result.status_code, 302)
+
+    @configure(False)
+    def test_redirects_tosetup_if_notconfigured(self):
+        result = self.test_app.get(self.BASE, follow_redirects = False)
+        self.assertEqual(result.location, "http://localhost/config")
+
+    @configure
+    def test_create_home_request(self):
         result = self.test_app.get(self.BASE_POST + "create")
         self.assertEqual(result.status_code, 200)
 
+    @configure
     def test_create_redirect(self):
         post = {
         "author" : "Mark Doe",
@@ -37,6 +57,7 @@ class BlogTests(unittest.TestCase):
         self.assertEqual(result.location.replace("127.0.0.1:5000", "localhost"),
         url_for("posts.read", post_id = "Ma2", _external = True))
     
+    @configure
     def test_create_post(self):
         post = {
         "author" : "John Doe",
@@ -49,6 +70,7 @@ class BlogTests(unittest.TestCase):
         self.assertIn(post["title"], creation.data.decode("UTF-8"))
         self.assertIn(post["post"], creation.data.decode("UTF-8"))
 
+    @configure
     def test_creation_home_print(self):
         post = {
         "author" : "James Doe",
@@ -60,6 +82,7 @@ class BlogTests(unittest.TestCase):
         result = self.test_app.get(self.BASE)
         self.assertIn(post["post"], result.data.decode("UTF-8"))
 
+    @configure
     def test_edit_request(self):
         edit = {
         "author" : "John Doe",
@@ -71,6 +94,7 @@ class BlogTests(unittest.TestCase):
         result = self.test_app.get(self.BASE_POST + "read/Jo1")
         self.assertIn(edit["post"], result.data.decode("UTF-8"))
 
+    @configure
     def test_delete_post(self):
         post = {
         "author" : "Greg Doe",
@@ -85,6 +109,7 @@ class BlogTests(unittest.TestCase):
         result = self.test_app.post(self.BASE_POST + "read/Gr4", data = {"postID" : "Gr4"})
         self.assertNotIn(post["author"], result.data.decode("UTF-8"))
 
+    @configure
     def test_redirect_delete(self):
         post = {
         "author" : "Greg Doe",
@@ -99,7 +124,7 @@ class BlogTests(unittest.TestCase):
             follow_redirects=False)
         self.assertEqual(result.status_code, 302)
         self.assertEqual(result.location.replace("127.0.0.1:5000", "localhost"),
-        url_for("home.front_page", _external = True))
-   
+        url_for("home.front_page", _external = True))    
+
     if __name__ == "__main__":
         unittest.main()

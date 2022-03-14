@@ -2,7 +2,6 @@
 class Services:
     container = {}
     DEPENDENCIES = {}
-    I = 0
     
     @classmethod
     def get(cls, constructor):
