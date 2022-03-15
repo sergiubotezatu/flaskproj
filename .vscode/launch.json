@@ -8,7 +8,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "tests\\test_posts.py",              
+            "program": "blog.py",              
             "env": {
                 "FLASK_APP": "blog.py",
                 "PYTHONPATH": "C:\\Users\\Cristina\\Desktop\\flaskBlog"},

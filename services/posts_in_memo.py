@@ -1,7 +1,7 @@
 from models.post import Preview
-from resources.ipost_repo import IPostRepo
+from services.ipost_repo import IPostRepo
 from models.post import Post
-from resources.services import Services
+from services.resources import Services
 
 class PostsEnumerator():
     def __init__(self, posts):
@@ -49,6 +49,13 @@ class Posts(IPostRepo):
 
     def replace(self, post_id, post):
         self.__posts[post_id].edit(post)
+
+    def get_user_posts(self, user_name):
+        user_posts = []
+        for posts in self.__posts:
+            if posts.auth == user_name:
+                user_posts.append(posts)
+        return user_posts
 
     def get_all(self):
         for posts in self:

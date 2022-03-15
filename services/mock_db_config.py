@@ -1,5 +1,5 @@
 from unittest import mock
-from resources.services import Services
+from services.resources import Services
 
 class MockDbConfig:
     @staticmethod

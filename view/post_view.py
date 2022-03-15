@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.post import Post
-from resources.database import DataBase
-from resources.ipost_repo import IPostRepo
-from resources.services import Services
+from services.database import DataBase
+from services.ipost_repo import IPostRepo
+from services.resources import Services
 
 class PostPage:
     @Services.get

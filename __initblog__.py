@@ -1,9 +1,9 @@
 from flask import Flask
-from resources.idata_base import IDataBase
-from resources.services import Services
+from services.idata_base import IDataBase
+from services.resources import Services
 from models.container import Container
-from resources.ipost_repo import IPostRepo
-
+from services.ipost_repo import IPostRepo
+from services.iusers import IUsers
 
 def create_blog(is_test_app = False):
     blog = Flask(__name__)
@@ -17,5 +17,7 @@ def create_blog(is_test_app = False):
     blog.register_blueprint(PostPage(IPostRepo).bp, url_prefix="/post")
     from view.db_setup import DbSetUp
     blog.register_blueprint(DbSetUp(IDataBase).bp)
+    from view.user_profile import UserProfile
+    blog.register_blueprint(UserProfile(IUsers).bp)
 
     return blog

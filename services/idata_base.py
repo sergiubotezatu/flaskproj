@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from resources.database_config import DataBaseConfig
+from services.database_config import DataBaseConfig
 
 class IDataBase(metaclass = ABCMeta):
     config : DataBaseConfig

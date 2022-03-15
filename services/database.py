@@ -1,7 +1,7 @@
 import psycopg2
-from resources.idata_base import IDataBase
-from resources.idatabase_config import IDataBaseConfig
-from resources.services import Services
+from services.idata_base import IDataBase
+from services.idatabase_config import IDataBaseConfig
+from services.resources import Services
 
 class DataBase(IDataBase):
     config = None

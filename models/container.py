@@ -1,28 +1,34 @@
-from resources.posts_db_repo import PostsDb
-from resources.posts_in_memo import Posts
-from resources.database import DataBase
-from resources.idata_base import IDataBase
-from resources.ipost_repo import IPostRepo
-from resources.idatabase_config import IDataBaseConfig
-from resources.database_config import DataBaseConfig
-from resources.mock_db_config import MockDbConfig
+from services.posts_db_repo import PostsDb
+from services.posts_in_memo import Posts
+from services.database import DataBase
+from services.idata_base import IDataBase
+from services.ipost_repo import IPostRepo
+from services.idatabase_config import IDataBaseConfig
+from services.database_config import DataBaseConfig
+from services.iusers import IUsers
+from services.users_in_memo import Users
+from services.mock_db_config import MockDbConfig
 
 class Container:
     DEPENDENCIES = {
         IPostRepo : IDataBase,
         IDataBase : IDataBaseConfig,
         IDataBaseConfig : None,
-        Posts : None}
+        Posts : None,
+        IUsers : IPostRepo}
 
     prod_services = {
         IPostRepo : PostsDb,
         IDataBase : DataBase,
-        IDataBaseConfig : DataBaseConfig}
+        IDataBaseConfig : DataBaseConfig,
+        IUsers : Users
+        }
 
     test_services = {
         IPostRepo : Posts,
         IDataBase: DataBase,
-        IDataBaseConfig: MockDbConfig.mocked_db_config}
+        IDataBaseConfig: MockDbConfig.mocked_db_config,
+        IUsers : Users}
 
     def __init__(self, is_test):
         self.items = self.get(is_test)

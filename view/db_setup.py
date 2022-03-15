@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from models.db_settings import DBSettings
-from resources.idata_base import IDataBase
-from resources.services import Services
+from services.idata_base import IDataBase
+from services.resources import Services
 
 class DbSetUp:
     @Services.get

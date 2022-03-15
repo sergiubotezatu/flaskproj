@@ -1,8 +1,8 @@
 from psycopg2 import DatabaseError
-from resources.ipost_repo import IPostRepo
-from resources.idata_base import IDataBase
+from services.ipost_repo import IPostRepo
+from services.idata_base import IDataBase
 from models.post import Post
-from resources.services import Services
+from services.resources import Services
 
 class PostsDb(IPostRepo):
     def __init__(self, db : IDataBase):

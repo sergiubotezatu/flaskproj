@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 from flask import url_for, current_app
 from __initblog__ import create_blog
-from resources.database import DataBase
+from services.database import DataBase
 
 def configure(is_config = True):
     def decorator(test_func):

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, current_app, url_for, redirect, request
-from resources.ipost_repo import IPostRepo
-from resources.seed import placeholder
-from resources.services import Services
-from resources.database import DataBase
+from services.ipost_repo import IPostRepo
+from services.seed import placeholder
+from services.resources import Services
+from services.database import DataBase
 
 class Home:
     @Services.get
@@ -19,4 +19,4 @@ class Home:
     def front_page(self):
         rows = len(self.blogPosts)
         posts = self.blogPosts if rows > 0 else placeholder
-        return render_template("home.html", allposts = posts.get_all())
+        return render_template("home.html", profile = "Log in", allposts = posts.get_all())

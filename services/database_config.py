@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 from models.db_settings import DBSettings
-from resources.idatabase_config import IDataBaseConfig
-from resources.services import Services
+from services.idatabase_config import IDataBaseConfig
+from services.resources import Services
 
 class DataBaseConfig(IDataBaseConfig):
     is_configured = False

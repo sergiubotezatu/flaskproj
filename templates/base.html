@@ -15,7 +15,8 @@
 
         <ul class = "largerScreen" id ="opaque">
             <li><a class = "option" href="/">Home</a></li>
-            <li><a class = "option" href="/post/create">Create new Post</a></li>                  
+            <li><a class = "option" href="/post/create">Create new Post</a></li>
+            <li>{%block log%}{%endblock%}</li>
         </ul>
 
         <ul class = "smallerScreen">
@@ -29,6 +30,7 @@
                 <div class="dropdown-content">
                 <a class = "option" href="/">Home</a>
                 <a class = "option" href="/post/create">Create new Post</a>
+                {{self.log()}}
                 </div>
                 <br>           
             </li>
