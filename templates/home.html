@@ -1,6 +1,7 @@
 {%extends "base.html"%}
 {%block title%}Home{%endblock%}
-{%block log%}<a class = "option" href="/login">{{profile}}</a>{%endblock%}
+{%block log%}<a class = "option" href="/login">
+  <img src = "static\icons\profile.png" style = "margin:0 10px;width:25px;height:30px;"></img>{{profile}}</a>{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}
