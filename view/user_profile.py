@@ -10,7 +10,7 @@ class UserProfile:
         self.users = repo
         self.bp = Blueprint("profile", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
-        self.profile = self.register("/view/<name>", self.view_profile)
+        self.profile = self.register("/view/<name>", self.user_profile)
         self.login = self.register("/login", self.log_in)
         self.signup = self.register("/signup", self.sign_up)
         
@@ -21,7 +21,7 @@ class UserProfile:
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
 
-    def view_profile(self, user_name):
+    def user_profile(self, user_name):
         print(user_name)
         if "profile" in session and session["profile"] == user_name:
             return render_template("user.html", user= user_name)
