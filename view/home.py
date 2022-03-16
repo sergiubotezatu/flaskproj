@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app, url_for, redirect, request
+from flask import Blueprint, render_template, current_app, url_for, redirect, request, session
 from services.ipost_repo import IPostRepo
 from services.seed import placeholder
 from services.resources import Services
@@ -19,4 +19,7 @@ class Home:
     def front_page(self):
         rows = len(self.blogPosts)
         posts = self.blogPosts if rows > 0 else placeholder
-        return render_template("home.html", profile = "Log in", allposts = posts.get_all())
+        profile = "Log in"
+        if "profile" in session:
+            profile = session["profile"]
+        return render_template("home.html", user = profile, allposts = posts.get_all())

@@ -64,7 +64,8 @@ li .option:hover, .dropbtn:hover
 .dropdown-content
 {                
     display: none;                      
-}          
+}
+
 
 .dropMenu:hover .dropdown-content 
 {
@@ -75,7 +76,8 @@ li .option:hover, .dropbtn:hover
 {
     display:none;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 1) ,rgba(80, 59, 218, 1));
-    margin-right: 0px;                  
+    margin-right: 0px;
+    
 }
 
 #smallDel
@@ -175,7 +177,7 @@ li .option:hover, .dropbtn:hover
 .row > *{
     pointer-events: auto;
     transition-duration: 1s;    
-    background-image: radial-gradient(#fcdcac,rgba(196, 132, 28, 0.514));
+    background-image: radial-gradient(#fff4e3,rgba(245, 188, 97, 0.514));
     margin-bottom: 10px;       
 }
 
@@ -212,7 +214,7 @@ li .option:hover, .dropbtn:hover
 
 @media screen and (max-width: 900px)
 {
-    .column {
+    .row {
     width: 100%;
     display: block;
     margin-bottom: 20px;
@@ -288,7 +290,7 @@ li .option:hover, .dropbtn:hover
 
  .readPost
  {
-    background-color: #e0c9a6ec;   
+    background-color: #fff4e3;   
  }
 
  .readPost > p
@@ -511,4 +513,77 @@ li .option:hover, .dropbtn:hover
         50%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.932) ,rgba(80, 59, 218, 0.466))}
         75%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.911) ,rgba(80, 59, 218, 0.26))}
         100%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.904) ,rgba(80, 59, 218, 0))}
+    }
+
+    .profile {
+        display: flex;
+        justify-content: space-around;
+      }
+      
+      .ownposts,
+      .profileinfo {
+        padding: 15px;
+        background-image: radial-gradient(#fff4e3,rgba(245, 188, 97, 0.514));
+        margin-bottom: 5px;
+        color:black;
+      }
+
+      .ownposts:hover{
+        transition-duration: 1s; 
+        transform: scale(1.2);
+      }
+      
+      .ownposts {
+        width: 45%;
+        height: auto;
+      }
+      
+      .profileinfo {
+        width: 30%;
+        min-width: 300px;
+        padding-top:100px;
+        padding-bottom:10px;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+      .profileinfo > p{
+        display: block;
+        text-align: center;
+        }
+
+      @media screen and (max-width: 800px)
+    {
+        .profile {
+        width: 100%;
+        display: inline-block;
+        margin-bottom: 20px;
+        transition-duration:0s;
+        }
+        
+        #userposts{
+            display:none;
+        }
+
+        .ownposts,
+        .profileinfo {
+            width: 100%;
+            transition-duration:0s;
+        }
+    }
+
+    .community {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        justify-content: space-evenly;
+        padding: 10px;
+      }
+      .member {
+        background-image: url("\\static\\icons\\user.png");
+        background-size: cover;
+        border-radius: 30%;
+        padding: 20px;
+        margin-bottom: 10px;
+        font-size: 30px;
     }

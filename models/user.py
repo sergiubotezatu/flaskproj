@@ -5,7 +5,7 @@ class User:
     def __init__(self, userName, email, password, date = None):
         self.id = User.user_id
         self.name = userName
-        self.__email = email
+        self.email = email
         self.__password = password
         self.created = self.date_created(date)
         self.modified = ""

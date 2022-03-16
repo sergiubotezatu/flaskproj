@@ -1,7 +1,13 @@
 {%extends "base.html"%}
 {%block title%}Home{%endblock%}
-{%block log%}<a class = "option" href="/login">
-  <img src = "static\icons\profile.png" style = "margin:0 10px;width:25px;height:30px;"></img>{{profile}}</a>{%endblock%}
+
+{%block log%}
+{%if user == "Log in"%}
+<a class = "option" href="login">
+{%else%}
+<a class = "option" href="{{ '/view/%s'%user|urlencode }}">
+{%endif%}
+  <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>{{user}}</a>{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}

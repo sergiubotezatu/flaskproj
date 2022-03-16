@@ -20,5 +20,5 @@ class IPostRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_all(self, post_id):
+    def get_all(self):
         pass

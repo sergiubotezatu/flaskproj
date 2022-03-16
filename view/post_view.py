@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.post import Post
 from services.database import DataBase
 from services.ipost_repo import IPostRepo

@@ -13,17 +13,21 @@ class UserProfile:
         self.profile = self.register("/view/<user_name>", self.user_profile)
         self.login = self.register("/login", self.log_in)
         self.signup = self.register("/signup", self.sign_up)
+        self.edit = self.register("/edit/<user_name>", self.edit_user)
+        self.members = self.register("/view/community", self.get_all_users)
         
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
+
 
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
 
     def user_profile(self, user_name):
+        logged = self.users.get_user_by_name(user_name)
         if "profile" in session and session["profile"] == user_name:
-            return render_template("user.html", user= user_name)
+            return render_template("user.html", user= user_name, email = logged.email, date = logged.created)
         else:
             return redirect(url_for(".log_in"))
 
@@ -63,5 +67,12 @@ class UserProfile:
                 return redirect(f"view/{username}")
         return render_template("signup.html")
 
+    def edit_user(self, user_name):
+        return render_template("edit_user.html", username = user_name, email = "adf")
+
+    def get_all_users(self):
+        return render_template("members.html", allmembers = self.users.get_all())
+
     def __is_existing_user(self, username):
         return self.users.get_user_by_name(username) != None
+

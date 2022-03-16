@@ -1,5 +1,20 @@
 {%extends "base.html"%}
 {%block title%}{{user}}{%endblock%}
-{%block log%}<a class = "option" href="/login">{{user}}{%endblock%}
+{%block log%}<a class = "option" href="{{ '/view/%s'%user|urlencode }}">
+    <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
+    {{user}}</a>{%endblock%}
 {%block content%}
+    <h3 id = "userposts"style="text-align:right; margin-right: 300px;color:white; text-shadow: 2px 4px 5px black">
+        {{user}}'s posts
+    </h3>
+    <div class="profile">
+        <div class="profileinfo">
+            <p>{{user}}</p>
+            <p>email:{{email}}</p>
+            <p>member since:{{date}}</p>
+            </div>
+        <div class="ownposts">
+        Main content
+        </div>
+    </div>
 {%endblock%}

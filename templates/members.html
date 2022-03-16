@@ -1,0 +1,16 @@
+{%extends "base.html"%}
+{%block title%}Our members{%endblock%}
+{%block log%}<a class = "option" href="{{ '/view/%s'%user|urlencode }}">
+    <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
+    {{user}}</a>{%endblock%}
+{%block content%}
+    <div class = "community">
+        {%for member in allmembers%}
+        <div class = "member">
+            <a href="{{ '/view/%s'%user|urlencode }}">
+                <p style = "text-align:center;color:white;">{{member}}</p>
+            </a>
+        </div>
+        {%endfor%}
+    </div>
+{%endblock%}

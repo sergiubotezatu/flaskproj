@@ -25,5 +25,11 @@ class Users(IUsers):
                 return users
         return None
 
+    def get_all(self):
+        names = []
+        for users in self.__users:
+            names.append(users.name)
+        return names
+
     def add_user(self, user : User):
         self.__users.append(user)

@@ -14,9 +14,26 @@
         <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
 
         <ul class = "largerScreen" id ="opaque">
-            <li><a class = "option" href="/"><img src = "static\icons\home.png" style = "width:25px;height:30px;"></img>Home</a></li>
-            <li><a class = "option" href="/post/create"><img src = "static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>Create new Post</a></li>
+            <li><a class = "option" href="/">
+                <img src = "\static\icons\home.png" style = "width:25px;height:30px;"></img>
+                Home
+            </a></li>
+            {%if is_logged%}
+            {%set path = "post/create"%}
+            {%else%}
+            {%set path = "login"%}
+            {%endif%}
+            <li><a class = "option" href="{{'/%s'%path|urlencode }}">
+                <img src = "\static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>
+                Create new Post
+            </a></li>
             <li>{%block log%}{%endblock%}</li>
+            <li>
+                <a class = "option" href="/view/community">
+                    <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
+                    Members
+                </a>
+            </li>
         </ul>
 
         <ul class = "smallerScreen">
@@ -31,6 +48,9 @@
                 <a class = "option" href="/">Home</a>
                 <a class = "option" href="/post/create">Create new Post</a>
                 {{self.log()}}
+                <a class = "option" href="/view/community">
+                    <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
+                Members</a>
                 </div>
                 <br>           
             </li>

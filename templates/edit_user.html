@@ -1,0 +1,79 @@
+{%extends "base.html"%}
+{%block title%}Sing_Up{%endblock%}
+{%block content%}
+<h3 
+style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
+Change profile information
+</h3>
+<form style="text-align:center" method = "Post">
+  <label for="username">Create an username:</label><br>
+  <input id ="toCheck"
+   class="field"
+   type="text"
+   name="username"
+   pattern="[a-zA-Z0-9]+" 
+   title="Name should be at least 4 characters long."
+   minlength="4"
+   autofocus
+   required
+   value = "{{username}}"
+   oninput="InvalidUserName()">
+   <br>
+   <span id="invalid" style="color:red;"></span>
+   <br>
+
+  <label for="email">Email address</label><br>
+  <input id ="mail"
+    class="field"
+    type="email"
+    name="email"
+    minlength="4"
+    autofocus
+    value = "{{email}}"
+    required>
+    <br>
+    <br>
+    
+    <label for="old">Old password</label><br>
+  <input class="field"
+   style ="width:250px;"
+   type="password"
+   id="oldpass" 
+   name="old"
+   pattern="([a-zA-Z0-9]+)*[^A-Za-z0-9]([a-zA-Z0-9]+)*"
+   title="Password must be 7 characters long and have 1 special character"
+   >
+   <br>
+   <br>
+
+  <label for="pwd">Create a new password</label><br>
+  <input class="field"
+   style ="width:250px;"
+   type="password"
+   id="pwd" 
+   name="pwd"
+   placeholder="Min 7 characters (min 1 special character)"
+   pattern="([a-zA-Z0-9]+)*[^A-Za-z0-9]([a-zA-Z0-9]+)*"
+   title="Password must be 7 characters long and have 1 special character"
+   minlength="7"
+   onfocus="RestoreAlerted()"
+   onblur="InvalidPass()">   
+   <br>
+   <span id="wrongFormat" style="color:red;"></span>
+   <br>
+
+   <label for="pwd2">Confirm password</label><br>
+  <input class="field"
+   type="password"
+   id="pwd2" 
+   name="pwd2"
+   placeholder="Type your password again"
+   title="All characters should match those entered above."
+   required
+   oninput="DifferentPass()">
+   <br>
+   <span id="diffPass" style="color:red;"></span> 
+   <br>
+  <input class ="submitBtn" id="sub" type="submit" value="Sign Up" style = background-color:yellowgreen>
+</form>
+{%endblock%}
