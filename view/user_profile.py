@@ -10,7 +10,7 @@ class UserProfile:
         self.users = repo
         self.bp = Blueprint("profile", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
-        self.profile = self.register("/view/<user_name>", self.user_profile)
+        self.profile = self.register("/view/<user_id>", self.user_profile)
         self.login = self.register("/login", self.log_in)
         self.signup = self.register("/signup", self.sign_up)
         self.edit = self.register("/edit/<user_name>", self.edit_user)
@@ -24,10 +24,11 @@ class UserProfile:
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
 
-    def user_profile(self, user_name):
-        logged = self.users.get_user_by_name(user_name)
-        if "profile" in session and session["profile"] == user_name:
-            return render_template("user.html", user= user_name, email = logged.email, date = logged.created)
+    def user_profile(self, user_id):
+        user_id = int(user_id)
+        if Session.has_user(user_id):
+            logged = self.users.get_user_by_id(user_id)
+            return render_template("user.html", user= logged.name, email = logged.email, date = logged.created)
         else:
             return redirect(url_for(".log_in"))
 
@@ -35,36 +36,39 @@ class UserProfile:
         if request.method == "GET":
             return render_template("login.html")
         else:
-            username = request.form.get("username")
+            email = request.form.get("mail")
             password = request.form.get("pwd")
-            found = self.users.get_user_by_name(username)
+            found = self.users.get_user_by_mail(email)
             if found == None:
-                flash(f"Username {username} is not assigned to any registered members\nCheck for spelling errors"
-                "Click on \"Here\" below the form if you don't have an account", "error")
+                flash(f"Email address {email} is not assigned to any registered members")
+                flash(f"Please check for spelling errors or "
+                "Click on \"HERE\" below the form if you don't have an account", "error")
                 return redirect(url_for(".log_in"))
             elif not found.check_pass(password):
                 flash("Incorrect Password. Please try again", "error")
                 return redirect(url_for(".log_in"))
 
-        session.permanent = True
-        session["profile"] = username
-        return redirect(f"/view/{username}")
+        Session.add_user(found.id, found.email, found.name)
+        return redirect(f"/view/{found.id}")
 
     def sign_up(self):
+        session.clear()
         if request.method == "POST":
-            username = request.form.get("username")
+            email = request.form.get("email")
             password = request.form.get("pwd")
-            if self.__is_existing_user(username):
-                flash(f"Username {username} is already assigned to another user. "
-               "Please use a different userName", "error")
+            if self.__is_existing_user(email):
+                flash(f"Email {email} is already assigned to another user. ")
+                flash(f"Please use an unregistered email or go to login page", "error")
                 return redirect(url_for(".sign_up"))
             else:
-                email = request.form.get("email")
-                self.users.add_user(User(username, email, password))
-                session["profile"] = username
-                flash(f"Welcome, {username}!\nThis is your profile page. Here you can see all of your posts "
-                "Click on [Create Post] button to add a new post", "info")
-                return redirect(f"view/{username}")
+                username = request.form.get("username")
+                new_user = User(username, email, password)
+                self.users.add_user(new_user)
+                Session.add_user(new_user.id, email, username)
+                flash(f"Welcome, {username}!")
+                flash("This is your profile page. Here you can see all of your posts.")
+                flash("Click on [Create Post] button to add a new post", "info")
+                return redirect(f"view/{new_user.id}")
         return render_template("signup.html")
 
     def edit_user(self, user_name):
@@ -73,6 +77,21 @@ class UserProfile:
     def get_all_users(self):
         return render_template("members.html", allmembers = self.users.get_all())
 
-    def __is_existing_user(self, username):
-        return self.users.get_user_by_name(username) != None
+    def __is_existing_user(self, mail):
+        return self.users.get_user_by_mail(mail) != None
 
+class Session:
+    @staticmethod
+    def has_user(user_id):
+        return "id" in session and session["id"] == int(user_id)
+
+    @staticmethod
+    def add_user(id, email, username):
+        session["id"] = id
+        session["logged_in"] = email
+        session["username"] = username 
+        session.permanent = True
+
+    @staticmethod
+    def is_active():
+        return "logged_in" in session
