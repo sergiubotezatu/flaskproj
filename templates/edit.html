@@ -8,22 +8,8 @@
 {%block create2%}{%endblock%}
 {%block content%}
 <form style="text-align:center" method = "Post">
-    <label for="author">{{auth}}</label><br><br>
-     <input id ="auth"
-      class="field"
-      style ="width:200px;"
-      type="text"
-      name="author"
-      title="Author name must be at least 4 characters long and no special characters allowed"
-      maxlength="20"
-      minlength ="4"
-      required
-      value = "{{auth}}"
-      oninput= InvalidAlert()>
-        <br>
-        <span id="invalid" style="color:red;"></span>
-        <br>
-      <br>
+  <input type="hidden" id="actId" name="author" value={{owner}}>
+   <br>
    <label for="title">Current Title</label><br><br>
      <textarea id ="description"
       class="field"

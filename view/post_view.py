@@ -9,7 +9,7 @@ class PostPage:
     def __init__(self, repo : IPostRepo):
         self.blogPosts = repo
         self.bp = Blueprint("posts", __name__)
-        self.to_db_setup = self.bp.before_request(self.goto_db_setup)
+        #self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.creation = self.register("/create",self.create)
         self.reading = self.register("/read/<post_id>", self.read)
         self.update = self.register("/edit/<post_id>", self.edit)
@@ -25,8 +25,8 @@ class PostPage:
         if request.method == "POST":
             return redirect(f"/post/read/{self.create_new_post()}")
 
-        return render_template("writePost.html")
-
+        return render_template("writePost.html", owner = session["username"])
+        
     def read(self, post_id):
         if request.method == "POST":
             to_delete = request.form.get("postID")
@@ -38,6 +38,7 @@ class PostPage:
         return render_template(
             "read.html",
             editable = post_id,
+            owner = selected_post.owner_id,
             auth = selected_post.auth,
             title = selected_post.title,
             content = selected_post.content,
@@ -51,20 +52,20 @@ class PostPage:
             return redirect(f"/post/read/{post_id}")
         return render_template(
             "edit.html",
-            auth = selected_post.auth,
+            owner = selected_post.auth,
             title = selected_post.title,
             current = selected_post.content
-            )  
+            )
 
     def create_new_post(self):
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
-        return self.blogPosts.add_post(Post(author, title, content))
+        return self.blogPosts.add_post(Post(author, title, content, session["id"]))
 
     def edit_post(self, post_id):
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
         editted = Post(author, title, content)
-        self.blogPosts.replace(post_id, editted)    
+        self.blogPosts.replace(post_id, editted)

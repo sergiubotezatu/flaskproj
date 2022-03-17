@@ -9,7 +9,7 @@ class Home:
     def __init__(self, repo : IPostRepo):
         self.blogPosts = repo
         self.bp = Blueprint("home", __name__)
-        self.to_db_setup = self.bp.before_request(self.goto_db_setup)
+        #self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.home = self.bp.route("/", )(self.front_page)
 
     def goto_db_setup(self):

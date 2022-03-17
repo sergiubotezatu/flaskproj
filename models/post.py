@@ -1,10 +1,11 @@
 from datetime import datetime
 
 class Post:
-    def __init__(self, auth, title, content, date = None):
+    def __init__(self, auth, title, content, owner_id = 0, date = None):
         self.auth = auth
         self.title = title
         self.content = content
+        self.owner_id = owner_id
         self.created = self.date_created(date)
         self.modified = ""
         

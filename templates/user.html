@@ -68,9 +68,25 @@
                 <p class = "edituser" >Edit info</p>
             </a>
             {%endif%}
-            </div>
-        <div class="ownposts">
-        Main content
         </div>
+        <div>
+        {%if posts|length > 0%}
+        {%for articles in posts%}
+        {%set id = articles[0]%}
+        <a href="{{ '/post/read/%s'%id|urlencode }}" style ="color:black; text-decoration:none; ">
+        <div class="ownposts" title = "Click to read more">            
+            <h3 class = "item" style ="margin-left:auto;margin-right:auto;">{{articles[1].title}}</h3>
+            <h4 class = "item" class ="higlight">by {{articles[1].auth}}</h4>
+            <div class = "item" style ="text-align:justify;">{{articles[1].content}}</div>
+            <span class = "item" style = "float: right">{{articles[1].created}}</span>
+        </div>
+        </a>
+        </div>
+        {%endfor%}
+        {%else%}
+        <div class="ownposts">
+            You have no posts yet.
+        </div>
+        {%endif%}
     </div>
 {%endblock%}

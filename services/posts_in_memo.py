@@ -50,11 +50,11 @@ class Posts(IPostRepo):
     def replace(self, post_id, post):
         self.__posts[post_id].edit(post)
 
-    def get_user_posts(self, user_name):
+    def get_user_posts(self, user_id):
         user_posts = []
-        for posts in self.__posts:
-            if posts.auth == user_name:
-                user_posts.append(posts)
+        for posts in self:
+            if posts[1].owner_id == user_id:
+                user_posts.append((posts[0], Preview(posts[1])))
         return user_posts
 
     def get_all(self):

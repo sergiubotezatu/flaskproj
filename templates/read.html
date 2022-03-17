@@ -21,6 +21,7 @@
 {%block create1%}{%endblock%}
 {%block create2%}{%endblock%}
 {%block content%}
+{%if session["id"] == owner%}
 <div class ="editDel">
   <a href= "{{ '/post/edit/%s'%editable|urlencode }}"><button class="edit">EDIT CONTENT</a>
   <button type ="button" class ="edit" id = "del" onclick="MessOn('overlay')">DELETE POST</button>
@@ -35,6 +36,7 @@
   </form>  
   </div>
 </div>
+{%endif%}
 <div class="readPost">  
   <div class="read">
     <h2 style ="text-align: center">{{title}}</h3>

@@ -11,14 +11,14 @@ from services.mock_db_config import MockDbConfig
 
 class Container:
     DEPENDENCIES = {
-        IPostRepo : IDataBase,
+        IPostRepo : Posts,
         IDataBase : IDataBaseConfig,
         IDataBaseConfig : None,
         Posts : None,
         IUsers : IPostRepo}
 
     prod_services = {
-        IPostRepo : PostsDb,
+        IPostRepo : Posts,
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
         IUsers : Users

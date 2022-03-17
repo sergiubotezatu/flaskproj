@@ -4,25 +4,8 @@
 {%block create2%}{%endblock%}
 {%block content%}
 <form class = "write" style="text-align:center" method = "Post">
-    <label for="author">Author</label><br><br>
-     <input id ="auth"
-      class="field"
-      style ="width:200px;"
-      type="text"
-      name="author"
-      placeholder="John Doe"
-      pattern="[a-zA-Z0-9 ]+" 
-      title="Author name must be at least 4 characters long and no special characters allowed"
-      maxlength="20"
-      minlength ="4"
-      autofocus
-      required
-      oninput= "InvalidAuth()">
-        <br>
-        <span id="invalid" style="color:red;"></span>
-        <br>
-      <br>
-   <label for="title">Add a title(optional)</label><br><br>
+  <input type="hidden" id="actId" name="author" value={{owner}}>
+  <label for="title">Add a title</label><br><br>
      <textarea id ="description"
       class="field"
       type="text"
@@ -34,7 +17,7 @@
       title="Title can be 50 characters long"
       maxlength="50"
       minlength = "4"
-      placeholder = "no title..."
+      placeholder = "My post"
       required></textarea>
     <br><br>
     <strong><label for="post">What's on your mind?</label></strong><br><br>
