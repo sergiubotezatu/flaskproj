@@ -5,13 +5,22 @@
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
 Log in and start posting
 </h2>
+<br><br>
+{%with messages = get_flashed_messages()%}
+  {%if messages%}
+    {%for note in messages%}
+    <strong><p style = "text-align: center;color:maroon;">{{note}}</p></strong>
+    </div>
+    {%endfor%}
+    {%endif%}
+{%endwith%}
 <form style="text-align:center" method = "Post">
-  <label for="username">Username:</label><br>
+  <label for="mail">Email address:</label><br>
   <input class="field"
-   type="text" 
-   id="username"
-   name="username"
-   placeholder="Type in UserName"
+   type="email" 
+   id="email"
+   name="mail"
+   placeholder="Type in email adress"
    autofocus
    required><br>
   <label for="pwd">Password:</label><br>

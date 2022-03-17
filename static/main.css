@@ -530,7 +530,7 @@ li .option:hover, .dropbtn:hover
 
       .ownposts:hover{
         transition-duration: 1s; 
-        transform: scale(1.2);
+        transform: scale(1.15);
       }
       
       .ownposts {

@@ -19,7 +19,4 @@ class Home:
     def front_page(self):
         rows = len(self.blogPosts)
         posts = self.blogPosts if rows > 0 else placeholder
-        profile = "Log in"
-        if "profile" in session:
-            profile = session["profile"]
-        return render_template("home.html", user = profile, allposts = posts.get_all())
+        return render_template("home.html", allposts = posts.get_all())

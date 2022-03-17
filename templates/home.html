@@ -2,10 +2,13 @@
 {%block title%}Home{%endblock%}
 
 {%block log%}
-{%if user == "Log in"%}
-<a class = "option" href="login">
+{%if "logged_in" in session %}
+{%set user = session["username"]%}
+{%set id = session["id"]%}
+<a class = "option" href="{{ '/view/%s'%id|urlencode }}">
 {%else%}
-<a class = "option" href="{{ '/view/%s'%user|urlencode }}">
+{%set user = "Log in"%}
+<a class = "option" href="login">
 {%endif%}
   <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>{{user}}</a>{%endblock%}
 {%block content%}

@@ -8,8 +8,7 @@ class Users(IUsers):
     def __init__(self, posts : IPostRepo):
         self.__users = []
         self.all_posts = posts
-        self.id = 1
-    
+        
     def get_user_by_id(self, id):
         pass
 
@@ -19,9 +18,15 @@ class Users(IUsers):
     def get_posts(self, user_name):
         return self.all_posts.get_user_posts(user_name)
 
-    def get_user_by_name(self, username) -> User:
+    def get_user_by_mail(self, mail) -> User:
         for users in self.__users:
-            if username == users.name:
+            if mail == users.email:
+                return users
+        return None
+
+    def get_user_by_id(self, id : int) -> User:
+        for users in self.__users:
+            if id == users.id:
                 return users
         return None
 

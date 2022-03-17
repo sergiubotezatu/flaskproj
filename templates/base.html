@@ -18,7 +18,7 @@
                 <img src = "\static\icons\home.png" style = "width:25px;height:30px;"></img>
                 Home
             </a></li>
-            {%if is_logged%}
+            {%if "logged_in" in session%}
             {%set path = "post/create"%}
             {%else%}
             {%set path = "login"%}
@@ -46,7 +46,7 @@
                 </a>              
                 <div class="dropdown-content">
                 <a class = "option" href="/">Home</a>
-                <a class = "option" href="/post/create">Create new Post</a>
+                <a class = "option" href="{{'/%s'%path|urlencode }}">Create new Post</a>
                 {{self.log()}}
                 <a class = "option" href="/view/community">
                     <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>

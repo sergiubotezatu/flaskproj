@@ -15,5 +15,9 @@ class IUsers(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_user_by_name(self, username):
+    def get_user_by_mail(self, username):
+        pass
+
+    @abstractmethod
+    def get_user_by_id(self, id):
         pass

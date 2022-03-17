@@ -4,10 +4,12 @@ from services.resources import Services
 from models.container import Container
 from services.ipost_repo import IPostRepo
 from services.iusers import IUsers
+from datetime import timedelta
 
 def create_blog(is_test_app = False):
     blog = Flask(__name__)
     blog.config["TESTING"] = is_test_app
+    blog.permanent_session_lifetime = timedelta(days = 1)
     blog.secret_key = "FlaskTest" if is_test_app else "FlaskBlog"
     Services.container = Container(is_test_app).items
     Services.DEPENDENCIES = Container.DEPENDENCIES
