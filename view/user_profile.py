@@ -37,7 +37,12 @@ class UserProfile:
             return redirect(url_for("home.front_page"))
         
         logged = self.users.get_user_by_id(user_id)
-        return render_template("user.html", user_id = logged.id, user= logged.name, email = logged.email, date = logged.created)
+        return render_template("user.html",
+        user_id = logged.id,
+        user= logged.name,
+        email = logged.email,
+        date = logged.created,
+        modified = logged.modified)
 
     def log_in(self):
         if request.method == "GET":

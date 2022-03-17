@@ -62,6 +62,7 @@
             <p>{{user}}</p>
             <p>email:{{email}}</p>
             <p>member since:{{date}}</p>
+            <p>{%if modified != None and modified != ""%}last update: {{modified}}{%endif%}</p>
             {%if session["id"] == user_id%}
             <a href = "{{ '/edit/%s'%user_id|urlencode }}">
                 <p class = "edituser" >Edit info</p>
