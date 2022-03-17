@@ -21,3 +21,11 @@ class IUsers(metaclass = ABCMeta):
     @abstractmethod
     def get_user_by_id(self, id):
         pass
+
+    @abstractmethod
+    def remove_user(self, user):
+        pass
+
+    @abstractmethod
+    def update_user(self, user, pwd):
+        pass

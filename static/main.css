@@ -367,7 +367,7 @@ li .option:hover, .dropbtn:hover
 
    
    
-    #overlay {
+    #overlay, #logoverlay, #signoverlay {
         position: fixed;
         display: none;
         width: 100%;
@@ -379,7 +379,7 @@ li .option:hover, .dropbtn:hover
         text-align: center;
         bottom: 0;
         background-color: rgba(46, 53, 110, 0.5);
-        z-index: 2;
+        z-index: 10;
         cursor: pointer;
     }
 
@@ -418,7 +418,7 @@ li .option:hover, .dropbtn:hover
     #yes:hover{
         transform: scale(1.2);
         box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
-        transition: all 0.3s ease-out;
+        transition: all 0.3s ease-in-out;
         background-color: orangered;
         color:blue;
         cursor: pointer; 
@@ -429,7 +429,7 @@ li .option:hover, .dropbtn:hover
         box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
         background-color: orangered;
         color:blue;
-        transition: all 0.3s ease-out;   
+        transition: all 0.3s ease-in-out;   
         cursor: pointer;        
     }
 
@@ -586,4 +586,24 @@ li .option:hover, .dropbtn:hover
         padding: 20px;
         margin-bottom: 10px;
         font-size: 30px;
+    }
+
+    .edituser{
+        display: block;
+        padding-top: 2px;
+        margin-right:20px;
+        margin-left:20px;
+        font-weight: bold;
+        text-align:center;
+        background-color: white;
+        border: 3px solid rgba(68, 26, 165, 0.76);
+    }
+
+    .edituser:hover{
+        transform: scale(1.1);
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
+        transition: all 0.3s ease-in-out;
+        background-color: orangered;
+        color:blue;
+        cursor: pointer; 
     }

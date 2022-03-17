@@ -1,10 +1,20 @@
 {%extends "base.html"%}
 {%block title%}Sing_Up{%endblock%}
 {%block content%}
-<h3 
+<h3
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
 Change profile information
 </h3>
+<br>
+<h4>
+{%with messages = get_flashed_messages()%}
+  {%if messages%}
+    {%for note in messages%}
+    <strong><p style = "text-align: center;color:maroon;">{{note}}</p></strong>
+    {%endfor%}
+    {%endif%}
+{%endwith%}
+</h4>
 <form style="text-align:center" method = "Post">
   <label for="username">Create an username:</label><br>
   <input id ="toCheck"
@@ -39,9 +49,8 @@ Change profile information
    style ="width:250px;"
    type="password"
    id="oldpass" 
-   name="old"
-   pattern="([a-zA-Z0-9]+)*[^A-Za-z0-9]([a-zA-Z0-9]+)*"
-   title="Password must be 7 characters long and have 1 special character"
+   name="oldpass"
+   required
    >
    <br>
    <br>
@@ -69,11 +78,10 @@ Change profile information
    name="pwd2"
    placeholder="Type your password again"
    title="All characters should match those entered above."
-   required
    oninput="DifferentPass()">
    <br>
    <span id="diffPass" style="color:red;"></span> 
    <br>
-  <input class ="submitBtn" id="sub" type="submit" value="Sign Up" style = background-color:yellowgreen>
+  <input class ="submitBtn" id="sub" type="submit" value="Submit" style = background-color:yellowgreen>
 </form>
 {%endblock%}

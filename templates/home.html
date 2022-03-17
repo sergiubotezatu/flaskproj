@@ -1,16 +1,14 @@
 {%extends "base.html"%}
 {%block title%}Home{%endblock%}
-
 {%block log%}
 {%if "logged_in" in session %}
 {%set user = session["username"]%}
-{%set id = session["id"]%}
-<a class = "option" href="{{ '/view/%s'%id|urlencode }}">
+{%set id = session["id"]%}<a class = "option" href="{{ '/view/%s'%id|urlencode }}">
 {%else%}
-{%set user = "Log in"%}
-<a class = "option" href="login">
+{%set user = "Log in"%}<a class = "option" href="login">
 {%endif%}
-  <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>{{user}}</a>{%endblock%}
+  <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>{{user}}</a>
+  {%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}
@@ -20,7 +18,7 @@
       <strong><p>{{note}}</p></strong>
     </div>
     {%endfor%}
-  {%endif%}
+    {%endif%}
 {%endwith%}
   <div class="row">
       {% for item in allposts%}

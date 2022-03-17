@@ -1,9 +1,59 @@
 {%extends "base.html"%}
 {%block title%}{{user}}{%endblock%}
-{%block log%}<a class = "option" href="{{ '/view/%s'%user|urlencode }}">
-    <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
-    {{user}}</a>{%endblock%}
+{%block log%}
+{%if "logged_in" not in session%}
+    <a class = "option" href="/login">
+        <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
+            Log in</a>
+{%elif session["id"] != user_id%}
+<a class = "option" href="{{ '/view/%s'%user_id|urlencode }}">
+        <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
+            {{session["username"]}}</a>
+{%else%}
+<a class = "option" href = "javascript:void(0)" onclick = "MessOn('logoverlay')">
+        <img src = "\static\icons\logout.png" style = "width:25px;height:30px;"></img>
+            Log out</a>
+{%endif%}
+{%endblock%}
+{%block signout%}
+{%if session["id"] == user_id%}
+<a class = "option" href = "javascript:void(0)" onclick = "MessOn('signoverlay')">
+            <img src = "\static\icons\unfollow.png" style = "width:25px;height:30px;"></img>
+            Sign out</a>
+{%endif%}
+{%endblock%}
 {%block content%}
+{%with messages = get_flashed_messages()%}
+  {%if messages%}
+    {%for note in messages%}
+    <div>
+    <strong><p style = "text-align: center;color:rgb(255, 255, 255);">{{note}}</p></strong>
+    </div>
+    {%endfor%}
+    {%endif%}
+{%endwith%}
+    <div id="logoverlay" onclick="MessOff(this.id)">
+        <div id="box">
+        <p id ="mess">Are you sure you want to logout?</p>
+        <form id = "requestDel" method = "Post">  
+            <input type="hidden" id="log" name="action" value= "logout">
+            <input type="submit" id ="yes" value="Yes">
+            <input type="button" id = "no" value ="No" onclick="MessOff('logoverlay')">
+        </form>  
+        </div>
+    </div>
+    <div id="signoverlay" onclick="MessOff(this.id)">
+        <div id="box">
+        <p id ="mess">Are you sure you want to delete your account?</p>
+        <form id = "requestDel" method = "Post">  
+            <input type="hidden" id="actId" name="userID" value={{user_id}}>
+            <input type="hidden" id="log" name="action" value= "signout">
+            <input type="submit" id ="yes" value="Yes">
+            <input type="button" id = "no" value ="No" onclick="MessOff('signoverlay')">
+        </form>
+        </div>
+    </div>
+
     <h3 id = "userposts"style="text-align:right; margin-right: 300px;color:white; text-shadow: 2px 4px 5px black">
         {{user}}'s posts
     </h3>
@@ -12,6 +62,11 @@
             <p>{{user}}</p>
             <p>email:{{email}}</p>
             <p>member since:{{date}}</p>
+            {%if session["id"] == user_id%}
+            <a href = "{{ '/edit/%s'%user_id|urlencode }}">
+                <p class = "edituser" >Edit info</p>
+            </a>
+            {%endif%}
             </div>
         <div class="ownposts">
         Main content

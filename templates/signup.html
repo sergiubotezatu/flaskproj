@@ -5,6 +5,16 @@
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
 Sign Up form
 </h3>
+<br>
+<h4>
+{%with messages = get_flashed_messages()%}
+  {%if messages%}
+    {%for note in messages%}
+    <strong><p style = "text-align: center;color:maroon;">{{note}}</p></strong>
+    {%endfor%}
+    {%endif%}
+{%endwith%}
+</h4>
 <form style="text-align:center" method = "Post">
   <label for="username">Create an username:</label><br>
   <input id ="toCheck"

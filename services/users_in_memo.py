@@ -8,6 +8,7 @@ class Users(IUsers):
     def __init__(self, posts : IPostRepo):
         self.__users = []
         self.all_posts = posts
+        self.deleted = []
         
     def get_user_by_id(self, id):
         pass
@@ -31,10 +32,20 @@ class Users(IUsers):
         return None
 
     def get_all(self):
-        names = []
+        id_names = []
         for users in self.__users:
-            names.append(users.name)
-        return names
+            id_names.append((users.id, users.name))
+        return id_names
 
     def add_user(self, user : User):
         self.__users.append(user)
+
+    def update_user(self, usr_id, editted, pwd = None):
+        for users in self.__users:
+            if users.id == usr_id:
+                users.edit(editted, pwd)
+                break
+
+    def remove_user(self, user: User):
+        self.deleted.append((user.email, user.date_created))
+        self.__users.remove(user)

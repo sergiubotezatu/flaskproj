@@ -24,14 +24,14 @@ function InvalidUserName()
     }
 }
 
-function MessOn()
+function MessOn(id)
 {
-    document.getElementById("overlay").style.display = "block";
+    document.getElementById(id).style.display = "block";
 }
 
-function MessOff()
+function MessOff(id)
 {
-    document.getElementById("overlay").style.display = "none";
+    document.getElementById(id).style.display = "none";
 }
 
 function InvalidPass()

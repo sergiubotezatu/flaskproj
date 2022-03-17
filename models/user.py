@@ -19,6 +19,13 @@ class User:
     def check_pass(self, userPass):
         return self.__password == userPass
 
+    def edit(self, editted, pwd = None):
+        self.name = editted.name
+        self.email = editted.email
+        self.modified = editted.created
+        if pwd != None: 
+            self.__password = pwd
+
     @classmethod
     def increment_id(cls):
         cls.user_id += 1
