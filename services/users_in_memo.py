@@ -43,9 +43,11 @@ class Users(IUsers):
     def update_user(self, usr_id, editted, pwd = None):
         for users in self.__users:
             if users.id == usr_id:
+                if users.name != editted.name:
+                    self.all_posts.reflect_user_changes(usr_id, editted.name)
                 users.edit(editted, pwd)
                 break
-
+    
     def remove_user(self, user: User):
         self.deleted[user.email] = []
         for posts in self.all_posts:

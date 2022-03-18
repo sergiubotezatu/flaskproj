@@ -48,14 +48,7 @@ class Posts(IPostRepo):
         self.__posts.pop(post_id)
 
     def replace(self, post_id, post):
-        self.__posts[post_id].edit(post)
-
-    def get_user_posts(self, user_id):
-        user_posts = []
-        for posts in self:
-            if posts[1].owner_id == user_id:
-                user_posts.append((posts[0], Preview(posts[1])))
-        return user_posts
+        self.__posts[post_id].edit(post)    
 
     def get_all(self):
         for posts in self:
@@ -63,4 +56,15 @@ class Posts(IPostRepo):
     
     def delete_all(self):
         self.__posts = {}
+
+    def get_user_posts(self, user_id):
+        user_posts = []
+        for posts in self:
+            if posts[1].owner_id == user_id:
+                user_posts.append((posts[0], Preview(posts[1])))
+        return user_posts    
     
+    def reflect_user_changes(self, id, new_name):
+        for posts in self:
+            if posts[1].owner_id == id:
+                posts[1].auth = new_name

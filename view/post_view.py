@@ -24,8 +24,11 @@ class PostPage:
     def create(self):
         if request.method == "POST":
             return redirect(f"/post/read/{self.create_new_post()}")
+        
+        if "logged_in" in session:
+            return render_template("writePost.html", owner = session["username"])
+        return redirect(url_for("profile.log_in"))
 
-        return render_template("writePost.html", owner = session["username"])
         
     def read(self, post_id):
         if request.method == "POST":

@@ -1,7 +1,10 @@
 {%extends "base.html"%}
 {%block title%}Create_Post{%endblock%}
-{%block create1%}{%endblock%}
-{%block create2%}{%endblock%}
+{%block log%}
+{%set user = session["username"]%}
+{%set id = session["id"]%}<a class = "option" href="{{ '/view/%s'%id|urlencode }}">
+  <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>{{user}}</a>
+{%endblock%}
 {%block content%}
 <form class = "write" style="text-align:center" method = "Post">
   <input type="hidden" id="actId" name="author" value={{owner}}>

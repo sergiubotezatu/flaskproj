@@ -1,5 +1,10 @@
 {%extends "base.html"%}
 {%block title%}Sing_Up{%endblock%}
+{%block log%}
+{%set user = session["username"]%}
+{%set id = session["id"]%}<a class = "option" href="{{ '/view/%s'%id|urlencode }}">
+  <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>{{user}}</a>
+{%endblock%}
 {%block content%}
 <h3
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
