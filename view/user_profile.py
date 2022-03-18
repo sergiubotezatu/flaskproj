@@ -9,7 +9,7 @@ class UserProfile:
     def __init__(self, repo : IUsers):
         self.users = repo
         self.bp = Blueprint("profile", __name__)
-        #self.to_db_setup = self.bp.before_request(self.goto_db_setup)
+        self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.profile = self.register("/view/<user_id>", self.user_profile)
         self.login = self.register("/login", self.log_in)
         self.signup = self.register("/signup", self.sign_up)
@@ -36,7 +36,6 @@ class UserProfile:
                 self.users.remove_user(to_delete)
             return redirect(url_for("home.front_page"))
         
-        print(type(user_id))
         logged = self.users.get_user_by_id(user_id)
         owned_posts = self.users.get_posts(user_id)
         return render_template("user.html",

@@ -10,12 +10,6 @@ class Users(IUsers):
         self.all_posts = posts
         self.deleted = {}
         
-    def get_user_by_id(self, id):
-        pass
-
-    def check_pass(self, userPass):
-        return self.__password == userPass
-
     def get_posts(self, user_id):
         return self.all_posts.get_user_posts(user_id)
 

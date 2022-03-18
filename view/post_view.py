@@ -9,7 +9,7 @@ class PostPage:
     def __init__(self, repo : IPostRepo):
         self.blogPosts = repo
         self.bp = Blueprint("posts", __name__)
-        #self.to_db_setup = self.bp.before_request(self.goto_db_setup)
+        self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.creation = self.register("/create",self.create)
         self.reading = self.register("/read/<post_id>", self.read)
         self.update = self.register("/edit/<post_id>", self.edit)

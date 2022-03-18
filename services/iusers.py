@@ -3,19 +3,15 @@ from abc import ABCMeta, abstractmethod
 class IUsers(metaclass = ABCMeta):
     
     @abstractmethod
-    def add_user(self):
+    def add_user(self, user):
         pass
 
     @abstractmethod
-    def check_pass(self):
+    def get_posts(self, user_id):
         pass
 
     @abstractmethod
-    def get_posts(self):
-        pass
-
-    @abstractmethod
-    def get_user_by_mail(self, username):
+    def get_user_by_mail(self, mail):
         pass
 
     @abstractmethod

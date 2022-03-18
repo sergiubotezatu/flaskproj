@@ -7,21 +7,22 @@ from services.idatabase_config import IDataBaseConfig
 from services.database_config import DataBaseConfig
 from services.iusers import IUsers
 from services.users_in_memo import Users
+from services.users_db_repo import UsersDb
 from services.mock_db_config import MockDbConfig
 
 class Container:
     DEPENDENCIES = {
-        IPostRepo : Posts,
+        IPostRepo : IDataBase,
         IDataBase : IDataBaseConfig,
         IDataBaseConfig : None,
         Posts : None,
-        IUsers : IPostRepo}
+        IUsers : IDataBase}
 
     prod_services = {
-        IPostRepo : Posts,
+        IPostRepo : PostsDb,
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
-        IUsers : Users
+        IUsers : UsersDb
         }
 
     test_services = {
