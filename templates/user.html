@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <h3 id = "userposts"style="text-align:right; margin-right: 300px;color:white; text-shadow: 2px 4px 5px black">
+    <h3 id = "userposts"style="text-align:right; margin-right: 450px;color:white; text-shadow: 2px 4px 5px black">
         {{user}}'s posts
     </h3>
     <div class="profile">
@@ -69,7 +69,7 @@
             </a>
             {%endif%}
         </div>
-        <div>
+        <div class = "postcontainer">
         {%if posts|length > 0%}
         {%for articles in posts%}
         {%set id = articles[0]%}
@@ -81,8 +81,8 @@
             <span class = "item" style = "float: right">{{articles[1].created}}</span>
         </div>
         </a>
-        </div>
         {%endfor%}
+        </div>
         {%else%}
         <div class="ownposts">
             You have no posts yet.
