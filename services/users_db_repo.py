@@ -99,7 +99,7 @@ class QueryUsers:
         "change_pass" : self.__change_password(),
         "admin_delete" : self.__complete_deletion()
         }
-        
+
     def __read_all(self):
         return """
         SELECT p.*,
@@ -174,8 +174,10 @@ class QueryUsers:
 
     def __fetch_if_needed(self, request):
         result = []
-        if request == "get_users" or request == "get_user_posts":
+        one_needed = ["get_by_mail", "get_by_id"]
+        all_needed = ["get_users", "get_user_posts"]
+        if request in all_needed:
             result = self.db.cursor.fetchall()
-        if request == "get_by_mail" or request == "get_by_id" or request == "insertion":
+        if request in one_needed:
             result = self.db.cursor.fetchone()
         return result
