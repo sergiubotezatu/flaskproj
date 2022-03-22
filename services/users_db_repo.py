@@ -99,49 +99,7 @@ class QueryUsers:
         "change_pass" : self.__change_password(),
         "admin_delete" : self.__complete_deletion()
         }
-    
-    def perform_read(self, id) -> Post:
-        result = None
-        try:
-            self.db.connect()
-            result = self.__fetch_all_posts(self.__read_all(id))
-            self.db.commit_and_close()
-        except (Exception, DatabaseError) as error:
-            print(error)
-        return result
-
-    def fetch_user(self, *user_id) -> Post:
-        result = None
-        try:
-            self.db.connect()
-            self.db.cursor.execute(self.__get_user(), user_id)
-            result = self.db.cursor.fetchone()
-            self.db.commit_and_close()
-        except (Exception, DatabaseError) as error:
-            print(error)
-        print(type(result))
-        print(result)    
-        return result
-
-    def __fetch_all_posts(self, query):
-        self.db.cursor.execute(query)
-        nextPost = self.db.cursor.fetchone()
-        result = []
-        while nextPost is not None:
-            result.append(
-            (nextPost[0], 
-            Post
-            (
-            nextPost[1],
-            nextPost[2],
-            self.__cut_poem_newlines(nextPost[7]),
-            nextPost[4])
-            )
-            )
-            nextPost = self.db.cursor.fetchone()
-        return result
-
-
+        
     def __read_all(self):
         return """
         SELECT p.*,
