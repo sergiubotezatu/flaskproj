@@ -173,6 +173,7 @@ li .option:hover, .dropbtn:hover
     grid-column-gap: 10px;
     padding: 10px;
     pointer-events: none;
+    white-space: pre-wrap;
 }
 
 .row > *{

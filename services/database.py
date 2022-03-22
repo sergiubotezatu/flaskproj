@@ -21,7 +21,7 @@ class DataBase(IDataBase):
     def create_database(self):
         try:
             self.connect()
-            for operation in self.table_creation():
+            for operation in self.tables_creation():
                 self.cursor.execute(operation)
             self.commit_and_close()
         except (Exception, psycopg2.DatabaseError) as error:
@@ -36,7 +36,7 @@ class DataBase(IDataBase):
         self.cursor.close()
         self.conn.close()
     
-    def table_creation(self):
+    def tables_creation(self):
         return ("""      
             CREATE TABLE IF NOT EXISTS blog_users(
             OwnerID SERIAL PRIMARY KEY,
@@ -68,5 +68,17 @@ class DataBase(IDataBase):
             ALTER TABLE blog_posts
             ADD FOREIGN KEY (OwnerID) REFERENCES blog_users(OwnerID)
             ON UPDATE CASCADE ON DELETE CASCADE;
+        """,
         """
+            INSERT INTO blog_users (Name, Email, Password)
+            SELECT Author, Author || '@dummy.com', Author
+            FROM blog_posts
+            WHERE blog_posts.OwnerID = NULL;
+        """,
+        """
+            UPDATE blog_posts
+            SET OwnerID = blog_users.OwnerID
+            FROM blog_users
+            WHERE blog_posts.OwnerID = NULL AND blog_users.Email = blog_posts.Author || '@dummy.com'; 
+        """        
            )
