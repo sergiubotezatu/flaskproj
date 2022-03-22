@@ -1,15 +1,13 @@
 from datetime import datetime
 
 class User:
-    user_id = 0
     def __init__(self, userName, email, password, date = None):
-        self.id = User.user_id + 1
+        self.id = 0
         self.name = userName
         self.email = email
         self.password = password
         self.created = self.date_created(date)
         self.modified = ""
-        User.increment_id()
         
     def date_created(self, date):
         if date == None:
@@ -26,6 +24,5 @@ class User:
         if pwd != None: 
             self.password = pwd
     
-    @classmethod
-    def increment_id(cls):
-        cls.user_id += 1
+    def serialize(self, id):
+        self.id = id

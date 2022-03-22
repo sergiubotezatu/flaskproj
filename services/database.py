@@ -55,9 +55,18 @@ class DataBase(IDataBase):
             Date varchar(50),
             Date_modified varchar(50),
             OwnerID int,
-            FOREIGN KEY (OwnerID) REFERENCES blog_users(OwnerID));
+            FOREIGN KEY (OwnerID) REFERENCES blog_users(OwnerID)
+            ON UPDATE CASCADE ON DELETE CASCADE);
         """,
         """        
             CREATE TABLE IF NOT EXISTS deleted_users(
             Email varchar(200),
-            Content varchar(5000));""")
+            Content varchar(5000),
+            deleted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
+        """,
+        """
+            ALTER TABLE blog_posts
+            ADD FOREIGN KEY (OwnerID) REFERENCES blog_users(OwnerID)
+            ON UPDATE CASCADE ON DELETE CASCADE;
+        """
+           )

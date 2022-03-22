@@ -25,7 +25,7 @@ class PostsDb(IPostRepo):
     
     def add_post(self, post : Post):
         self.count += 1
-        return self.query.perform("insertion", post.auth, post.title, post.content, post.created)        
+        return self.query.perform("insertion", post.auth, post.title, post.content, post.created, post.owner_id)      
 
     def replace(self, id, post : Post):
         self.query.perform("edit", post.auth, post.title, post.content, post.created, id)
@@ -36,13 +36,12 @@ class PostsDb(IPostRepo):
     
     def get_post(self, id) -> Post:
         displayed = self.query.perform_read(id)
-        post = Post(displayed[0], displayed[1], displayed[2], displayed[3])
-        post.modified = displayed[4]
+        post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4])
+        post.modified = displayed[5]
         return post
 
     def get_all(self):
         return self.query.perform_read()
-
 
 class QueryPosts:
     @Services.get
@@ -59,6 +58,8 @@ class QueryPosts:
             self.db.connect()
             self.db.cursor.execute(execution, args)
             retrieved = self.__fetch_if_needed(request)
+            print(retrieved)
+            print(type(retrieved))
             self.db.commit_and_close()
         except (Exception, DatabaseError) as error:
             print(error)
@@ -98,8 +99,8 @@ class QueryPosts:
             (
             nextPost[1],
             nextPost[2],
-            self.__cut_poem_newlines(nextPost[6]),
-            nextPost[4])
+            self.__cut_poem_newlines(nextPost[7]),
+            date = nextPost[4])
             )
             )
             nextPost = self.db.cursor.fetchone()
@@ -107,7 +108,7 @@ class QueryPosts:
 
     def __read_post(self, id):
         return f"""
-                SELECT Author, Title, Content, Date, Date_modified
+                SELECT Author, Title, Content, OwnerID, Date, Date_modified
                 FROM blog_posts
                 WHERE PostID = {id};
             """
@@ -125,8 +126,8 @@ class QueryPosts:
 
     def __insertion(self):
         return """
-        INSERT INTO blog_posts       
-        VALUES (DEFAULT, %s, %s, %s, %s)
+        INSERT INTO blog_posts (PostID, Author, Title, Content, Date, OwnerID)     
+        VALUES (DEFAULT, %s, %s, %s, %s, %s)
         RETURNING PostID;
         """
 
@@ -151,6 +152,7 @@ class QueryPosts:
             """
 
     def __cut_poem_newlines(self, content):
+        print("Y---", type(content))
         lines_count = content.count("\n")
         if lines_count > 0:
             chunk = lines_count * 3

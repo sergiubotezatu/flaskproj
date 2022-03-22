@@ -64,7 +64,7 @@ class PostPage:
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
-        return self.blogPosts.add_post(Post(author, title, content, session["id"]))
+        return self.blogPosts.add_post(Post(author, title, content, owner_id = session["id"]))
 
     def edit_post(self, post_id):
         author = request.form.get("author")

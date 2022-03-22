@@ -76,7 +76,7 @@ class UserProfile:
             else:
                 username = request.form.get("username")
                 new_user = User(username, email, password)
-                self.users.add_user(new_user)
+                new_user.serialize(self.users.add_user(new_user))
                 Session.add_user(new_user.id, email, username)
                 flash(f"Welcome, {username}!")
                 flash("This is your profile page. Here you can see all of your posts.")

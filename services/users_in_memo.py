@@ -9,6 +9,7 @@ class Users(IUsers):
         self.__users = []
         self.all_posts = posts
         self.deleted = {}
+        self.count = 0
         
     def get_posts(self, user_id):
         return self.all_posts.get_user_posts(user_id)
@@ -32,8 +33,10 @@ class Users(IUsers):
         return id_names
 
     def add_user(self, user : User):
+        self.count += 1
+        user.serialize(self.count)
         self.__users.append(user)
-
+        
     def update_user(self, usr_id, editted, pwd = None):
         for users in self.__users:
             if users.id == usr_id:
