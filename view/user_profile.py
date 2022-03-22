@@ -19,7 +19,6 @@ class UserProfile:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
-
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
@@ -52,7 +51,7 @@ class UserProfile:
         else:
             email = request.form.get("mail")
             password = request.form.get("pwd")
-            found = self.users.get_user_by_mail(email)
+            found : User = self.users.get_user_by_mail(email)
             if found == None:
                 flash(f"Email address {email} is not assigned to any registered members")
                 flash(f"Please check for spelling errors or "
@@ -68,14 +67,16 @@ class UserProfile:
     def sign_up(self):
         if request.method == "POST":
             email = request.form.get("email")
-            password = request.form.get("pwd")
+            pwd = request.form.get("pwd")
             if self.__is_existing_user(email):
                 flash(f"Email {email} is already assigned to another user.")
                 flash(f"Please use an unregistered email or if you have an account go to login.", "error")
                 return redirect(url_for(".sign_up"))
             else:
                 username = request.form.get("username")
-                new_user = User(username, email, password)
+                new_user = User(username, email)
+                new_user.set_pass(pwd, True)
+                print(new_user.hashed_pass)
                 new_user.serialize(self.users.add_user(new_user))
                 Session.add_user(new_user.id, email, username)
                 flash(f"Welcome, {username}!")
@@ -93,7 +94,7 @@ class UserProfile:
                 new_mail = request.form.get("email", user_id)
                 new_password = request.form.get("pwd")
                 Session.modify_user(user_id, new_mail, new_name)
-                self.users.update_user(user_id, User(new_name, new_mail, new_password), new_password)
+                self.users.update_user(user_id, User(new_name, new_mail), new_password)
                 return redirect(url_for(".user_profile", user_id = user_id))
             else:
                 flash(f"Old password does not match current one. Please try again", "error")

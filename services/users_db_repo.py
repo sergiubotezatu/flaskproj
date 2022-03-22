@@ -13,7 +13,7 @@ class UsersDb(IUsers):
         self.query = QueryUsers(db) 
     
     def add_user(self, user : User):
-        return self.query.perform("insertion", user.name, user.email, user.password, user.created)[0]        
+        return self.query.perform("insertion", user.name, user.email, user.hashed_pass, user.created)[0]        
 
     def get_posts(self, user_id):
         to_display = self.query.perform("get_user_posts", user_id)
@@ -35,7 +35,8 @@ class UsersDb(IUsers):
         displayed = self.query.perform("get_by_mail", mail)
         if displayed == None:
             return displayed
-        user = User(displayed[1], displayed[2], displayed[3], displayed[4])
+        user = User(displayed[1], displayed[2], displayed[4])
+        user.set_pass(displayed[3], False)
         user.serialize(displayed[0])
         return user
 
@@ -43,7 +44,8 @@ class UsersDb(IUsers):
         displayed = self.query.perform("get_by_id", id)
         if displayed == None:
             return displayed
-        user = User(displayed[1], displayed[2], displayed[3], displayed[4])
+        user = User(displayed[1], displayed[2], displayed[4])
+        user.set_pass(displayed[3], False)
         user.serialize(displayed[0])
         return user        
 
@@ -51,8 +53,8 @@ class UsersDb(IUsers):
         self.query.perform("archive", user.id)
         self.query.perform("deletion", user.id)
 
-    def update_user(self, usr_id, user : User, pwd = None):
-        if pwd == None:
+    def update_user(self, usr_id, user : User, pwd = ""):
+        if pwd != "":
             self.query.perform("change_pass", pwd, usr_id)
         self.query.perform("edit", user.name, user.email, user.created, usr_id, usr_id)
 
@@ -174,7 +176,7 @@ class QueryUsers:
 
     def __fetch_if_needed(self, request):
         result = []
-        one_needed = ["get_by_mail", "get_by_id"]
+        one_needed = ["get_by_mail", "get_by_id", "insertion"]
         all_needed = ["get_users", "get_user_posts"]
         if request in all_needed:
             result = self.db.cursor.fetchall()
