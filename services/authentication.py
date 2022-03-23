@@ -32,7 +32,7 @@ class Authentication(IAuthentication):
             flash(f"Please use an unregistered email or if you have an account go to login.", "error")
             return False
         new_user = User(name, email)
-        new_user.set_pass(password, True)
+        new_user.password = PassHash.generate_pass(password)
         new_user.serialize(self.users.add_user(new_user))
         self.log_session(new_user.id, name, email)
         Authentication.logged_user = new_user

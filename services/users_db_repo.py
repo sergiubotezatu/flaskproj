@@ -37,16 +37,18 @@ class UsersDb(IUsers):
         if displayed == None:
             return displayed
         user = User(displayed[1], displayed[2], displayed[4])
-        user.set_pass(displayed[3], False)
+        user.password = displayed[3]
+        user.modified = displayed[5]
         user.serialize(displayed[0])
         return user
 
-    def get_user_by_id(self, id):
+    def get_user_by_id(self, id) -> User:
         displayed = self.query.perform("get_by_id", id)
         if displayed == None:
             return displayed
         user = User(displayed[1], displayed[2], displayed[4])
-        user.set_pass(displayed[3], False)
+        user.password = displayed[3]
+        user.modified = displayed[5]
         user.serialize(displayed[0])
         return user        
 

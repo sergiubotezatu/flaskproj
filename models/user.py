@@ -1,5 +1,4 @@
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 
 class User:
     def __init__(self, userName, email, date = None):
@@ -15,20 +14,8 @@ class User:
         raise AttributeError("Password can not be read.")
 
     @password.setter
-    def password(self, userPass):
-        self.hashed_pass = generate_password_hash(userPass)
-    
-    def set_pass(self, userPass, hashed = True):
-        if hashed == False:
-            self.hashed_pass = userPass
-        else:
-            self.password = userPass
-
-    def check_pass(self, userPass):
-        print(generate_password_hash(userPass))
-        print(self.hashed_pass)
-        print(userPass)
-        return check_password_hash(self.hashed_pass, userPass)
+    def password(self, hashed):
+        self.hashed_pass = hashed
         
     def date_created(self, date):
         if date == None:

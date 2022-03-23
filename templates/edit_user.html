@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Sing_Up{%endblock%}
+{%block title%}Edit profile{%endblock%}
 {%block log%}
 {%set user = session["username"]%}
 {%set id = session["id"]%}<a class = "option" href="{{ '/view/%s'%id|urlencode }}">
@@ -49,7 +49,7 @@ Change profile information
     <br>
     <br>
     
-    <label for="old">Old password</label><br>
+    <label for="old">Verify it's you</label><br>
   <input class="field"
    style ="width:250px;"
    type="password"

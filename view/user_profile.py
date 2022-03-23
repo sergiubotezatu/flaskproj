@@ -3,6 +3,7 @@ from services.iusers import IUsers
 from services.resources import Services
 from services.database import DataBase
 from models.user import User
+from services.passhash import PassHash
 
 class UserProfile:
     @Services.get
@@ -44,15 +45,10 @@ class UserProfile:
  
     def edit_user(self, user_id):
         user_id = int(user_id)
-        editable = self.users.get_user_by_id(user_id)
+        editable : User = self.users.get_user_by_id(user_id)
         if request.method == "POST":
-            if editable.check_pass(request.form.get("oldpass")):
-                new_name = request.form.get("username")
-                new_mail = request.form.get("email", user_id)
-                new_password = request.form.get("pwd")
-                session["name"] = new_name
-                session["email"] = new_mail
-                self.users.update_user(user_id, User(new_name, new_mail), new_password)
+            if PassHash.check_pass(editable.hashed_pass, request.form.get("oldpass")):
+                self.__update_info(user_id)
                 return redirect(url_for(".user_profile", user_id = user_id))
             else:
                 flash(f"Old password does not match current one. Please try again", "error")
@@ -61,4 +57,17 @@ class UserProfile:
 
     def get_all_users(self):
         return render_template("members.html", allmembers = self.users.get_all())
+
+    def __update_info(self, user_id):
+        new_name = request.form.get("username")
+        new_mail = request.form.get("email", user_id)
+        new_password = self.__hash_if_new_pass(request.form.get("pwd"))
+        session["name"] = new_name
+        session["email"] = new_mail
+        self.users.update_user(user_id, User(new_name, new_mail), new_password)
+
+    def __hash_if_new_pass(self, input):
+        if input != "":
+            return PassHash.generate_pass(input)
+        return input
 
