@@ -31,7 +31,7 @@ class UsersDb(IUsers):
         
         return posts
 
-    def get_user_by_mail(self, mail):
+    def get_user_by_mail(self, mail) -> User:
         displayed = self.query.perform("get_by_mail", mail)
         if displayed == None:
             return displayed

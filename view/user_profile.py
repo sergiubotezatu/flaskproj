@@ -3,6 +3,7 @@ from services.iusers import IUsers
 from services.resources import Services
 from services.database import DataBase
 from models.user import User
+from services.authentication import Authentication
 
 class UserProfile:
     @Services.get
@@ -15,6 +16,7 @@ class UserProfile:
         self.signup = self.register("/signup", self.sign_up)
         self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.members = self.register("/view/community", self.get_all_users)
+        self.auth = Authentication(self.users)
         
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -52,13 +54,7 @@ class UserProfile:
             email = request.form.get("mail")
             password = request.form.get("pwd")
             found : User = self.users.get_user_by_mail(email)
-            if found == None:
-                flash(f"Email address {email} is not assigned to any registered members")
-                flash(f"Please check for spelling errors or "
-                "Click on \"HERE\" below the form if you don't have an account", "error")
-                return redirect(url_for(".log_in"))
-            elif not found.check_pass(password):
-                flash("Incorrect Password. Please try again", "error")
+            if not self.auth.log_in_succesful(email, password):
                 return redirect(url_for(".log_in"))
         flash(f"Welcome back, {found.name}!")
         Session.add_user(found.id, found.email, found.name)
@@ -68,21 +64,12 @@ class UserProfile:
         if request.method == "POST":
             email = request.form.get("email")
             pwd = request.form.get("pwd")
-            if self.__is_existing_user(email):
-                flash(f"Email {email} is already assigned to another user.")
-                flash(f"Please use an unregistered email or if you have an account go to login.", "error")
+            username = request.form.get("username")
+            user_id = self.auth.sign_up_succesful(username, email, pwd)
+            if  user_id == -1:
                 return redirect(url_for(".sign_up"))
-            else:
-                username = request.form.get("username")
-                new_user = User(username, email)
-                new_user.set_pass(pwd, True)
-                print(new_user.hashed_pass)
-                new_user.serialize(self.users.add_user(new_user))
-                Session.add_user(new_user.id, email, username)
-                flash(f"Welcome, {username}!")
-                flash("This is your profile page. Here you can see all of your posts.")
-                flash("Select Create new post to add a new post", "info")
-                return redirect(f"view/{new_user.id}")
+            else:                
+                return redirect(f"view/{user_id}")
         return render_template("signup.html")
 
     def edit_user(self, user_id):
