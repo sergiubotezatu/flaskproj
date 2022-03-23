@@ -1,7 +1,7 @@
 {%extends "base.html"%}
 {%block title%}{{user}}{%endblock%}
 {%block log%}
-{%if "logged_in" not in session%}
+{%if "id" not in session%}
     <a class = "option" href="/login">
         <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
             Log in</a>
