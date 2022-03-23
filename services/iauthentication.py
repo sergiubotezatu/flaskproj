@@ -2,9 +2,14 @@ from abc import ABCMeta, abstractmethod
 from models.user import User
 
 class IAuthentication(metaclass = ABCMeta):
-    
+    logged_user : User
+
     @abstractmethod
-    def log_in_succesful(self, id, email, username) -> bool:
+    def log_in_successful(self, id, email, username) -> bool:
+        pass
+
+    @abstractmethod
+    def sign_up_successful(self, name, email, password) -> bool:
         pass
 
     @abstractmethod

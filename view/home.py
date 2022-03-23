@@ -3,7 +3,6 @@ from services.ipost_repo import IPostRepo
 from services.seed import placeholder
 from services.resources import Services
 from services.database import DataBase
-from view.user_profile import Session
 
 class Home:
     @Services.get
@@ -18,9 +17,6 @@ class Home:
             return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):
-        if request.method == "POST":
-            Session.empty()
-            flash(f"You have been logged out. See you again soon!")
         rows = len(self.blogPosts)
         posts = self.blogPosts if rows > 0 else placeholder
         return render_template("home.html", allposts = posts.get_all())

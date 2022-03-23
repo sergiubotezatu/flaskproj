@@ -1,3 +1,5 @@
+from services.iauthentication import IAuthentication
+from services.authentication import Authentication
 from services.posts_db_repo import PostsDb
 from services.posts_in_memo import Posts
 from services.database import DataBase
@@ -15,14 +17,17 @@ class Container:
         IPostRepo : IDataBase,
         IDataBase : IDataBaseConfig,
         IDataBaseConfig : None,
-        Posts : None,
-        IUsers : IDataBase}
+        IUsers : IDataBase,
+        IAuthentication : IUsers,
+        Posts : None        
+        }
 
     prod_services = {
         IPostRepo : PostsDb,
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
-        IUsers : UsersDb
+        IUsers : UsersDb,
+        IAuthentication : Authentication
         }
 
     test_services = {

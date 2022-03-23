@@ -1,4 +1,5 @@
 from flask import Flask
+from services.iauthentication import IAuthentication
 from services.idata_base import IDataBase
 from services.resources import Services
 from models.container import Container
@@ -21,5 +22,7 @@ def create_blog(is_test_app = False):
     blog.register_blueprint(DbSetUp(IDataBase).bp)
     from view.user_profile import UserProfile
     blog.register_blueprint(UserProfile(IUsers).bp)
+    from view.user_authenticate import UserAuthenticate
+    blog.register_blueprint(UserAuthenticate(IAuthentication).bp)
 
     return blog

@@ -33,6 +33,7 @@ class UsersDb(IUsers):
 
     def get_user_by_mail(self, mail) -> User:
         displayed = self.query.perform("get_by_mail", mail)
+        print(displayed)
         if displayed == None:
             return displayed
         user = User(displayed[1], displayed[2], displayed[4])
@@ -65,7 +66,6 @@ class UsersDb(IUsers):
         return self.query.perform("admin_delete")
 
     def __cut_poem_newlines(self, content):
-        print("Y---", type(content))
         lines_count = content.count("\n")
         if lines_count > 0:
             chunk = lines_count * 3
