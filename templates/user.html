@@ -33,14 +33,13 @@
     {%endif%}
 {%endwith%}
     <div id="logoverlay" onclick="MessOff(this.id)">
-        <div id="box">
-        <p id ="mess">Are you sure you want to logout?</p>
-        <form id = "requestDel" method = "Post">  
-            <input type="hidden" id="log" name="action" value= "logout">
-            <input type="submit" id ="yes" value="Yes">
-            <input type="button" id = "no" value ="No" onclick="MessOff('logoverlay')">
-        </form>  
-        </div>
+    <div id="box">
+    <p id ="mess">Are you sure you want to logout?</p>
+    <div id = "requestDel" method = "Post">  
+        <a href = "/logout"><input type = "button" id = "yes" value ="Yes"></a>
+        <input type="button" id = "no" value ="No" onclick="MessOff('overlay')">
+      </div>
+    </div>
     </div>
     <div id="signoverlay" onclick="MessOff(this.id)">
         <div id="box">

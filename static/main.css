@@ -173,7 +173,6 @@ li .option:hover, .dropbtn:hover
     grid-column-gap: 10px;
     padding: 10px;
     pointer-events: none;
-    white-space: pre-wrap;
 }
 
 .row > *{
@@ -203,7 +202,8 @@ li .option:hover, .dropbtn:hover
     font-family:cursive;
     padding-top: 0;
     margin-top:0;
-    white-space: pre-wrap;    
+    white-space: pre-wrap;
+    word-break: break-all;
 }
 
 .post > h4, p
@@ -393,28 +393,15 @@ li .option:hover, .dropbtn:hover
     left:300px;
     }
 
-    #yes
+    #yes, #no
     {
-    display:inline;
-    font-weight: bold;
-    font-family: cursive;
-    width:50px;
-    height:50px;
-    background-color: white;
-    border: 3px solid rgba(68, 26, 165, 0.76);
-    border-radius: 5px;
-    }
-
-    #no
-    {   
-    font-family: cursive;
-    font-weight: bold;
-    display:inline-block;
-    width:50px;
-    height:50px;
-    background-color: white;
-    border:3px solid rgba(68, 26, 165, 0.76);
-    border-radius: 5px;
+        display:inline-block;
+        font-weight: bold;
+        font-family: cursive;
+        height:50px;
+        background-color: white;
+        border: 3px solid rgba(68, 26, 165, 0.76);
+        border-radius: 5px;
     }
 
     #yes:hover{
@@ -432,7 +419,7 @@ li .option:hover, .dropbtn:hover
         background-color: orangered;
         color:blue;
         transition: all 0.3s ease-in-out;   
-        cursor: pointer;        
+        cursor: pointer;     
     }
 
     #box
