@@ -111,15 +111,17 @@ class DataBase(IDataBase):
             WHERE blog_posts.OwnerID = NULL AND blog_users.Email = blog_posts.Author || '@dummy.com'; 
         """,
         """ 
-            CREATE FUNCTION delete_expired_archived() RETURNS trigger
+           CREATE OR REPLACE FUNCTION delete_expired_archived() RETURNS trigger
             LANGUAGE plpgsql
         AS $$
         BEGIN
-        DELETE FROM deleted_users WHERE deleted_at < NOW() - INTERVAL '180 days';
+        DELETE FROM deleted_users WHERE deleted_at < NOW() - interval '1 year';
         RETURN NEW;
         END;
         $$;
+            DROP TRIGGER IF EXISTS expired_users_delete
+            ON public.deleted_users;
             CREATE TRIGGER expired_users_delete
             AFTER INSERT ON deleted_users
-            EXECUTE PROCEDURE delete_expired_archived(); 
+            EXECUTE PROCEDURE delete_expired_archived();
         """)

@@ -142,11 +142,11 @@ class QueryUsers:
     
     def __archive(self):
         return """
-        INSERT INTO deleted_users(Email, Content)
+        INSERT INTO deleted_users
         SELECT u.Email, p.Content 
         FROM blog_posts p
-        LEFT JOIN blog_users u ON p.OwnerId = u.OwnerID
-        WHERE p.OwnerID = %s;
+        RIGHT JOIN blog_users u ON p.OwnerId = u.OwnerID
+        WHERE u.OwnerID = %s;
         """
 
     def __delete(self):
