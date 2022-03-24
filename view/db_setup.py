@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request, url_for, redirect
 from models.db_settings import DBSettings
 from services.idata_base import IDataBase
 from services.resources import Services
+from datetime import datetime
+from services.passhash import PassHash
 
 class DbSetUp:
     @Services.get
@@ -16,7 +18,9 @@ class DbSetUp:
         if request.method == "POST":
             settings = DBSettings(self.get_items())        
             self.database.initialize_db(settings)
-            self.database.create_database()
+            admin_pass = PassHash.generate_pass("admin1")
+            admin_creation = datetime.now().strftime("%d/%b/%y %H:%M:%S")
+            self.database.create_database(admin_pass, admin_creation)
             return redirect(url_for("home.front_page"))
         return render_template("db_setup.html")             
     

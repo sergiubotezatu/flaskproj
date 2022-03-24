@@ -100,8 +100,7 @@ class QueryUsers:
         "get_by_mail" : self.__get_user_by_identifier("Email"),
         "get_by_id" : self.__get_user_by_identifier("OwnerID"),
         "get_user_posts" : self.__read_all(),
-        "change_pass" : self.__change_password(),
-        "admin_delete" : self.__complete_deletion()
+        "change_pass" : self.__change_password()
         }
 
     def __read_all(self):
@@ -146,8 +145,8 @@ class QueryUsers:
         INSERT INTO deleted_users(Email, Content)
         SELECT u.Email, p.Content 
         FROM blog_posts p
-        INNER JOIN blog_users u ON p.OwnerId = u.OwnerID
-        Where p.OwnerID = %s;
+        LEFT JOIN blog_users u ON p.OwnerId = u.OwnerID
+        WHERE p.OwnerID = %s;
         """
 
     def __delete(self):
@@ -168,12 +167,6 @@ class QueryUsers:
         SELECT OwnerID, Name
         FROM blog_users
         ORDER BY OwnerID DESC;
-        """
-
-    def __complete_deletion(self):
-        return """
-        DELETE FROM deleted_users
-        WHERE deleted_at < now() - interval '180 days'
         """
 
     def __fetch_if_needed(self, request):

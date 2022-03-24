@@ -18,11 +18,11 @@ class DataBase(IDataBase):
         cls.config.save()
         cls.config.load()
 
-    def create_database(self):
+    def create_database(self, *args):
         try:
             self.connect()
             for operation in self.tables_creation():
-                self.cursor.execute(operation)
+                self.cursor.execute(operation, args)
             self.commit_and_close()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
@@ -58,6 +58,35 @@ class DataBase(IDataBase):
             FOREIGN KEY (OwnerID) REFERENCES blog_users(OwnerID)
             ON UPDATE CASCADE ON DELETE CASCADE);
         """,
+        """    
+        do $$
+        declare
+            first_row record;
+            pass text := %s;
+            creation_date text := %s;
+            id_update text;            
+        begin
+            SELECT *
+            into first_row
+            FROM blog_users
+            LIMIT 1;
+
+            IF first_row IS NULL THEN
+
+            INSERT INTO blog_users
+            VALUES(DEFAULT, 'Admin1', 'default@admin', pass, creation_date);
+            
+            ELSIF first_row.Email <> 'default@admin' THEN
+
+            INSERT INTO blog_users
+            VALUES(1, 'Admin1', 'default@admin', pass, creation_date) 
+            ON CONFLICT ON CONSTRAINT blog_users_pkey
+            DO 
+            UPDATE SET NAME = 'Admin1', Email = 'default@admin', Password = pass, Date = creation_date;
+            END IF;
+        END;
+        $$
+        """,
         """        
             CREATE TABLE IF NOT EXISTS deleted_users(
             Email varchar(200),
@@ -80,5 +109,17 @@ class DataBase(IDataBase):
             SET OwnerID = blog_users.OwnerID
             FROM blog_users
             WHERE blog_posts.OwnerID = NULL AND blog_users.Email = blog_posts.Author || '@dummy.com'; 
-        """        
-           )
+        """,
+        """ 
+            CREATE FUNCTION delete_expired_archived() RETURNS trigger
+            LANGUAGE plpgsql
+        AS $$
+        BEGIN
+        DELETE FROM deleted_users WHERE deleted_at < NOW() - INTERVAL '180 days';
+        RETURN NEW;
+        END;
+        $$;
+            CREATE TRIGGER expired_users_delete
+            AFTER INSERT ON deleted_users
+            EXECUTE PROCEDURE delete_expired_archived(); 
+        """)
