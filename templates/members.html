@@ -16,10 +16,17 @@
 {%block content%}
 <div class = "community">
         {%for member in allmembers%}
+        
         <div class = "member">
+            {%if member[0] == member[1]%}
             <a href="{{ '/view/%s'%member[0]|urlencode }}">
                 <p style = "text-align:center;color:white;">{{member[1]}}</p>
             </a>
+            {%else%}
+            <a href="{{ '/view/%s'%member[0]|urlencode }}">
+                <p style = "text-align:center;color:white;">{{member[1]}}</p>
+            </a>
+            {%endif%}
         </div>
         {%endfor%}
     </div>

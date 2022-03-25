@@ -15,6 +15,9 @@ class UserProfile:
         self.profile = self.register("/view/<user_id>", self.user_profile)
         self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.members = self.register("/view/community", self.get_all_users)
+        self.admin_choice = self.bp.route("/view/admin_choice")(self.chose_users_list)
+        self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
+        self.removed_user = self.register("/view/archive/<email>", self.inactive_user)
 
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -26,13 +29,7 @@ class UserProfile:
     def user_profile(self, user_id):
         user_id = int(user_id)
         if request.method == "POST":
-            if request.form.get("action") == "logout":
-                flash(f"You have been logged out. See you again soon!")
-            else:
-                to_delete = self.users.get_user_by_id(user_id)
-                flash(f"Your membership has been canceled.")
-                self.users.remove_user(to_delete)
-            return redirect(url_for("home.front_page"))
+            return self.check_for_logout()
         
         logged = self.users.get_user_by_id(user_id)
         owned_posts = self.users.get_posts(user_id)
@@ -58,7 +55,27 @@ class UserProfile:
         return render_template("edit_user.html", username = editable.name, email = editable.email)
 
     def get_all_users(self):
-        return render_template("members.html", allmembers = self.users.get_all())
+        return render_template("members.html", prefix = "view", allmembers = self.users.get_all())
+
+    @Authorization.admin_required
+    def chose_users_list(self):
+        return render_template("admin_choice.html")
+
+    def get_all_inactive(self):
+        return render_template("members.html", prefix = "view/archive", allmembers = self.users.get_all_inactive())
+
+    @Authorization.admin_required
+    def inactive_user(self, email):
+        if request.method == "POST":
+            return self.check_for_logout()
+        removed_posts = self.users.get_inactive_posts(email)
+        return render_template("user.html", 
+        user_id = email,
+        user= "Deleted User",
+        email = email,
+        date = "N/A",
+        modified = None,
+        posts = removed_posts)        
 
     def __update_info(self, user_id):
         new_name = request.form.get("username")
@@ -67,6 +84,15 @@ class UserProfile:
         session["name"] = new_name
         session["email"] = new_mail
         self.users.update_user(user_id, User(new_name, new_mail), new_password)
+
+    def check_for_log_out(self):
+        if request.form.get("action") == "logout":
+            flash(f"You have been logged out. See you again soon!")
+        else:
+            to_delete = self.users.get_user_by_id(session["id"])
+            flash(f"Your membership has been canceled.")
+            self.users.remove_user(to_delete)
+        return redirect(url_for("home.front_page"))
 
     def __hash_if_new_pass(self, input):
         if input != "":
