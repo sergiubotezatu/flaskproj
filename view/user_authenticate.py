@@ -1,3 +1,4 @@
+from services.authorization import Authorization
 from services.iauthentication import IAuthentication
 from models.user import User
 from flask import Blueprint, request, redirect, render_template, url_for, flash
@@ -22,7 +23,17 @@ class UserAuthenticate:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
+    @Authorization.admin_required
     def create(self):
+        if request.method == "POST":
+            email = request.form.get("email")
+            pwd = request.form.get("pwd")
+            username = request.form.get("username")
+            if not self.authenticator.sign_up_successful(username, email, pwd):
+                return redirect(url_for(".sign_up"))
+            else:
+                signed_id = self.authenticator.get_logged_user().id              
+                return redirect(url_for("profile.user_profile", user_id = signed_id))
         return render_template("create_users.html")
 
     def log_in(self):

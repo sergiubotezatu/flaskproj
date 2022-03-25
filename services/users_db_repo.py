@@ -64,6 +64,21 @@ class UsersDb(IUsers):
     def get_all(self):
         return self.query.perform("get_users")
 
+    def get_all_inactive(self):
+        displayed =  self.query.perform("get_inactive")
+        result = []
+        for record in displayed:
+            result.append((record[0], record[0]))
+        return result
+
+    def get_inactive_posts(self, email):
+        displayed = self.query.perform("get_removed_posts", email)
+        posts = []
+        for record in displayed:
+            posts.append((email, Post(email, "No title", record[0], owner_id = email)))
+        return posts
+       
+
     def delete_from_archive(self):
         return self.query.perform("admin_delete")
 
@@ -104,7 +119,9 @@ class QueryUsers:
         "get_by_id" : self.__get_user_by_identifier("OwnerID"),
         "get_user_posts" : self.__read_all(),
         "change_pass" : self.__change_password(),
-        "search" : self.__has_user()
+        "search" : self.__has_user(),
+        "get_inactive" : self.__get_removed_users(),
+        "get_removed_posts" : self.__read_all_inactive()
         }
 
     def __read_all(self):
@@ -117,6 +134,17 @@ class QueryUsers:
         FROM blog_posts AS p
         WHERE OwnerID = %s
         ORDER BY p.PostID DESC;
+        """
+
+    def __read_all_inactive(self):
+        return """
+        SELECT d.Content,
+        CASE
+        WHEN CHAR_LENGTH(d.Content) > 150 THEN SUBSTRING(d.Content, 1, 150)
+        ELSE d.Content
+        END AS Preview 
+        FROM deleted_users AS d
+        WHERE Email = %s
         """
 
     def __insertion(self):
@@ -172,6 +200,13 @@ class QueryUsers:
         FROM blog_users
         ORDER BY OwnerID DESC;
         """
+
+    def __get_removed_users(self):
+        return """
+        SELECT DISTINCT Email
+        FROM deleted_users
+        ;
+        """
     
     def __has_user(self):
         return """
@@ -184,7 +219,7 @@ class QueryUsers:
     def __fetch_if_needed(self, request):
         result = []
         one_needed = ["get_by_mail", "get_by_id", "insertion", "search"]
-        all_needed = ["get_users", "get_user_posts"]
+        all_needed = ["get_users", "get_user_posts", "get_inactive", "get_removed_posts"]
         if request in all_needed:
             result = self.db.cursor.fetchall()
         if request in one_needed:

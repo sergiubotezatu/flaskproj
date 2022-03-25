@@ -30,15 +30,15 @@ class Authorization:
         return wrapper
         
 
-    def admin_required(post):
-        def decorator(route_func):
-            def wrapper(instance, **kwargs):
-                if Authorization.is_owner_or_admin(instance):
-                    route_func(instance, **kwargs)
-                else:
-                    return "<h1>you do not have the necessary autorization.</h1>"
-                return wrapper
-            return decorator    
+    def admin_required(routing):
+        @wraps(routing)
+        def wrapper(instance, **kwargs):
+            if Authorization.is_admin():
+                return routing(instance, **kwargs)
+            else:
+                return "<h1>you do not have the necessary autorization.</h1>"
+        return wrapper
+        
 
     @staticmethod
     def is_owner(posts_instance, **kwargs):

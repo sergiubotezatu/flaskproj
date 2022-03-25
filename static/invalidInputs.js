@@ -24,6 +24,18 @@ function InvalidUserName()
     }
 }
 
+function InvalidMail() 
+{
+    document.getElementById("invalid").innerHTML = "";
+    document.getElementById("mail").style.backgroundColor = "white";
+    var input = document.getElementById("mail").value
+    if (input.lastIndexOf("@admin") != -1)
+    {
+      document.getElementById("invalid").innerHTML = "@admin is for admin use only";
+      document.getElementById("mail").style.backgroundColor = "rgba(201, 37, 22, 0.7)";
+    }
+}
+
 function MessOn(id)
 {
     document.getElementById(id).style.display = "block";

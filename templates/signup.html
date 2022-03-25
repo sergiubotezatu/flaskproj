@@ -39,9 +39,10 @@ Sign Up form
     name="email"
     placeholder="John.Doe@domain.com"
     minlength="4"
-    autofocus
-    required>
+    required
+    oninput="InvalidMail()">
     <br>
+    <span id="invalid" style="color:red;"></span>
     <br>
     
   <label for="pwd">Create a password</label><br>

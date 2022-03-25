@@ -1,4 +1,8 @@
 {%extends "base.html"%}
+{%block statics%}    
+        <link rel="stylesheet" type ="text/css" href ="../static/main.css">
+        <script src="../static/invalidInputs.js"></script>
+    {%endblock%}
 {%block title%}{{user}}{%endblock%}
 {%block log%}
 {%if "id" not in session%}
