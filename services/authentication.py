@@ -1,13 +1,14 @@
 from services.iauthentication import IAuthentication
-from flask import session, flash, request
+from flask import session, flash
 from models.user import User
 from services.iusers import IUsers
 from services.passhash import PassHash
 from services.resources import Services
 
 class Authentication(IAuthentication):
-    logged_user = User
     
+    logged_user = User
+
     @Services.get
     def __init__(self, users : IUsers):
         self.users = users
@@ -52,13 +53,16 @@ class Authentication(IAuthentication):
         session.pop("username")
         session.pop("email")
         Authentication.logged_user = User
-        
+            
+    def get_logged_user(self, id = None) -> User:
+        if id == None:
+            return Authentication.logged_user
+        else:
+            return self.users.get_user_by_id(id)
 
-    def is_any_logged_in(self) -> bool:
+    @staticmethod
+    def is_any_logged_in() -> bool:
         return  "id" in session
 
     def is_logged_in(self, id) -> bool:
         return "id" in session and session["id"] == int(id)
-
-    def get_logged_user(self) -> User:
-        return Authentication.logged_user

@@ -51,3 +51,10 @@ class Users(IUsers):
             if user.id == posts.owner_id:
                 self.deleted[user.email].append(posts)
         self.__users.remove(user)
+
+    def has_account(self, user_id) -> bool:
+        for user in self.__users:
+            if user.id == user_id:
+                return True
+                break
+        return False

@@ -18,12 +18,7 @@
                 <img src = "\static\icons\home.png" style = "width:25px;height:30px;"></img>
                 Home
             </a></li>
-            {%if "id" in session%}
-            {%set path = "post/create"%}
-            {%else%}
-            {%set path = "login"%}
-            {%endif%}
-            <li><a class = "option" href="{{'/%s'%path|urlencode }}">
+            <li><a class = "option" href="post/create">
                 <img src = "\static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>
                 Create new Post
             </a></li>

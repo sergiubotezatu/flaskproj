@@ -67,6 +67,9 @@ class UsersDb(IUsers):
     def delete_from_archive(self):
         return self.query.perform("admin_delete")
 
+    def has_account(self, user_id) -> bool:
+        return self.query.perform("search", user_id)
+
     def __cut_poem_newlines(self, content):
         lines_count = content.count("\n")
         if lines_count > 0:
@@ -100,7 +103,8 @@ class QueryUsers:
         "get_by_mail" : self.__get_user_by_identifier("Email"),
         "get_by_id" : self.__get_user_by_identifier("OwnerID"),
         "get_user_posts" : self.__read_all(),
-        "change_pass" : self.__change_password()
+        "change_pass" : self.__change_password(),
+        "search" : self.__has_user()
         }
 
     def __read_all(self):
@@ -168,10 +172,18 @@ class QueryUsers:
         FROM blog_users
         ORDER BY OwnerID DESC;
         """
+    
+    def __has_user(self):
+        return """
+        SELECT EXISTS(
+            SELECT OwnerID
+            FROM blog_users
+            WHERE OwnerID = %s)
+        """
 
     def __fetch_if_needed(self, request):
         result = []
-        one_needed = ["get_by_mail", "get_by_id", "insertion"]
+        one_needed = ["get_by_mail", "get_by_id", "insertion", "search"]
         all_needed = ["get_users", "get_user_posts"]
         if request in all_needed:
             result = self.db.cursor.fetchall()

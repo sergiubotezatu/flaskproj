@@ -25,3 +25,7 @@ class IUsers(metaclass = ABCMeta):
     @abstractmethod
     def update_user(self, user, pwd):
         pass
+
+    @abstractmethod
+    def has_account(self, user_id) -> bool:
+        pass

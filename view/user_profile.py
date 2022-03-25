@@ -4,6 +4,7 @@ from services.resources import Services
 from services.database import DataBase
 from models.user import User
 from services.passhash import PassHash
+from services.authorization import Authorization
 
 class UserProfile:
     @Services.get
@@ -43,6 +44,7 @@ class UserProfile:
         modified = logged.modified,
         posts = owned_posts)
  
+    @Authorization.owner_or_admin
     def edit_user(self, user_id):
         user_id = int(user_id)
         editable : User = self.users.get_user_by_id(user_id)
