@@ -13,6 +13,7 @@ class UserAuthenticate:
         self.login = self.register("/login", self.log_in)
         self.signup = self.register("/signup", self.sign_up)
         self.logout = self.bp.route("/logout")(self.log_out)
+        self.create_new = self.bp.route("/create")(self.create)
 
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
@@ -20,6 +21,9 @@ class UserAuthenticate:
 
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
+
+    def create(self):
+        return render_template("create_users.html")
 
     def log_in(self):
         if request.method == "GET":

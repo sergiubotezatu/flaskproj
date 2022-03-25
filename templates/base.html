@@ -25,10 +25,17 @@
             <li>{%block log%}{%endblock%}</li>
             <li>{%block signout%}{%endblock%}</li>
             <li>
-                <a class = "option" href="/view/community">
+                {%if "id" in session and "@admin" in session["email"]%}
+                <a class = "option" href="/view/admin_choice">
                     <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
                     Members
                 </a>
+                {%else%}
+                <a class = "option" href="/view/community">
+                <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
+                Members
+                </a>
+                {%endif%}             
             </li>
         </ul>
 

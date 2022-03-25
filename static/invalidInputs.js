@@ -71,3 +71,14 @@ function DifferentPass()
        document.getElementById("pwd2").style.backgroundColor = "red";
    }
 }
+
+function FillInEmail()
+{
+    var value = document.getElementById("mail").value;
+    var autofill = "";
+    if (value == "")
+    {
+        autofill = "@admin";
+    }
+    document.getElementById("mail").value = autofill;
+}
