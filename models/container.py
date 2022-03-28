@@ -1,5 +1,7 @@
+from services.Ipassword_hash import IPassHash
 from services.iauthentication import IAuthentication
 from services.authentication import Authentication
+from services.passhash import PassHash
 from services.posts_db_repo import PostsDb
 from services.posts_in_memo import Posts
 from services.database import DataBase
@@ -18,7 +20,8 @@ class Container:
         IDataBase : IDataBaseConfig,
         IDataBaseConfig : None,
         IUsersRepo : IDataBase,
-        IAuthentication : IUsersRepo,
+        IAuthentication : (IUsersRepo, IPassHash),
+        IPassHash : None,
         Posts : None        
         }
 
@@ -27,7 +30,8 @@ class Container:
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
         IUsersRepo : UsersDb,
-        IAuthentication : Authentication
+        IAuthentication : Authentication,
+        IPassHash : PassHash 
         }
 
     test_services = {

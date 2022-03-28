@@ -2,7 +2,7 @@ from services.iauthentication import IAuthentication
 from flask import session, flash
 from models.user import User
 from services.iusersrepo import IUsersRepo
-from services.passhash import PassHash
+from services.Ipassword_hash import IPassHash
 from services.resources import Services
 
 class Authentication(IAuthentication):
@@ -10,8 +10,9 @@ class Authentication(IAuthentication):
     logged_user = User
 
     @Services.get
-    def __init__(self, users : IUsersRepo):
+    def __init__(self, users : IUsersRepo, hasher : IPassHash):
         self.users = users
+        self.hasher = hasher
         
     def log_in_successful(self, email, password) -> bool:       
         found : User = self.users.get_user_by(mail = email)
@@ -20,7 +21,7 @@ class Authentication(IAuthentication):
             flash(f"Please check for spelling errors or "
             "Click on \"HERE\" below the form if you don't have an account", "error")
             return False
-        elif not PassHash.check_pass(found.hashed_pass, password):
+        elif not self.hasher.check_pass(found.hashed_pass, password):
             flash("Incorrect Password. Please try again", "error")
             return False
         self.log_session(found.id, found.name, found.email)
@@ -33,7 +34,7 @@ class Authentication(IAuthentication):
             flash(f"Please use an unregistered email or if you have an account go to login.", "error")
             return False
         new_user = User(name, email)
-        new_user.password = PassHash.generate_pass(password)
+        new_user.password = self.hasher.generate_pass(password)
         new_user.id = self.users.add_user(new_user)
         self.log_session(new_user.id, name, email)
         Authentication.logged_user = new_user
