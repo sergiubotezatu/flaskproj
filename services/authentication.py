@@ -16,14 +16,12 @@ class Authentication(IAuthentication):
         
     def log_in_successful(self, email, password) -> bool:       
         found : User = self.users.get_user_by(mail = email)
-        if found == None:
-            flash(f"Email address {email} is not assigned to any registered members")
+        if found == None or not self.hasher.check_pass(found.hashed_pass, password):
+            flash("Incorrect Password or Email. Please try again", "error")
             flash(f"Please check for spelling errors or "
             "Click on \"HERE\" below the form if you don't have an account", "error")
             return False
-        elif not self.hasher.check_pass(found.hashed_pass, password):
-            flash("Incorrect Password. Please try again", "error")
-            return False
+        
         self.log_session(found.id, found.name, found.email)
         Authentication.logged_user = found
         return True
