@@ -3,7 +3,6 @@ from flask import redirect, url_for, session
 from models.post import Post
 from models.user import User
 from services.iauthentication import IAuthentication
-from services.iusers import IUsers
 from services.authentication import Authentication
 from services.resources import Services
 

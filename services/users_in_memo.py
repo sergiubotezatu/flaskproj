@@ -1,9 +1,9 @@
-from services.iusers import IUsers
+from services.iusersrepo import IUsersRepo
 from services.resources import Services
 from services.ipost_repo import IPostRepo
 from models.user import User
 
-class Users(IUsers):
+class Users(IUsersRepo):
     @Services.get
     def __init__(self, posts : IPostRepo):
         self.__users = []

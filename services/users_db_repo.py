@@ -1,12 +1,12 @@
 from psycopg2 import DatabaseError
 from services.resources import Services
 from models.user import User
-from services.iusers import IUsers
+from services.iusersrepo import IUsersRepo
 from models.post import Post
 from services.idata_base import IDataBase
 from services.resources import Services
 
-class UsersDb(IUsers):
+class UsersDb(IUsersRepo):
     @Services.get
     def __init__(self, db : IDataBase):
         self.db = db

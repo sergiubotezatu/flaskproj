@@ -1,7 +1,7 @@
 from services.iauthentication import IAuthentication
 from flask import session, flash
 from models.user import User
-from services.iusers import IUsers
+from services.iusersrepo import IUsersRepo
 from services.passhash import PassHash
 from services.resources import Services
 
@@ -10,7 +10,7 @@ class Authentication(IAuthentication):
     logged_user = User
 
     @Services.get
-    def __init__(self, users : IUsers):
+    def __init__(self, users : IUsersRepo):
         self.users = users
         
     def log_in_successful(self, email, password) -> bool:       

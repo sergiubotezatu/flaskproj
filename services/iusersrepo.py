@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-class IUsers(metaclass = ABCMeta):
+class IUsersRepo(metaclass = ABCMeta):
     
     @abstractmethod
     def add_user(self, user):

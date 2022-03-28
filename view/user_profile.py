@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
-from services.iusers import IUsers
+from services.iusersrepo import IUsersRepo
 from services.resources import Services
 from services.database import DataBase
 from models.user import User
@@ -8,7 +8,7 @@ from services.authorization import Authorization
 
 class UserProfile:
     @Services.get
-    def __init__(self, repo : IUsers):
+    def __init__(self, repo : IUsersRepo):
         self.users = repo
         self.bp = Blueprint("profile", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)

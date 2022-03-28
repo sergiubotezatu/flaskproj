@@ -4,7 +4,7 @@ from services.idata_base import IDataBase
 from services.resources import Services
 from models.container import Container
 from services.ipost_repo import IPostRepo
-from services.iusers import IUsers
+from services.iusersrepo import IUsersRepo
 from datetime import timedelta
 
 def create_blog(is_test_app = False):
@@ -21,7 +21,7 @@ def create_blog(is_test_app = False):
     from view.db_setup import DbSetUp
     blog.register_blueprint(DbSetUp(IDataBase).bp)
     from view.user_profile import UserProfile
-    blog.register_blueprint(UserProfile(IUsers).bp)
+    blog.register_blueprint(UserProfile(IUsersRepo).bp)
     from view.user_authenticate import UserAuthenticate
     blog.register_blueprint(UserAuthenticate(IAuthentication).bp)
 
