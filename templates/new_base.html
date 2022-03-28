@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" type ="text/css"  href='{{ url_for("static", filename="main.css") }}'>
+        <link rel="stylesheet" type ="text/css"  href='../static/main.css'>
         <script src="../static/invalidInputs.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{%block title%}{%endblock%}</title>
     </head>
 
-    <body>
+    <body onresize="hideOptions()">
         <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
 
-        <ul class = "largerScreen" id ="opaque">
+        
+        <ul class = "largerScreen" id ="opaque" >
             <li><a class = "option" href="/">
                 <img src = "\static\icons\home.png" style = "width:25px;height:30px;"></img>
                 Home
@@ -20,22 +21,22 @@
                 <img src = "\static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>
                 Create new Post
             </a></li>
-            <li>{%block log%}{%endblock%}</li>
-            <li>{%block signout%}{%endblock%}</li>
             <li>
-                {%if "id" in session and "@admin" in session["email"]%}
-                <a class = "option" href="/view/admin_choice">
-                    <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
-                    Members
-                </a>
-                {%else%}
-                <a class = "option" href="/view/community">
-                <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
-                Members
-                </a>
-                {%endif%}             
+                <a class = "option" href = "/view/community">
+                    <img src = "\static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>
+                    Users</a>
             </li>
+            <li style = "float:right">
+                <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">
+                <img src = "\static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>
+                <i id = "arr" class="arrow down"></i>
+                Profile</a>                
+            </li>         
         </ul>
+        <ul id = "drop-log-sign"style = "float:right;width:150px;">
+            <div><li style = "width:100%;"><a class = "option" href="/login">Log in</a></li></div>
+            <div><li style = "width:100%;"><a class = "option" href="/signup">Sign up</a></li></div>
+        </ul>             
 
         <ul class = "smallerScreen">
             <li class="dropMenu">
@@ -48,19 +49,20 @@
                 <div class="dropdown-content">
                 <a class = "option" href="/">Home</a>
                 <a class = "option" href="{{'/%s'%path|urlencode }}">Create new Post</a>
-                {{self.log()}}
-                {{self.signout()}}
                 <a class = "option" href="/view/community">
                     <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
                 Members</a>
+                {{self.log()}}
+                {{self.signout()}}
                 </div>
                 <br>           
             </li>
             {%block smallerEdit%}            
             {%endblock%}  
         </ul>
-        <br id ="space">        
+        <br id ="space">
+         
         {%block content%}        
-        {%endblock%}               
+        {%endblock%}                    
     </body>
 </html>

@@ -94,3 +94,25 @@ function FillInEmail()
     }
     document.getElementById("mail").value = autofill;
 }
+
+function showOptions(){
+  var display = "block";
+  var direction = "up";
+  var arrow = document.getElementById("arr");  
+  if (document.getElementById("drop-log-sign").style.display == "block")
+  {
+      arrow.classList.remove(direction)    
+      display = "none";
+      direction = "down";        
+  }
+   document.getElementById("drop-log-sign").style.display = display;
+   arrow.classList.add(direction);
+}
+
+function hideOptions()
+{
+  if (document.getElementById("drop-log-sign").style.display == "block"){
+    document.getElementById("drop-log-sign").style.display = "none";
+  }
+
+}

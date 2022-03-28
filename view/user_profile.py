@@ -17,7 +17,7 @@ class UserProfile:
         self.members = self.register("/view/community", self.get_all_users)
         self.admin_choice = self.bp.route("/view/admin_choice")(self.chose_users_list)
         self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
-        self.removed_user = self.register("/view/archive/<email>", self.inactive_user)
+        self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
 
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)

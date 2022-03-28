@@ -46,7 +46,7 @@ li a
     display: block;
     color: white;
     text-align: center;
-    padding: 30px 30px;
+    padding: 15px 30px;
     text-decoration: none;
     transition: 0.5s all;
     z-index:5;
@@ -61,7 +61,32 @@ li .option:hover, .dropbtn:hover
     overflow:visible;
 }
 
-.dropdown-content
+nav{
+    position: -webkit-sticky;
+    position: sticky;}
+
+.arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+  }
+  
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+
+  #drop-log-sign{
+      display:none;
+  }
+
+  .dropdown-content
 {                
     display: none;                      
 }
@@ -109,6 +134,11 @@ li .option:hover, .dropbtn:hover
     z-index:5;
     }
 
+    #drop-log-sign
+    {
+        display:none;
+    }
+    
     .largerScreen
     {
         display: none;
