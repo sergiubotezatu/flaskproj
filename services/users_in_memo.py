@@ -34,7 +34,7 @@ class Users(IUsers):
 
     def add_user(self, user : User):
         self.count += 1
-        user.serialize(self.count)
+        user.id = self.count
         self.__users.append(user)
         
     def update_user(self, usr_id, editted, pwd = None):
@@ -42,8 +42,15 @@ class Users(IUsers):
             if users.id == usr_id:
                 if users.name != editted.name:
                     self.all_posts.reflect_user_changes(usr_id, editted.name)
-                users.edit(editted, pwd)
+                self.__change_user_info(users, editted, pwd)
                 break
+
+    def __change_user_info(user, new_user, pwd):
+        user.name = new_user.name
+        user.email = new_user.email
+        user.modified = new_user.created
+        if pwd != None: 
+            user.password = pwd
     
     def remove_user(self, user: User):
         self.deleted[user.email] = []

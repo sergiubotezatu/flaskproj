@@ -47,8 +47,11 @@ class Posts(IPostRepo):
     def remove(self, post_id):
         self.__posts.pop(post_id)
 
-    def replace(self, post_id, post):
-        self.__posts[post_id].edit(post)    
+    def replace(self, post_id, editted : Post):
+        self.__posts[post_id].auth = editted.auth
+        self.__posts[post_id].title = editted.title
+        self.__posts[post_id].content = editted.content
+        self.__posts[post_id].modified = editted.created            
 
     def get_all(self):
         for posts in self:

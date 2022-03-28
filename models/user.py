@@ -20,15 +20,4 @@ class User:
     def date_created(self, date):
         if date == None:
             date = datetime.now().strftime("%d/%b/%y %H:%M:%S")
-        return date
-    
-
-    def edit(self, editted, pwd = None):
-        self.name = editted.name
-        self.email = editted.email
-        self.modified = editted.created
-        if pwd != None: 
-            self.password = pwd
-    
-    def serialize(self, id):
-        self.id = id
+        return date    

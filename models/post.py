@@ -14,12 +14,6 @@ class Post:
             date = datetime.now().strftime("%d/%b/%y %H:%M:%S")
         return date
 
-    def edit(self, editted):
-        self.auth = editted.auth
-        self.title = editted.title
-        self.content = editted.content
-        self.modified = editted.created
-
 class Preview():
     def __init__(self, post):
         self.auth = post.auth
