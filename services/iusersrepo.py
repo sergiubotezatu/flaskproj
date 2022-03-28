@@ -11,11 +11,7 @@ class IUsersRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_user_by_mail(self, mail):
-        pass
-
-    @abstractmethod
-    def get_user_by_id(self, id):
+    def get_user_by(self, **kwargs):
         pass
 
     @abstractmethod

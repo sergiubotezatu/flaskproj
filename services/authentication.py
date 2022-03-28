@@ -14,7 +14,7 @@ class Authentication(IAuthentication):
         self.users = users
         
     def log_in_successful(self, email, password) -> bool:       
-        found : User = self.users.get_user_by_mail(email)
+        found : User = self.users.get_user_by(mail = email)
         if found == None:
             flash(f"Email address {email} is not assigned to any registered members")
             flash(f"Please check for spelling errors or "
@@ -28,13 +28,13 @@ class Authentication(IAuthentication):
         return True
 
     def sign_up_successful(self, name, email, password) -> bool:
-        if self.users.get_user_by_mail(email) != None:
+        if self.users.get_user_by(mail = email) != None:
             flash(f"Email {email} is already assigned to another user.")
             flash(f"Please use an unregistered email or if you have an account go to login.", "error")
             return False
         new_user = User(name, email)
         new_user.password = PassHash.generate_pass(password)
-        new_user.serialize(self.users.add_user(new_user))
+        new_user.id = self.users.add_user(new_user)
         self.log_session(new_user.id, name, email)
         Authentication.logged_user = new_user
         flash(f"Welcome, {name}!")
@@ -58,7 +58,7 @@ class Authentication(IAuthentication):
         if id == None:
             return Authentication.logged_user
         else:
-            return self.users.get_user_by_id(id)
+            return self.users.get_user_by(id = id)
 
     @staticmethod
     def is_any_logged_in() -> bool:

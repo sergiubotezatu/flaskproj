@@ -29,9 +29,9 @@ class UserProfile:
     def user_profile(self, user_id):
         user_id = int(user_id)
         if request.method == "POST":
-            return self.check_for_logout()
+            return self.check_for_log_out()
         
-        logged = self.users.get_user_by_id(user_id)
+        logged = self.users.get_user_by(id = user_id)
         owned_posts = self.users.get_posts(user_id)
         return render_template("user.html",
         user_id = logged.id,
@@ -44,7 +44,7 @@ class UserProfile:
     @Authorization.owner_or_admin
     def edit_user(self, user_id):
         user_id = int(user_id)
-        editable : User = self.users.get_user_by_id(user_id)
+        editable : User = self.users.get_user_by(id = user_id)
         if request.method == "POST":
             if PassHash.check_pass(editable.hashed_pass, request.form.get("oldpass")):
                 self.__update_info(user_id)
@@ -67,7 +67,7 @@ class UserProfile:
     @Authorization.admin_required
     def inactive_user(self, email):
         if request.method == "POST":
-            return self.check_for_logout()
+            return self.check_for_log_out()
         removed_posts = self.users.get_inactive_posts(email)
         return render_template("user.html", 
         user_id = email,
@@ -89,7 +89,7 @@ class UserProfile:
         if request.form.get("action") == "logout":
             flash(f"You have been logged out. See you again soon!")
         else:
-            to_delete = self.users.get_user_by_id(session["id"])
+            to_delete = self.users.get_user_by(id = session["id"])
             flash(f"Your membership has been canceled.")
             self.users.remove_user(to_delete)
         return redirect(url_for("home.front_page"))

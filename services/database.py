@@ -2,6 +2,7 @@ import psycopg2
 from services.idata_base import IDataBase
 from services.idatabase_config import IDataBaseConfig
 from services.resources import Services
+from services.repos_queries import queries, fetch_if_needed
 
 class DataBase(IDataBase):
     config = None
@@ -35,6 +36,18 @@ class DataBase(IDataBase):
         self.conn.commit()
         self.cursor.close()
         self.conn.close()
+
+    def perform(self, request, *args):
+        retrieved = 0
+        execution = queries()[request]
+        try:
+            self.connect()
+            self.cursor.execute(execution, args)
+            retrieved = fetch_if_needed(request, self.cursor)
+            self.commit_and_close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+        return retrieved
     
     def tables_creation(self):
         return ("""      
