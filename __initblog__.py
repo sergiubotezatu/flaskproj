@@ -1,4 +1,5 @@
 from flask import Flask
+from services.Ipassword_hash import IPassHash
 from services.iauthentication import IAuthentication
 from services.idata_base import IDataBase
 from services.resources import Services
@@ -21,7 +22,7 @@ def create_blog(is_test_app = False):
     from view.db_setup import DbSetUp
     blog.register_blueprint(DbSetUp(IDataBase).bp)
     from view.user_profile import UserProfile
-    blog.register_blueprint(UserProfile(IUsersRepo).bp)
+    blog.register_blueprint(UserProfile(IUsersRepo, IPassHash).bp)
     from view.user_authenticate import UserAuthenticate
     blog.register_blueprint(UserAuthenticate(IAuthentication).bp)
 

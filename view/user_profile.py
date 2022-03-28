@@ -3,13 +3,14 @@ from services.iusersrepo import IUsersRepo
 from services.resources import Services
 from services.database import DataBase
 from models.user import User
-from services.passhash import PassHash
+from services.Ipassword_hash import IPassHash
 from services.authorization import Authorization
 
 class UserProfile:
     @Services.get
-    def __init__(self, repo : IUsersRepo):
+    def __init__(self, repo : IUsersRepo, hasher : IPassHash):
         self.users = repo
+        self.hasher = hasher
         self.bp = Blueprint("profile", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.profile = self.register("/view/<user_id>", self.user_profile)
@@ -46,7 +47,7 @@ class UserProfile:
         user_id = int(user_id)
         editable : User = self.users.get_user_by(id = user_id)
         if request.method == "POST":
-            if PassHash.check_pass(editable.hashed_pass, request.form.get("oldpass")):
+            if self.hasher.check_pass(editable.hashed_pass, request.form.get("oldpass")):
                 self.__update_info(user_id)
                 return redirect(url_for(".user_profile", user_id = user_id))
             else:
@@ -96,6 +97,6 @@ class UserProfile:
 
     def __hash_if_new_pass(self, input):
         if input != "":
-            return PassHash.generate_pass(input)
+            return self.hasher.generate_pass(input)
         return input
 

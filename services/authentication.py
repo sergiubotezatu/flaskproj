@@ -5,8 +5,7 @@ from services.iusersrepo import IUsersRepo
 from services.Ipassword_hash import IPassHash
 from services.resources import Services
 
-class Authentication(IAuthentication):
-    
+class Authentication(IAuthentication):    
     logged_user = User
 
     @Services.get
