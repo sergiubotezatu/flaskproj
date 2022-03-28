@@ -39,7 +39,7 @@ class UsersDb(IUsers):
         user = User(displayed[1], displayed[2], displayed[4])
         user.password = displayed[3]
         user.modified = displayed[5]
-        user.serialize(displayed[0])
+        user.id = displayed[0]
         return user
 
     def get_user_by_id(self, id) -> User:
@@ -49,7 +49,7 @@ class UsersDb(IUsers):
         user = User(displayed[1], displayed[2], displayed[4])
         user.password = displayed[3]
         user.modified = displayed[5]
-        user.serialize(displayed[0])
+        user.id = displayed[0]
         return user        
 
     def remove_user(self, user : User):
