@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
+from services.iauthentication import IAuthentication
 from services.iusersrepo import IUsersRepo
 from services.resources import Services
 from services.database import DataBase
 from models.user import User
 from services.Ipassword_hash import IPassHash
-from services.authorization import Authorization
+from services.access_decorators import owner_or_admin, admin_required
 
 class UserProfile:
     @Services.get
@@ -19,7 +20,7 @@ class UserProfile:
         self.admin_choice = self.bp.route("/view/admin_choice")(self.chose_users_list)
         self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
         self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
-
+       
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
@@ -42,7 +43,7 @@ class UserProfile:
         modified = logged.modified,
         posts = owned_posts)
  
-    @Authorization.owner_or_admin
+    @owner_or_admin
     def edit_user(self, user_id):
         user_id = int(user_id)
         editable : User = self.users.get_user_by(id = user_id)
@@ -58,14 +59,14 @@ class UserProfile:
     def get_all_users(self):
         return render_template("members.html", prefix = "view", allmembers = self.users.get_all())
 
-    @Authorization.admin_required
+    @admin_required
     def chose_users_list(self):
         return render_template("admin_choice.html")
 
     def get_all_inactive(self):
         return render_template("members.html", prefix = "view/archive", allmembers = self.users.get_all_inactive())
 
-    @Authorization.admin_required
+    @admin_required
     def inactive_user(self, email):
         if request.method == "POST":
             return self.check_for_log_out()

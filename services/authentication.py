@@ -4,10 +4,9 @@ from models.user import User
 from services.iusersrepo import IUsersRepo
 from services.Ipassword_hash import IPassHash
 from services.resources import Services
+from models.logged_user import Logged_user
 
 class Authentication(IAuthentication):    
-    logged_user = User
-
     @Services.get
     def __init__(self, users : IUsersRepo, hasher : IPassHash):
         self.users = users
@@ -22,7 +21,6 @@ class Authentication(IAuthentication):
             return False
         
         self.log_session(found.id, found.name, found.email)
-        Authentication.logged_user = found
         return True
 
     def sign_up_successful(self, name, email, password) -> bool:
@@ -34,7 +32,6 @@ class Authentication(IAuthentication):
         new_user.password = self.hasher.generate_pass(password)
         new_user.id = self.users.add_user(new_user)
         self.log_session(new_user.id, name, email)
-        Authentication.logged_user = new_user
         flash(f"Welcome, {name}!")
         flash("This is your profile page. Here you can see all of your posts.")
         flash("Select Create new post to add a new post", "info")
@@ -50,17 +47,15 @@ class Authentication(IAuthentication):
         session.pop("id")
         session.pop("username")
         session.pop("email")
-        Authentication.logged_user = User
-            
-    def get_logged_user(self, id = None) -> User:
-        if id == None:
-            return Authentication.logged_user
-        else:
-            return self.users.get_user_by(id = id)
+       
+    def get_logged_user(self) -> Logged_user:
+        if "id" in session:
+            return Logged_user(session["id"], session["username"], session["email"])
+        return None
 
     @staticmethod
-    def is_any_logged_in() -> bool:
-        return  "id" in session
+    def is_active_session() -> bool:
+        return "id" in session
 
     def is_logged_in(self, id) -> bool:
         return "id" in session and session["id"] == int(id)

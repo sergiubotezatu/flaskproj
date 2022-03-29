@@ -5,6 +5,7 @@ from services.ipost_repo import IPostRepo
 from services.resources import Services
 from services.authorization import Authorization
 from services.authentication import Authentication
+from services.access_decorators import member_required, owner_or_admin
 
 class PostPage:
     @Services.get
@@ -17,15 +18,13 @@ class PostPage:
         self.update = self.register("/edit/<post_id>", self.edit)
 
     def register(self, link, func):
-        decorator = Authorization.member_required
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
     def goto_db_setup(self):
-        Authentication.logged_user
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
 
-    @Authorization.member_required
+    @member_required
     def create(self):
         if request.method == "POST":
             return redirect(f"/post/read/{self.create_new_post()}")
@@ -50,7 +49,7 @@ class PostPage:
             created = selected_post.created,
             modified = selected_post.modified)
 
-    @Authorization.owner_or_admin
+    @owner_or_admin
     def edit(self, post_id):
         selected_post = self.blogPosts.get_post(post_id)
         if request.method == "POST":

@@ -1,9 +1,9 @@
-from services.authorization import Authorization
 from services.iauthentication import IAuthentication
 from models.user import User
 from flask import Blueprint, request, redirect, render_template, url_for, flash
 from services.resources import Services
 from services.database import DataBase
+from services.access_decorators import admin_required
 
 class UserAuthenticate:
     @Services.get
@@ -15,7 +15,7 @@ class UserAuthenticate:
         self.signup = self.register("/signup", self.sign_up)
         self.logout = self.bp.route("/logout")(self.log_out)
         self.create_new = self.bp.route("/create")(self.create)
-
+        
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
@@ -23,7 +23,7 @@ class UserAuthenticate:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
-    @Authorization.admin_required
+    @admin_required
     def create(self):
         if request.method == "POST":
             email = request.form.get("email")

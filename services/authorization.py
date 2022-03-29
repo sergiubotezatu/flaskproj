@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import redirect, url_for, session
+from flask import redirect, url_for
 from models.post import Post
 from models.user import User
 from services.Ipassword_hash import IPassHash
@@ -8,43 +8,16 @@ from services.authentication import Authentication
 from services.resources import Services
 
 class Authorization:
-    @staticmethod
-    def member_required(routing):
-        @wraps(routing)
-        def wrapper(*args, **Kwargs):
-                if Authentication.is_any_logged_in():
-                    return routing(*args, **Kwargs)
-                else:
-                    return redirect(url_for("authentication.log_in"))
-        return wrapper
-        
-    @staticmethod
-    def owner_or_admin(routing):
-        @wraps(routing)
-        def wrapper(instance, **Kwargs):
-                if Authorization.is_owner_or_admin(instance, **Kwargs):
-                    return routing(instance, **Kwargs)
-                else:
-                    return "<h1>you do not have the necessary autorization.</h1>"
-        return wrapper
-        
-    @staticmethod
-    def admin_required(routing):
-        @wraps(routing)
-        def wrapper(instance, **kwargs):
-            if Authorization.is_admin():
-                return routing(instance, **kwargs)
-            else:
-                return "<h1>you do not have the necessary autorization.</h1>"
-        return wrapper
-        
+    @Services.get
+    def __init__(self, authenticator : IAuthentication):
+        self.authenticator = authenticator    
 
-    @staticmethod
-    def is_owner(posts_instance, **kwargs):
-        if "id" not in session:
+    def is_owner(self, posts_instance, **kwargs):
+        logged = self.authenticator.get_logged_user()
+        if logged == None:
             return False
         else:
-            logged_id = session["id"]
+            logged_id = logged.id
         
         if "post_id" in kwargs:
             post_id = kwargs["post_id"]
@@ -55,15 +28,17 @@ class Authorization:
             print(logged_id)
             return logged_id == int(kwargs["user_id"])
 
-    @staticmethod
-    def is_admin():
-        if "email" in session:
-            return session["email"][-6:] == "@admin"
+    def is_admin(self):
+        logged = self.authenticator.get_logged_user()
+        if logged != None:
+            return logged.email[-6:] == "@admin"
+        return False
 
-    @staticmethod
-    def is_owner_or_admin(posts_instance, **kwargs):
-        return Authorization.is_admin() or Authorization.is_owner(posts_instance, **kwargs)
+    def is_owner_or_admin(self, posts_instance, **kwargs):
+        return self.is_admin() or self.is_owner(posts_instance, **kwargs)
 
-    @staticmethod
-    def is_default_admin(logged_user: User):
-        return Authorization.is_admin(logged_user) and logged_user.id == 1
+    def is_default_admin(self, logged_user: User):
+        return self.is_admin(logged_user) and logged_user.id == 1
+
+    def is_member(self):
+        return self.authenticator.get_logged_user() != None

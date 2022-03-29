@@ -1,9 +1,7 @@
 from abc import ABCMeta, abstractmethod
-from models.user import User
+from models.logged_user import Logged_user
 
 class IAuthentication(metaclass = ABCMeta):
-    logged_user : User
-
     @abstractmethod
     def log_in_successful(self, id, email, username) -> bool:
         pass
@@ -17,13 +15,9 @@ class IAuthentication(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def is_any_logged_in(self) -> bool:
-        pass
-
-    @abstractmethod
     def is_logged_in(self, id) -> bool:
         pass
 
     @abstractmethod
-    def get_logged_user(self) -> User:
+    def get_logged_user(self) -> Logged_user:
         pass
