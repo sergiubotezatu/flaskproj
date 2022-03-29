@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from models.user import User
 
 class IUsersRepo(metaclass = ABCMeta):
     
@@ -11,7 +12,7 @@ class IUsersRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_user_by(self, **kwargs):
+    def get_user_by(self, **kwargs) -> User:
         pass
 
     @abstractmethod

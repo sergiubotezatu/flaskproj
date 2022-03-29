@@ -7,10 +7,6 @@ class IAuthentication(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def sign_up_successful(self, name, email, password) -> bool:
-        pass
-
-    @abstractmethod
     def log_out(self, id, email, username):
         pass
 

@@ -9,7 +9,7 @@ from services.idata_base import IDataBase
 from services.ipost_repo import IPostRepo
 from services.idatabase_config import IDataBaseConfig
 from services.database_config import DataBaseConfig
-from services.iusersrepo import IUsersRepo
+from services.iusers_repo import IUsersRepo
 from services.users_in_memo import Users
 from services.users_db_repo import UsersDb
 from services.mock_db_config import MockDbConfig

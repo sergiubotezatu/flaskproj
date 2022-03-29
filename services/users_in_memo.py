@@ -1,4 +1,4 @@
-from services.iusersrepo import IUsersRepo
+from services.iusers_repo import IUsersRepo
 from services.resources import Services
 from services.ipost_repo import IPostRepo
 from models.user import User

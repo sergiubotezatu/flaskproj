@@ -5,7 +5,7 @@ from services.idata_base import IDataBase
 from services.resources import Services
 from models.container import Container
 from services.ipost_repo import IPostRepo
-from services.iusersrepo import IUsersRepo
+from services.iusers_repo import IUsersRepo
 from datetime import timedelta
 
 def create_blog(is_test_app = False):
