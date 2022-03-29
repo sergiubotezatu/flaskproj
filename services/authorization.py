@@ -2,12 +2,12 @@ from functools import wraps
 from flask import redirect, url_for, session
 from models.post import Post
 from models.user import User
+from services.Ipassword_hash import IPassHash
 from services.iauthentication import IAuthentication
 from services.authentication import Authentication
 from services.resources import Services
 
 class Authorization:
-    
     @staticmethod
     def member_required(routing):
         @wraps(routing)
@@ -28,7 +28,7 @@ class Authorization:
                     return "<h1>you do not have the necessary autorization.</h1>"
         return wrapper
         
-
+    @staticmethod
     def admin_required(routing):
         @wraps(routing)
         def wrapper(instance, **kwargs):

@@ -12,14 +12,14 @@ class Services:
                 next_inject = ()
                 injected = ()
                 for service in services:
-                    next_inject = Services.unpack_if_needed(cls.DEPENDENCIES[service])
+                    next_inject = Services.pack_if_needed(cls.DEPENDENCIES[service])
                     injected += (cls.container[service](*next_inject),)
                 constructor(instance, *injected)
                 
         return wrapper
   
     @staticmethod
-    def unpack_if_needed(dependency):
+    def pack_if_needed(dependency):
         if type(dependency) != tuple:
             return (dependency,)
         return dependency
