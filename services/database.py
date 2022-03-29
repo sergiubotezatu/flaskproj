@@ -115,13 +115,13 @@ class DataBase(IDataBase):
             INSERT INTO blog_users (Name, Email, Password)
             SELECT Author, Author || '@dummy.com', Author
             FROM blog_posts
-            WHERE blog_posts.OwnerID = NULL;
+            WHERE blog_posts.OwnerID is Null;
         """,
         """
             UPDATE blog_posts
             SET OwnerID = blog_users.OwnerID
             FROM blog_users
-            WHERE blog_posts.OwnerID = NULL AND blog_users.Email = blog_posts.Author || '@dummy.com'; 
+            WHERE blog_posts.OwnerID is NULL AND blog_users.Email = blog_posts.Author || '@dummy.com'; 
         """,
         """ 
            CREATE OR REPLACE FUNCTION delete_expired_archived() RETURNS trigger

@@ -12,7 +12,7 @@ class DataBaseConfig(Config, IDataBaseConfig):
         super().__init__()
         self.settings = None
         self.current_config = None
-        self.load_existing_section()
+        #self.load_existing_section()
         
     def add_settings(self, settings : DBSettings):
         self.settings = settings
