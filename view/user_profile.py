@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
-from services.iauthentication import IAuthentication
-from services.iusersrepo import IUsersRepo
+from services.authentication import Authentication
+from services.iusers_repo import IUsersRepo
 from services.resources import Services
 from services.database import DataBase
 from models.user import User
@@ -17,6 +17,7 @@ class UserProfile:
         self.profile = self.register("/view/<user_id>", self.user_profile)
         self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.members = self.register("/view/community", self.get_all_users)
+        self.signup = self.register("/signup", self.sign_up)
         self.admin_choice = self.bp.route("/view/admin_choice")(self.chose_users_list)
         self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
         self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
@@ -27,6 +28,21 @@ class UserProfile:
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
+
+    def sign_up(self):
+        if request.method == "POST":
+            email = request.form.get("email")
+            pwd = request.form.get("pwd")
+            username = request.form.get("username")
+            if not self.__sign_up_validated(username, email):
+                return redirect(url_for(".sign_up"))
+            else:
+                new_user = User(username, email)
+                new_user.password = self.hasher.generate_pass(pwd)
+                new_user.id = self.users.add_user(new_user)
+                Authentication.log_session(new_user.id, username, email)
+                return redirect(url_for("profile.user_profile", user_id = new_user.id))
+        return render_template("signup.html")
 
     def user_profile(self, user_id):
         user_id = int(user_id)
@@ -92,6 +108,7 @@ class UserProfile:
             flash(f"You have been logged out. See you again soon!")
         else:
             to_delete = self.users.get_user_by(id = session["id"])
+            Authentication.log_out()
             flash(f"Your membership has been canceled.")
             self.users.remove_user(to_delete)
         return redirect(url_for("home.front_page"))
@@ -100,4 +117,15 @@ class UserProfile:
         if input != "":
             return self.hasher.generate_pass(input)
         return input
+
+    def __sign_up_validated(self, name, email):
+        if self.users.get_user_by(mail = email) != None:
+            flash(f"Email {email} is already assigned to another user.")
+            flash(f"Please use an unregistered email or if you have an account go to login.", "error")
+            return False
+        flash(f"Welcome, {name}!")
+        flash("This is your profile page. Here you can see all of your posts.")
+        flash("Select Create new post to add a new post", "info")
+        return True
+
 
