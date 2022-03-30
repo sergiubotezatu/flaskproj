@@ -2,7 +2,11 @@ from abc import ABCMeta, abstractmethod
 from models.db_settings import DBSettings
 
 class IDataBaseConfig(metaclass = ABCMeta):
-    is_configured : bool
+    
+    @classmethod
+    @abstractmethod
+    def is_configured(cls) -> bool:
+        pass
 
     @abstractmethod
     def add_settings(cls):
