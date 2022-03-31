@@ -42,7 +42,10 @@ class Container:
         IPostRepo : Posts,
         IDataBase: DataBase,
         IDataBaseConfig: MockDbConfig.mocked_db_config,
-        IUsersRepo : Users}
+        IUsersRepo : Users,
+        IAuthentication : Authentication,
+        IPassHash: PassHash,
+        IDataBaseUpgrade : MockDbConfig.mocked_db_config}
 
     def __init__(self, is_test):
         self.items = self.get(is_test)

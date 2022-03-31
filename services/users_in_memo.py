@@ -14,17 +14,25 @@ class Users(IUsersRepo):
     def get_posts(self, user_id):
         return self.all_posts.get_user_posts(user_id)
 
+    def get_user_by(self, **kwargs):
+        match = self.same_id if "id" in kwargs else self.same_mail
+        identifier = kwargs["id"] if "id" in kwargs else kwargs["mail"]
+        for user in self.__users:
+            if match(user, identifier):
+                return user
+        return None
+
     def get_user_by_mail(self, mail) -> User:
         for users in self.__users:
             if mail == users.email:
                 return users
         return None
 
-    def get_user_by_id(self, id : int) -> User:
-        for users in self.__users:
-            if id == users.id:
-                return users
-        return None
+    def same_id(user : User, id):
+        return user.id == id
+
+    def same_mail(user : User, mail):
+        return user.email == mail
 
     def get_all(self):
         id_names = []
