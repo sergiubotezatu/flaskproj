@@ -9,7 +9,7 @@ class IDataBase(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def create_database(self):
+    def upgrade_db(self):
         pass
 
     @abstractmethod

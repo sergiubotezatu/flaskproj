@@ -26,7 +26,7 @@ class PostsDb(IPostRepo):
     
     def add_post(self, post : Post):
         self.count += 1
-        return self.db.perform("insert_post", post.auth, post.title, post.content, post.created, post.owner_id)[0]     
+        return self.db.perform("insert_post", post.title, post.content, post.created, post.owner_id)[0]     
 
     def replace(self, id, post : Post):
         self.db.perform("edit_post", post.auth, post.title, post.content, post.created, id)
@@ -47,5 +47,5 @@ class PostsDb(IPostRepo):
     def __get_fetched(self, fetched):
         result = []
         for post in fetched:
-            result.append((post[0], Post(post[1], post[2], post[7], owner_id= post[6], date = post[4])))
+            result.append((post[0], Post(post[1], post[2], post[3], owner_id= post[4], date = post[5])))
         return result

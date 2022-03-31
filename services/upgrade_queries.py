@@ -2,7 +2,9 @@
 
 def get_queries():
     return [
-        ("""      
+        (
+        "SET client_encoding = 'UTF8';",
+        """      
             CREATE TABLE IF NOT EXISTS blog_users(
             OwnerID SERIAL PRIMARY KEY,
             Name varchar(30),
@@ -15,7 +17,6 @@ def get_queries():
             CREATE TABLE IF NOT EXISTS blog_posts(
             PostID SERIAL PRIMARY KEY,
             OwnerID int,
-            Author varchar(30),
             Title varchar(200),
             Content varchar(5000),
             Date varchar(50),
@@ -79,7 +80,6 @@ def get_queries():
                 first_row record;
                 pass text := %s;
                 creation_date text := %s;
-                id_update text;            
             begin
                 SELECT *
                 into first_row
@@ -98,21 +98,43 @@ def get_queries():
                     ON CONFLICT ON CONSTRAINT blog_users_pkey
                     DO 
                     UPDATE SET NAME = 'Admin1', Email = 'default@admin', Password = pass, Date = creation_date;
+
+                    INSERT INTO blog_users
+                    VALUES(DEFAULT, first_row.NAME, first_row.Email, first_row.Password, first_row.Date, first_row.Date_modified);
                 END IF;
             END;
             $$
             LANGUAGE plpgsql;
         """,),        
         ("""
-            INSERT INTO blog_users (Name, Email, Password)
-            SELECT Author, Author || '@dummy.com', Author
-            FROM blog_posts
-            WHERE blog_posts.OwnerID is Null;
-        """,
-        """
-            UPDATE blog_posts
-            SET OwnerID = blog_users.OwnerID
-            FROM blog_users
-            WHERE blog_posts.OwnerID is NULL AND blog_users.Email = blog_posts.Author || '@dummy.com'; 
-        """)]
+           DO $$
+                declare
+                    mail text := '@dummy.com';
+            BEGIN
+                if exists(SELECT *
+                    FROM information_schema.columns 
+                    WHERE table_schema='public' AND
+                    table_name='blog_posts' AND
+                    column_name='author')
+                then      
+                    INSERT INTO blog_users (Name, Email, Password)
+                    SELECT Author, Author || mail, Author
+                    FROM blog_posts
+                    WHERE blog_posts.OwnerID is Null;
+
+                    UPDATE blog_posts
+                    SET OwnerID = blog_users.OwnerID
+                    FROM blog_users
+                    WHERE blog_posts.OwnerID is NULL AND
+                    blog_users.Email = blog_posts.Author || mail; 
+            
+                    ALTER table blog_posts
+                    DROP COLUMN
+                    Author;     
+            
+            end if;
+        end;
+        $$
+        LANGUAGE plpgsql;
+        """,)]
 

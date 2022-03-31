@@ -22,12 +22,11 @@ class UsersDb(IUsersRepo):
             Post(
                 post[1],
                 post[2],
-                self.__cut_poem_newlines(post[7]),
+                self.__cut_poem_newlines(post[3]),
                 owner_id = user_id,
-                date = post[4]
+                date = post[5]
                 ))
                 )
-        
         return posts
 
     def get_user_by(self, **kwargs):
@@ -84,6 +83,8 @@ class UsersDb(IUsersRepo):
         return self.db.perform("search", user_id)
 
     def __cut_poem_newlines(self, content):
+        if content == None:
+            return ''
         lines_count = content.count("\n")
         if lines_count > 0:
             chunk = lines_count * 3

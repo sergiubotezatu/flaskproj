@@ -20,7 +20,7 @@ def create_blog(is_test_app = False):
     from view.post_view import PostPage
     blog.register_blueprint(PostPage(IPostRepo).bp, url_prefix="/post")
     from view.db_setup import DbSetUp
-    blog.register_blueprint(DbSetUp(IDataBase).bp)
+    blog.register_blueprint(DbSetUp(IDataBase, IPassHash).bp)
     from view.user_profile import UserProfile
     blog.register_blueprint(UserProfile(IUsersRepo, IPassHash).bp)
     from view.user_authenticate import UserAuthenticate

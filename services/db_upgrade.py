@@ -18,5 +18,6 @@ class DataBaseUpgrade:
         self.config.set_db_version(self.last_version)
         while i < int(self.last_version[-1:]):
             for upgrades in queries[i]:
+                print(i, upgrades, i)
                 yield upgrades
             i += 1
