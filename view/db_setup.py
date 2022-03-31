@@ -11,16 +11,17 @@ class DbSetUp:
         self.database = db
         self.bp = Blueprint("db_setup", __name__)
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
+        self.admin_pass = PassHash.generate_pass("admin1")
+        self.admin_creation = datetime.now().strftime("%d/%b/%y %H:%M:%S")
     
     def set_database(self):
         if self.database.config.is_configured:
+            self.database.create_database(self.admin_pass, self.admin_creation)
             return redirect(url_for("home.front_page"))             
         if request.method == "POST":
             settings = DBSettings(self.get_items())        
             self.database.initialize_db(settings)
-            admin_pass = PassHash.generate_pass("admin1")
-            admin_creation = datetime.now().strftime("%d/%b/%y %H:%M:%S")
-            self.database.create_database(admin_pass, admin_creation)
+            self.database.create_database(self.admin_pass, self.admin_creation)
             return redirect(url_for("home.front_page"))
         return render_template("db_setup.html")             
     

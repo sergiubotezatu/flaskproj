@@ -5,7 +5,7 @@ from services.resources import Services
 from services.database import DataBase
 from models.user import User
 from services.Ipassword_hash import IPassHash
-from services.access_decorators import owner_or_admin, admin_required
+from services.access_decorators import owner_or_admin, admin_required, decorator
 
 class UserProfile:
     @Services.get
@@ -25,9 +25,9 @@ class UserProfile:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
+    @decorator.only_once
     def goto_db_setup(self):
-        if not DataBase.config.is_configured:
-            return redirect(url_for("db_setup.set_database"))
+        return redirect(url_for("db_setup.set_database"))
 
     def sign_up(self):
         if request.method == "POST":

@@ -5,7 +5,7 @@ from services.ipost_repo import IPostRepo
 from services.resources import Services
 from services.authorization import Authorization
 from services.authentication import Authentication
-from services.access_decorators import member_required, owner_or_admin
+from services.access_decorators import decorator, member_required, owner_or_admin
 
 class PostPage:
     @Services.get
@@ -20,9 +20,9 @@ class PostPage:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
+    @decorator.only_once
     def goto_db_setup(self):
-        if not DataBase.config.is_configured:
-            return redirect(url_for("db_setup.set_database"))
+        return redirect(url_for("db_setup.set_database"))
 
     @member_required
     def create(self):
