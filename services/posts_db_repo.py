@@ -29,7 +29,7 @@ class PostsDb(IPostRepo):
         return self.db.perform("insert_post", post.title, post.content, post.created, post.owner_id)[0]     
 
     def replace(self, id, post : Post):
-        self.db.perform("edit_post", post.auth, post.title, post.content, post.created, id)
+        self.db.perform("edit_post", post.title, post.content, post.created, id)
 
     def remove(self, id):
         self.count -= 1

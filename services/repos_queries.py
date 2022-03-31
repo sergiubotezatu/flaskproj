@@ -30,10 +30,6 @@ def __update_user():
         UPDATE blog_users
         SET Name = %s, Email= %s, Date_modified = %s
         WHERE OwnerID = %s;
-        UPDATE blog_posts
-        SET Author = blog_users.Name
-        FROM blog_users
-        WHERE blog_posts.OwnerID = blog_users.OwnerID AND blog_posts.OwnerID = %s;
         """
 
 def __update_post():

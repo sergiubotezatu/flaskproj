@@ -57,7 +57,7 @@ class UsersDb(IUsersRepo):
     def update_user(self, usr_id, user : User, pwd = ""):
         if pwd != "":
             self.db.perform("change_pass", pwd, usr_id)
-        self.db.perform("edit_user", user.name, user.email, user.created, usr_id, usr_id)
+        self.db.perform("edit_user", user.name, user.email, user.created, usr_id)
 
     def get_all(self):
         return self.db.perform("get_users")
