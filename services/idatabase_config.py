@@ -19,3 +19,11 @@ class IDataBaseConfig(metaclass = ABCMeta):
     @abstractmethod
     def save(self):
         pass
+
+    @abstractmethod
+    def set_db_version(self, version):
+        pass
+
+    @abstractmethod
+    def get_db_version(self):
+        pass

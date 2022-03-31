@@ -1,43 +1,22 @@
-from services.idata_base import IDataBase
+from services.idatabase_config import IDataBaseConfig
 from services.resources import Services
-from psycopg2 import DatabaseError
+from services.upgrade_queries import get_queries
 
 class DataBaseUpgrade:
     @Services.get
-    def __init__(self, db : IDataBase):
-        self.db = db
-        self.config = db.config
+    def __init__(self, config : IDataBaseConfig):
+        self.config = config
+        self.last_version = "1.4"
+        self.current_version = self.config.get_db_version()
+        
+    def is_latest_version(self):
+        return self.current_version == self.last_version
 
-    def get_version_difference(self):
-        upgrades_needed = 0
-        try:
-            self.db.connect()
-            for query in self.steps_needed():
-                self.db.cursor.execute(query)
-                if bool(self.db.cursor.fetchone()) == True:
-                    break
-                upgrades_needed += 1
-            self.commit_and_close()  
-        except (Exception, DatabaseError) as error:
-            print(error)
-        return upgrades_needed
-
-    def steps_needed(self):
-        return ( """
-        SELECT EXISTS(
-        SELECT OwnerID
-        FROM blog_posts)        
-        """,
-        """
-        SELECT EXISTS(
-        SELECT OwnerID
-        FROM blog_posts
-        Where OwnerID = Null)        
-        """,
-        """
-        SELECT EXISTS(
-        SELECT Email
-        FROM blog_users
-        WHERE Email = 'default@admin')        
-        """        
-        )
+    def upgrade(self):
+        queries = get_queries()
+        i = int(self.current_version[-1:])
+        self.config.set_db_version(self.last_version)
+        while i < int(self.last_version[-1:]):
+            for upgrades in queries[i]:
+                yield upgrades
+            i += 1

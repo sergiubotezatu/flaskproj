@@ -1,4 +1,3 @@
-from configparser import ConfigParser
 from models.db_settings import DBSettings
 from services.idatabase_config import IDataBaseConfig
 from services.resources import Services
@@ -36,7 +35,7 @@ class DataBaseConfig(Config, IDataBaseConfig):
         super().save()
         if self.section_exists():            
             self.load()
-        self.is_configured = True
+            self.is_configured = True
    
     def set_db_version(self, version):
         if self.parser.has_section("version"):

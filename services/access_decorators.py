@@ -30,4 +30,14 @@ def admin_required(routing):
             return routing(instance, **kwargs)
         else:
             return "<h1>you do not have the necessary autorization.</h1>"
-    return wrapper        
+    return wrapper
+
+class decorator:
+    redirects = 0
+
+    def only_once(redirecter):
+        def wrapper(instance):
+            if decorator.redirects == 0:
+                decorator.redirects = 1
+                return redirecter(instance)
+        return wrapper

@@ -1,6 +1,8 @@
 from services.Ipassword_hash import IPassHash
+from services.db_upgrade import DataBaseUpgrade
 from services.iauthentication import IAuthentication
 from services.authentication import Authentication
+from services.idb_upgrade import IDataBaseUpgrade
 from services.passhash import PassHash
 from services.posts_db_repo import PostsDb
 from services.posts_in_memo import Posts
@@ -17,8 +19,9 @@ from services.mock_db_config import MockDbConfig
 class Container:
     DEPENDENCIES = {
         IPostRepo : IDataBase,
-        IDataBase : IDataBaseConfig,
+        IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
+        IDataBaseUpgrade : IDataBaseConfig,
         IUsersRepo : IDataBase,
         IAuthentication : (IUsersRepo, IPassHash),
         IPassHash : None,
@@ -29,9 +32,10 @@ class Container:
         IPostRepo : PostsDb,
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
+        IDataBaseUpgrade : DataBaseUpgrade,
         IUsersRepo : UsersDb,
         IAuthentication : Authentication,
-        IPassHash : PassHash 
+        IPassHash : PassHash
         }
 
     test_services = {
