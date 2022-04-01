@@ -22,7 +22,7 @@ class Container:
         IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
         IDataBaseUpgrade : IDataBaseConfig,
-        IUsersRepo : IPostRepo,
+        IUsersRepo : IDataBase,
         IAuthentication : (IUsersRepo, IPassHash),
         IPassHash : None,
         }
@@ -52,5 +52,6 @@ class Container:
     def get(self, is_test : bool) -> dict:
         if is_test:
             self.dependencies["IPostRepo"] = None
+            self.dependencies["IUsersRepo"] = IPostRepo
         return self.test_services if is_test else self.prod_services
    

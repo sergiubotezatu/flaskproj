@@ -16,13 +16,6 @@
             Log out</a>
 {%endif%}
 {%endblock%}
-{%block signout%}
-{%if session["id"] == user_id%}
-<a class = "option" href = "javascript:void(0)" onclick = "MessOn('signoverlay')">
-            <img src = "\static\icons\unfollow.png" style = "width:25px;height:30px;"></img>
-            Sign out</a>
-{%endif%}
-{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}
@@ -67,6 +60,9 @@
             <a href = "{{ '/edit/%s'%user_id|urlencode }}">
                 <p class = "edituser" >Edit info</p>
             </a>
+            <a href = "javascript:void(0)" onclick = "MessOn('signoverlay')">
+                <img src = "\static\icons\unfollow.png" style = "width:25px;height:30px;"></img>
+                Delete account</a>
             {%endif%}
         </div>
         <div class = "postcontainer">

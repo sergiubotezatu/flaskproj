@@ -2,6 +2,7 @@ from services.iusers_repo import IUsersRepo
 from services.resources import Services
 from services.ipost_repo import IPostRepo
 from models.user import User
+from models.post import Preview
 
 class Users(IUsersRepo):
     @Services.get
@@ -12,8 +13,13 @@ class Users(IUsersRepo):
         self.deleted = {}
         self.count = 0
         
-    def get_posts(self, user_id):
-        return self.all_posts.get_user_posts(user_id)
+    def get_user_posts(self, user_id):
+        user_posts = []
+        for posts in self.all_posts:
+            if posts[1].owner_id == user_id:
+                user_posts.append((posts[0], Preview(posts[1])))
+        return user_posts  
+        
 
     def get_user_by(self, **kwargs):
         match = self.same_id if "id" in kwargs else self.same_mail

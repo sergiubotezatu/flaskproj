@@ -58,14 +58,7 @@ class Posts(IPostRepo):
             yield (posts[0], Preview(posts[1]))
     
     def delete_all(self):
-        self.__posts = {}
-
-    def get_user_posts(self, user_id):
-        user_posts = []
-        for posts in self:
-            if posts[1].owner_id == user_id:
-                user_posts.append((posts[0], Preview(posts[1])))
-        return user_posts    
+        self.__posts = {} 
     
     def reflect_user_changes(self, id, new_name):
         for posts in self:
