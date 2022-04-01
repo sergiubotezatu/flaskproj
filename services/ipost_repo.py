@@ -22,3 +22,7 @@ class IPostRepo(metaclass = ABCMeta):
     @abstractmethod
     def get_all(self):
         pass
+    
+    @abstractmethod
+    def get_user_posts(user_id):
+        pass

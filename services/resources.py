@@ -1,6 +1,6 @@
 class Services:
     container = {}
-    DEPENDENCIES = {}
+    dependencies = {}
     
     @classmethod
     def get(cls, constructor):
@@ -11,8 +11,7 @@ class Services:
                 next_inject = ()
                 injected = ()
                 for service in services:
-                    next_inject = Services.pack_if_needed(cls.DEPENDENCIES[service])
-                    print(next_inject)
+                    next_inject = Services.pack_if_needed(cls.dependencies[service])
                     injected += (cls.container[service](*next_inject),)
                 constructor(instance, *injected)
                 

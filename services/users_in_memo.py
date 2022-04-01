@@ -7,7 +7,8 @@ class Users(IUsersRepo):
     @Services.get
     def __init__(self, posts : IPostRepo):
         self.__users = []
-        self.all_posts = posts
+        self.all_posts : IPostRepo = posts
+        print(type(self.all_posts))
         self.deleted = {}
         self.count = 0
         
@@ -22,13 +23,7 @@ class Users(IUsersRepo):
                 return user
         return None
 
-    def get_user_by_mail(self, mail) -> User:
-        for users in self.__users:
-            if mail == users.email:
-                return users
-        return None
-
-    def same_id(user : User, id):
+    def same_id(self, user : User, id):
         return user.id == id
 
     def same_mail(user : User, mail):
@@ -44,6 +39,7 @@ class Users(IUsersRepo):
         self.count += 1
         user.id = self.count
         self.__users.append(user)
+        return user.id
         
     def update_user(self, usr_id, editted, pwd = None):
         for users in self.__users:

@@ -26,3 +26,5 @@ class IUsersRepo(metaclass = ABCMeta):
     @abstractmethod
     def has_account(self, user_id) -> bool:
         pass
+
+        

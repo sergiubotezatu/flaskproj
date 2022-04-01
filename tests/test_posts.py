@@ -12,7 +12,7 @@ def configure(is_config = True):
         return wrapper
     return decorator
 
-class BlogTests(unittest.TestCase):
+class PostsTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)
     
     def setUp(self):

@@ -14,7 +14,7 @@ def create_blog(is_test_app = False):
     blog.permanent_session_lifetime = timedelta(days = 1)
     blog.secret_key = "FlaskTest" if is_test_app else "FlaskBlog"
     Services.container = Container(is_test_app).items
-    Services.DEPENDENCIES = Container.DEPENDENCIES
+    Services.dependencies = Container.dependencies
     from view.home import Home
     blog.register_blueprint(Home(IPostRepo).bp, url_prefix="/")
     from view.post_view import PostPage

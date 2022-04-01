@@ -37,6 +37,7 @@ class UserProfile:
             if not self.__sign_up_validated(username, email):
                 return redirect(url_for(".sign_up"))
             else:
+                print("YYY")
                 new_user = User(username, email)
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add_user(new_user)

@@ -17,14 +17,14 @@ from services.users_db_repo import UsersDb
 from services.mock_db_config import MockDbConfig, MockConfig
 
 class Container:
-    DEPENDENCIES = {
+    dependencies = {
         IPostRepo : IDataBase,
         IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
         IDataBaseUpgrade : IDataBaseConfig,
-        IUsersRepo : IDataBase,
+        IUsersRepo : IPostRepo,
         IAuthentication : (IUsersRepo, IPassHash),
-        IPassHash : None        
+        IPassHash : None,
         }
 
     prod_services = {
@@ -50,5 +50,7 @@ class Container:
         self.items = self.get(is_test)
     
     def get(self, is_test : bool) -> dict:
+        if is_test:
+            self.dependencies["IPostRepo"] = None
         return self.test_services if is_test else self.prod_services
    
