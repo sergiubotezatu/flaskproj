@@ -1,21 +1,5 @@
 {%extends "base.html"%}
 {%block title%}Home{%endblock%}
-{%block log%}
-{%if "id" in session %}
-{%set user = session["username"]%}
-{%set id = session["id"]%}<a class = "option" href="{{ '/view/%s'%id|urlencode }}">
-{%else%}
-{%set user = "Log in"%}<a class = "option" href="login">
-{%endif%}
-  <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>{{user}}</a>
-{%endblock%}
-{%block signout%}
-{%if "id" in session %}
-<a class = "option" href = "javascript:void(0)" onclick = "MessOn('logoverlay')">
-  <img src = "\static\icons\logout.png" style = "width:25px;height:30px;"></img>
-      Log out</a>
-{%endif%}
-{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}

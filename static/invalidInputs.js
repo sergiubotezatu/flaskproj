@@ -38,7 +38,7 @@ function InvalidMail()
 
 function MessOn(id)
 {
-    document.getElementById(id).style.display = "block";
+  document.getElementById(id).style.display = "block";
 }
 
 function MessOff(id)
@@ -96,6 +96,7 @@ function FillInEmail()
 }
 
 function showOptions(){
+  
   var display = "block";
   var direction = "up";
   var arrow = document.getElementById("arr");  
@@ -103,16 +104,17 @@ function showOptions(){
   {
       arrow.classList.remove(direction)    
       display = "none";
-      direction = "down";        
-  }
+      direction = "down";
+    }
    document.getElementById("drop-log-sign").style.display = display;
    arrow.classList.add(direction);
-}
+   }
 
 function hideOptions()
 {
   if (document.getElementById("drop-log-sign").style.display == "block"){
     document.getElementById("drop-log-sign").style.display = "none";
+    var arrow = document.getElementById("arr");
   }
 
 }

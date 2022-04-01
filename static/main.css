@@ -396,10 +396,9 @@ nav{
        .editDel{display:none}      
        
    }
-
    
    
-    #overlay, #logoverlay, #signoverlay {
+    #overlay, #logoverlay, #signoverlay{
         position: fixed;
         display: none;
         width: 100%;
@@ -412,6 +411,24 @@ nav{
         bottom: 0;
         background-color: rgba(46, 53, 110, 0.5);
         z-index: 10;
+        cursor: pointer;
+    }
+
+    #hidedropmenu{
+        position: fixed;
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding:0;
+        margin:0;
+        top: 0;
+        left: 0;
+        right: 0;
+        font-size:30px;
+        text-align: center;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0);
+        z-index: -1;
         cursor: pointer;
     }
 

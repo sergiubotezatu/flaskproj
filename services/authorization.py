@@ -31,14 +31,14 @@ class Authorization:
     def is_admin(self):
         logged = self.authenticator.get_logged_user()
         if logged != None:
-            return logged.email[-6:] == "@admin"
+            return logged.role == "admin" or logged.role == "default"
         return False
 
     def is_owner_or_admin(self, posts_instance, **kwargs):
         return self.is_admin() or self.is_owner(posts_instance, **kwargs)
 
     def is_default_admin(self, logged_user: User):
-        return self.is_admin(logged_user) and logged_user.id == 1
+        return logged_user.role == "default"
 
     def is_member(self):
         return self.authenticator.get_logged_user() != None

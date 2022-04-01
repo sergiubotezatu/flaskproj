@@ -1,21 +1,6 @@
 {%extends "base.html"%}
 
 {%block title%}{{user}}{%endblock%}
-{%block log%}
-{%if "id" not in session%}
-    <a class = "option" href="/login">
-        <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
-            Log in</a>
-{%elif session["id"] != user_id%}
-<a class = "option" href="{{ '/view/%s'%user_id|urlencode }}">
-        <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
-            {{session["username"]}}</a>
-{%else%}
-<a class = "option" href = "javascript:void(0)" onclick = "MessOn('logoverlay')">
-        <img src = "\static\icons\logout.png" style = "width:25px;height:30px;"></img>
-            Log out</a>
-{%endif%}
-{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}

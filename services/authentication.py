@@ -25,7 +25,7 @@ class Authentication(IAuthentication):
 
     def get_logged_user(self) -> Logged_user:
         if "id" in session:
-            return Logged_user(session["id"], session["username"], session["email"])
+            return Logged_user(session["id"], session["username"], session["email"], session["role"])
         return None
 
     def is_logged_in(self, id) -> bool:
@@ -36,6 +36,13 @@ class Authentication(IAuthentication):
         session["id"] = id
         session["username"] = username
         session["email"] = email
+        mail_sufix = email[-6:]
+        if mail_sufix != "@admin":
+            session["role"] = "regular"
+        elif id == 1:
+            session["role"] = "default"
+        else:
+            session["role"] = "admin"
         session.permanent = True
 
     @staticmethod

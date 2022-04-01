@@ -9,11 +9,10 @@ class Users(IUsersRepo):
     def __init__(self, posts : IPostRepo):
         self.__users = []
         self.all_posts : IPostRepo = posts
-        print(type(self.all_posts))
         self.deleted = {}
         self.count = 0
         
-    def get_user_posts(self, user_id):
+    def get_posts(self, user_id):
         user_posts = []
         for posts in self.all_posts:
             if posts[1].owner_id == user_id:

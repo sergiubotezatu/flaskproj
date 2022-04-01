@@ -1,18 +1,5 @@
 {%extends "base.html"%}
 {%block title%}Our members{%endblock%}
-{%block log%}
-{%if "id" in session%}
-{%set user_id = session["id"]%}
-{%set user = session["username"]%}
-<a class = "option" href="{{ '/view/%s'%user_id|urlencode }}">
-    <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
-    {{user}}</a>    
-{%else%}
-<a class = "option" href="/login">
-    <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
-    Log in</a>
-{%endif%}
-{%endblock%}
 {%block content%}
 <div class = "community">
         {%for member in allmembers%}
