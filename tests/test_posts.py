@@ -23,11 +23,6 @@ class BlogTests(unittest.TestCase):
     BASE =  "/"
     BASE_POST = "/post/"
     CONFIG_PAGE = "/config"    
-    
-    @configure(False)
-    def test_not_configured_redirects(self):
-        result = self.test_app.get(self.BASE, follow_redirects = False)
-        self.assertEqual(result.status_code, 302)
 
     @configure
     def test_setuppage_redirects_if_configured(self):
@@ -35,9 +30,30 @@ class BlogTests(unittest.TestCase):
         self.assertEqual(result.status_code, 302)
 
     @configure(False)
-    def test_redirects_tosetup_if_notconfigured(self):
+    def test_setuppage_doesnt_redirect_if_not_config(self):
+        result = self.test_app.get(self.CONFIG_PAGE, follow_redirects = False)
+        self.assertEqual(result.status_code, 200)
+    
+    @configure
+    def test_home_redirects_tosetup_and_viceversa_if_config(self):
         result = self.test_app.get(self.BASE, follow_redirects = False)
         self.assertEqual(result.location, "http://localhost/config")
+        redirect = self.test_app.get(result.location, follow_redirects = False)
+        self.assertEqual(redirect.location, "http://localhost/")
+
+    @configure(False)
+    def test_redirects_tosetup_if_not_first_time_access(self):
+        from services.access_decorators import decorator
+        decorator.redirects = 0
+        result = self.test_app.get(self.BASE, follow_redirects = False)
+        self.assertEqual(result.location, "http://localhost/config")
+
+    @configure
+    def test_home_redirects_only_when_first_time_access(self):
+        first = self.test_app.get(self.BASE, follow_redirects = False)
+        self.assertEqual(first.status_code, 302)
+        second = self.test_app.get(self.BASE, follow_redirects = False)
+        self.self.assertEqual(first.status_code, 200)
 
     @configure
     def test_create_home_request(self):

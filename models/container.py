@@ -14,7 +14,7 @@ from services.database_config import DataBaseConfig
 from services.iusers_repo import IUsersRepo
 from services.users_in_memo import Users
 from services.users_db_repo import UsersDb
-from services.mock_db_config import MockDbConfig
+from services.mock_db_config import MockDbConfig, MockConfig
 
 class Container:
     DEPENDENCIES = {
@@ -24,8 +24,7 @@ class Container:
         IDataBaseUpgrade : IDataBaseConfig,
         IUsersRepo : IDataBase,
         IAuthentication : (IUsersRepo, IPassHash),
-        IPassHash : None,
-        Posts : None        
+        IPassHash : None        
         }
 
     prod_services = {
@@ -41,11 +40,11 @@ class Container:
     test_services = {
         IPostRepo : Posts,
         IDataBase: DataBase,
-        IDataBaseConfig: MockDbConfig.mocked_db_config,
+        IDataBaseConfig: MockDbConfig,
         IUsersRepo : Users,
         IAuthentication : Authentication,
         IPassHash: PassHash,
-        IDataBaseUpgrade : MockDbConfig.mocked_db_config}
+        IDataBaseUpgrade : DataBaseUpgrade}
 
     def __init__(self, is_test):
         self.items = self.get(is_test)
