@@ -1,10 +1,8 @@
-from psycopg2 import DatabaseError
-from services.resources import Services
+from services.dependency_inject.injector import Services
 from models.user import User
-from services.iusers_repo import IUsersRepo
+from services.interfaces.iusers_repo import IUsersRepo
 from models.post import Post
-from services.idata_base import IDataBase
-from services.resources import Services
+from services.interfaces.idata_base import IDataBase
 
 class UsersDb(IUsersRepo):
     @Services.get

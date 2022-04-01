@@ -1,7 +1,7 @@
 from models.post import Preview
-from services.ipost_repo import IPostRepo
+from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
-from services.resources import Services
+from services.dependency_inject.injector import Services
 
 class PostsEnumerator():
     def __init__(self, posts):

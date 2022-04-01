@@ -1,6 +1,6 @@
 import unittest
 from flask import url_for, current_app
-from services.database import DataBase
+from services.database.database import DataBase
 from __initblog__ import create_blog
 
 

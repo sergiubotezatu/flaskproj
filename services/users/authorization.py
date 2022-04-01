@@ -1,11 +1,8 @@
 from functools import wraps
 from flask import redirect, url_for
-from models.post import Post
 from models.user import User
-from services.Ipassword_hash import IPassHash
-from services.iauthentication import IAuthentication
-from services.authentication import Authentication
-from services.resources import Services
+from services.interfaces.iauthentication import IAuthentication
+from services.dependency_inject.injector import Services
 
 class Authorization:
     @Services.get

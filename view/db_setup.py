@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from models.db_settings import DBSettings
-from services.Ipassword_hash import IPassHash
-from services.idata_base import IDataBase
-from services.resources import Services
+from services.interfaces.Ipassword_hash import IPassHash
+from services.interfaces.idata_base import IDataBase
+from services.dependency_inject.injector import Services
 from datetime import datetime
-from services.passhash import PassHash
 
 class DbSetUp:
     @Services.get

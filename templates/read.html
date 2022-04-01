@@ -17,7 +17,7 @@
 {%block create1%}{%endblock%}
 {%block create2%}{%endblock%}
 {%block content%}
-{%if session["id"] == owner%}
+{%if session["id"] == owner or session["role"] == "admin" or session["role"] == "default"%}
 <div class ="editDel">
   <a href= "{{ '/post/edit/%s'%editable|urlencode }}"><button class="edit">EDIT CONTENT</a>
   <button type ="button" class ="edit" id = "del" onclick="MessOn('overlay')">DELETE POST</button>

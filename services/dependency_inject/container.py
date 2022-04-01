@@ -1,20 +1,20 @@
-from services.Ipassword_hash import IPassHash
-from services.db_upgrade import DataBaseUpgrade
-from services.iauthentication import IAuthentication
-from services.authentication import Authentication
-from services.idb_upgrade import IDataBaseUpgrade
-from services.passhash import PassHash
-from services.posts_db_repo import PostsDb
-from services.posts_in_memo import Posts
-from services.database import DataBase
-from services.idata_base import IDataBase
-from services.ipost_repo import IPostRepo
-from services.idatabase_config import IDataBaseConfig
-from services.database_config import DataBaseConfig
-from services.iusers_repo import IUsersRepo
-from services.users_in_memo import Users
-from services.users_db_repo import UsersDb
-from services.mock_db_config import MockDbConfig, MockConfig
+from services.interfaces.Ipassword_hash import IPassHash
+from services.database.db_upgrade import DataBaseUpgrade
+from services.interfaces.iauthentication import IAuthentication
+from services.users.authentication import Authentication
+from services.interfaces.idb_upgrade import IDataBaseUpgrade
+from services.users.passhash import PassHash
+from services.posts.posts_db_repo import PostsDb
+from services.posts.posts_in_memo import Posts
+from services.database.database import DataBase
+from services.interfaces.idata_base import IDataBase
+from services.interfaces.ipost_repo import IPostRepo
+from services.interfaces.idatabase_config import IDataBaseConfig
+from services.database.database_config import DataBaseConfig
+from services.interfaces.iusers_repo import IUsersRepo
+from services.users.users_in_memo import Users
+from services.users.users_db_repo import UsersDb
+from services.database.mock_db_config import MockDbConfig
 
 class Container:
     dependencies = {

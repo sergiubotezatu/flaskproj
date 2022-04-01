@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from services.Ipassword_hash import IPassHash
-from services.resources import Services
+from services.interfaces.Ipassword_hash import IPassHash
+from services.dependency_inject.injector import Services
 
 class PassHash(IPassHash):
     @Services.get

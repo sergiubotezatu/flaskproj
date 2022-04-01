@@ -1,11 +1,10 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
-from services.authentication import Authentication
-from services.iusers_repo import IUsersRepo
-from services.resources import Services
-from services.database import DataBase
+from services.users.authentication import Authentication
+from services.interfaces.iusers_repo import IUsersRepo
+from services.dependency_inject.injector import Services
 from models.user import User
-from services.Ipassword_hash import IPassHash
-from services.access_decorators import owner_or_admin, admin_required, decorator
+from services.interfaces.Ipassword_hash import IPassHash
+from services.users.access_decorators import owner_or_admin, admin_required, decorator
 
 class UserProfile:
     @Services.get

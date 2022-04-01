@@ -1,9 +1,9 @@
 from psycopg2 import DatabaseError
-from services.ipost_repo import IPostRepo
-from services.idata_base import IDataBase
+from services.interfaces.ipost_repo import IPostRepo
+from services.interfaces.idata_base import IDataBase
 from models.post import Post
-from services.resources import Services
-from services.repos_queries import queries, fetch_if_needed
+from services.dependency_inject.injector import Services
+from services.database.repos_queries import queries, fetch_if_needed
 
 class PostsDb(IPostRepo):
     @Services.get

@@ -1,11 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.post import Post
-from services.database import DataBase
-from services.ipost_repo import IPostRepo
-from services.resources import Services
-from services.authorization import Authorization
-from services.authentication import Authentication
-from services.access_decorators import decorator, member_required, owner_or_admin
+from services.interfaces.ipost_repo import IPostRepo
+from services.dependency_inject.injector import Services
+from services.users.access_decorators import decorator, member_required, owner_or_admin
 
 class PostPage:
     @Services.get

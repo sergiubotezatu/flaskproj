@@ -1,6 +1,6 @@
-from services.iusers_repo import IUsersRepo
-from services.resources import Services
-from services.ipost_repo import IPostRepo
+from services.interfaces.iusers_repo import IUsersRepo
+from services.dependency_inject.injector import Services
+from services.interfaces.ipost_repo import IPostRepo
 from models.user import User
 from models.post import Preview
 

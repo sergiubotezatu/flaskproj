@@ -1,10 +1,8 @@
-from services.Ipassword_hash import IPassHash
-from services.iauthentication import IAuthentication
+from services.interfaces.iauthentication import IAuthentication
 from models.user import User
 from flask import Blueprint, request, redirect, render_template, url_for, flash
-from services.resources import Services
-from services.database import DataBase
-from services.access_decorators import admin_required, decorator
+from services.dependency_inject.injector import Services
+from services.users.access_decorators import admin_required, decorator
 
 class UserAuthenticate:
     @Services.get

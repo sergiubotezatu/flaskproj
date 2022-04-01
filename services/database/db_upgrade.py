@@ -1,6 +1,6 @@
-from services.idatabase_config import IDataBaseConfig
-from services.resources import Services
-from services.upgrade_queries import get_queries
+from services.interfaces.idatabase_config import IDataBaseConfig
+from services.dependency_inject.injector import Services
+from services.database.upgrade_queries import get_queries
 
 class DataBaseUpgrade:
     @Services.get

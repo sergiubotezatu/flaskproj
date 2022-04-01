@@ -1,6 +1,6 @@
 from functools import wraps
-from services.authorization import Authorization
-from services.iauthentication import IAuthentication
+from services.users.authorization import Authorization
+from services.interfaces.iauthentication import IAuthentication
 from flask import redirect, url_for
 
 authorizator = Authorization(IAuthentication)

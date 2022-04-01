@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, url_for, redirect, Flask
-from services.ipost_repo import IPostRepo
-from services.seed import placeholder
-from services.resources import Services
-from services.access_decorators import decorator
+from services.interfaces.ipost_repo import IPostRepo
+from services.posts.seed import placeholder
+from services.dependency_inject.injector import Services
+from services.users.access_decorators import decorator
 
 class Home:
     @Services.get

@@ -1,6 +1,6 @@
 from unittest import mock
-from services.idatabase_config import IDataBaseConfig
-from services.resources import Services
+from services.interfaces.idatabase_config import IDataBaseConfig
+from services.dependency_inject.injector import Services
 
 class MockConfig:
     def __init__(self):

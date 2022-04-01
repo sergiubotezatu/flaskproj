@@ -1,9 +1,9 @@
 import psycopg2
-from services.idata_base import IDataBase
-from services.idatabase_config import IDataBaseConfig
-from services.idb_upgrade import IDataBaseUpgrade
-from services.resources import Services
-from services.repos_queries import queries, fetch_if_needed
+from services.interfaces.idata_base import IDataBase
+from services.interfaces.idatabase_config import IDataBaseConfig
+from services.interfaces.idb_upgrade import IDataBaseUpgrade
+from services.dependency_inject.injector import Services
+from services.database.repos_queries import queries, fetch_if_needed
 
 class DataBase(IDataBase):
     config = None

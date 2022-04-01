@@ -1,9 +1,9 @@
-from services.iauthentication import IAuthentication
+from services.interfaces.iauthentication import IAuthentication
 from flask import session, flash
 from models.user import User
-from services.iusers_repo import IUsersRepo
-from services.Ipassword_hash import IPassHash
-from services.resources import Services
+from services.interfaces.iusers_repo import IUsersRepo
+from services.interfaces.Ipassword_hash import IPassHash
+from services.dependency_inject.injector import Services
 from models.logged_user import Logged_user
 
 class Authentication(IAuthentication):    
