@@ -2,9 +2,9 @@ from services.interfaces.Ipassword_hash import IPassHash
 from services.database.db_upgrade import DataBaseUpgrade
 from services.interfaces.iauthentication import IAuthentication
 from services.interfaces.iauthorization import IAuthorization
-from services.users.authentication import Authentication
+from services.auth.authentication import Authentication
 from services.interfaces.idb_upgrade import IDataBaseUpgrade
-from services.users.authorization import Authorization
+from services.auth.authorization import Authorization
 from services.users.passhash import PassHash
 from services.posts.posts_db_repo import PostsDb
 from services.posts.posts_in_memo import Posts

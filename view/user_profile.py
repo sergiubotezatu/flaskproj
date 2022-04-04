@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
 from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
-from services.users.authentication import Authentication
+from services.auth.authentication import Authentication
 from services.interfaces.iusers_repo import IUsersRepo
 from services.dependency_inject.injector import Services
 from models.user import User
