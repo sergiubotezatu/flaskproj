@@ -13,6 +13,10 @@ class IDataBase(metaclass = ABCMeta):
         pass
 
     @abstractmethod
+    def perform(self, query, *args, fetch = ""):
+        pass
+
+    @abstractmethod
     def connect(self):
         pass
 

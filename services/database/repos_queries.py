@@ -130,7 +130,6 @@ def __read_all():
             INNER JOIN blog_users u
             ON p.OwnerID = u.OwnerID 
             ORDER BY p.PostID DESC;
-
             """
 
 def __read_user_posts():

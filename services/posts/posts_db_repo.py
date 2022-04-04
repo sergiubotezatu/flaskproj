@@ -14,7 +14,11 @@ class PostsDb(IPostRepo):
     @property
     def count(self):
         if self.__count == -1:
-            return self.db.perform("count_posts")[0]
+            return self.db.perform("""
+            SELECT
+            COUNT(Content)
+            FROM blog_posts;
+            """, fetch = "fetchone")[0]
         return self.__count
 
     @count.setter
@@ -26,23 +30,58 @@ class PostsDb(IPostRepo):
     
     def add_post(self, post : Post):
         self.count += 1
-        return self.db.perform("insert_post", post.title, post.content, post.created, post.owner_id)[0]     
+        return self.db.perform("""
+        INSERT INTO blog_posts (PostID, Title, Content, Date, OwnerID)     
+        VALUES (DEFAULT, %s, %s, %s, %s)
+        RETURNING PostID;
+        """, post.title, post.content, post.created, post.owner_id, fetch = "fetchone")[0]     
 
     def replace(self, id, post : Post):
-        self.db.perform("edit_post", post.title, post.content, post.created, id)
+        self.db.perform("""
+            UPDATE blog_posts
+            SET Title= %s, Content = %s, Date_modified = %s
+            WHERE PostID = %s;
+        """, post.title, post.content, post.created, id)
 
     def remove(self, id):
         self.count -= 1
-        self.db.perform("delete_post", id)   
+        self.db.perform("""
+            DELETE FROM blog_posts
+            WHERE PostID = %s;
+            """, id)   
     
     def get_post(self, id) -> Post:
-        displayed = self.db.perform("read_post", id)
+        displayed = self.db.perform("""
+           SELECT
+                u.Name,
+                p.title,
+                p.content,
+                u.OwnerID,
+                p.date,
+                p.Date_modified
+            FROM
+                blog_users u
+            INNER JOIN blog_posts p
+                ON u.OwnerID = p.OwnerID
+                where p.PostID = %s;
+            """, id, fetch = "fetchone")
         post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4])
         post.modified = displayed[5]
         return post
 
     def get_all(self):
-        return self.__get_fetched(self.db.perform("read_all"))
+        return self.__get_fetched(self.db.perform("""
+            SELECT p.PostID,
+            u.Name,
+            p.Title,
+            SUBSTRING(p.Content, 1, 150),
+            p.OwnerID,
+            p.Date
+            FROM blog_posts p
+            INNER JOIN blog_users u
+            ON p.OwnerID = u.OwnerID 
+            ORDER BY p.PostID DESC;
+            """, fetch = "fetchall"))
 
     def __get_fetched(self, fetched):
         result = []

@@ -10,10 +10,26 @@ class UsersDb(IUsersRepo):
         self.db = db
         
     def add_user(self, user : User):
-        return self.db.perform("insert_user", user.name, user.email, user.hashed_pass, user.created)[0]        
+        return self.db.perform("""
+    INSERT INTO blog_users      
+    VALUES (DEFAULT, %s, %s, %s, %s)
+    RETURNING OwnerID;
+    """, user.name, user.email, user.hashed_pass, user.created, fetch="fetchone")[0]        
 
     def get_posts(self, user_id):
-        to_display = self.db.perform("get_user_posts", user_id)
+        to_display = self.db.perform("""
+            SELECT p.PostID,
+                u.Name,
+                p.Title,
+                SUBSTRING(p.Content, 1, 150),
+                p.OwnerID,
+                p.Date
+                FROM blog_posts p
+            INNER JOIN blog_users u
+                ON p.OwnerID = u.OwnerID
+                AND p.OwnerID = %s
+                ORDER BY p.PostID DESC;
+            """, user_id, fetch = "fetchall")
         posts = []
         for post in to_display:
             posts.append((post[0],
@@ -31,15 +47,18 @@ class UsersDb(IUsersRepo):
         identifier = ""
         ident_value = None
         if "mail" in kwargs:
-            identifier = "get_by_mail"
+            identifier = "Email"
             ident_value = kwargs["mail"]
         else:
-            identifier = "get_by_id"
+            identifier = "OwnerID"
             ident_value = int(kwargs["id"])
         return self.__get_user(identifier, ident_value)
 
     def __get_user(self, identifier, value):
-        displayed = self.db.perform(identifier, value)
+        displayed = self.db.perform(f"""
+        SELECT *
+        FROM blog_users
+        WHERE {identifier} = """ + "%s", value, fetch = "fetchone")
         if displayed == None:
             return displayed
         user = User(displayed[1], displayed[2], displayed[4])
@@ -49,36 +68,78 @@ class UsersDb(IUsersRepo):
         return user
 
     def remove_user(self, user : User):
-        self.db.perform("archive", user.id)
-        self.db.perform("delete_user", user.id)
+        self.db.perform("""
+        INSERT INTO deleted_users
+        SELECT u.Email, p.Content 
+        FROM blog_posts p
+        RIGHT JOIN blog_users u ON p.OwnerId = u.OwnerID
+        WHERE u.OwnerID = %s;
+        """, user.id)
+        self.db.perform("""
+        DELETE FROM 
+        blog_users
+        WHERE OwnerID = %s;
+        """, user.id)
 
     def update_user(self, usr_id, user : User, pwd = ""):
         if pwd != "":
-            self.db.perform("change_pass", pwd, usr_id)
-        self.db.perform("edit_user", user.name, user.email, user.created, usr_id)
+            self.db.perform("""
+        UPDATE blog_users
+        SET Password = %s
+        WHERE OwnerID = %s;
+        """, pwd, usr_id)
+        self.db.perform("""
+        UPDATE blog_users
+        SET Name = %s, Email= %s, Date_modified = %s
+        WHERE OwnerID = %s;
+        """, user.name, user.email, user.created, usr_id)
 
     def get_all(self):
-        return self.db.perform("get_users")
+        return self.db.perform("""
+        SELECT OwnerID, Name
+        FROM blog_users
+        ORDER BY OwnerID DESC;
+        """, fetch = "fetchall")
 
     def get_all_inactive(self):
-        displayed =  self.db.perform("get_inactive")
+        displayed =  self.db.perform("""
+        SELECT DISTINCT Email
+        FROM deleted_users
+        ;
+        """, fetch = "fetchall")
         result = []
         for record in displayed:
             result.append((record[0], record[0]))
         return result
 
     def get_inactive_posts(self, email):
-        displayed = self.db.perform("get_removed_posts", email)
+        displayed = self.db.perform("""
+        SELECT d.Content,
+        CASE
+        WHEN CHAR_LENGTH(d.Content) > 150 THEN SUBSTRING(d.Content, 1, 150)
+        ELSE d.Content
+        END AS Preview 
+        FROM deleted_users AS d
+        WHERE Email = %s
+        """, email, fetch = "fetchall")
         posts = []
         for record in displayed:
             posts.append((email, Post(email, "No title", record[0], owner_id = email)))
         return posts       
 
-    def delete_from_archive(self):
-        return self.db.perform("admin_delete")
+    def delete_from_archive(self, email):
+        return self.db.perform(f"""
+            DELETE FROM deleted_users
+            WHERE Email = {email};
+            """)
 
     def has_account(self, user_id) -> bool:
-        return self.db.perform("search", user_id)
+        return self.db.perform("""
+    SELECT EXISTS(
+        SELECT OwnerID
+        FROM blog_users
+        WHERE OwnerID = %s)
+    """, user_id, fetch = "fetchone")
 
     def __cut_poem_newlines(self, content):
         if content == None:

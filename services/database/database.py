@@ -36,18 +36,17 @@ class DataBase(IDataBase):
                 self.connect()
                 for operation in self.upgrader.upgrade():
                     self.cursor.execute(operation, args)
-                self.commit_and_close()
+                    self.commit_and_close()
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
 
-
-    def perform(self, request, *args):
-        retrieved = 0
-        execution = queries()[request]
+    def perform(self, query, *args, fetch = ""):
+        retrieved = None
         try:
             self.connect()
-            self.cursor.execute(execution, args)
-            retrieved = fetch_if_needed(request, self.cursor)
+            self.cursor.execute(query, args)
+            if fetch != "":
+                retrieved = getattr(self.cursor, fetch)()
             self.commit_and_close()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
