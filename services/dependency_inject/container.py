@@ -1,8 +1,10 @@
 from services.interfaces.Ipassword_hash import IPassHash
 from services.database.db_upgrade import DataBaseUpgrade
 from services.interfaces.iauthentication import IAuthentication
+from services.interfaces.iauthorization import IAuthorization
 from services.users.authentication import Authentication
 from services.interfaces.idb_upgrade import IDataBaseUpgrade
+from services.users.authorization import Authorization
 from services.users.passhash import PassHash
 from services.posts.posts_db_repo import PostsDb
 from services.posts.posts_in_memo import Posts
@@ -24,6 +26,7 @@ class Container:
         IDataBaseUpgrade : IDataBaseConfig,
         IUsersRepo : IDataBase,
         IAuthentication : (IUsersRepo, IPassHash),
+        IAuthorization : IAuthentication,
         IPassHash : None,
         }
 
@@ -34,7 +37,8 @@ class Container:
         IDataBaseUpgrade : DataBaseUpgrade,
         IUsersRepo : UsersDb,
         IAuthentication : Authentication,
-        IPassHash : PassHash
+        IPassHash : PassHash,
+        IAuthorization : Authorization
         }
 
     test_services = {
@@ -53,5 +57,6 @@ class Container:
         if is_test:
             self.dependencies["IPostRepo"] = None
             self.dependencies["IUsersRepo"] = IPostRepo
-        return self.test_services if is_test else self.prod_services
+            return self.test_services
+        return self.prod_services
    

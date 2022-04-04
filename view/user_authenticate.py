@@ -2,9 +2,12 @@ from services.interfaces.iauthentication import IAuthentication
 from models.user import User
 from flask import Blueprint, request, redirect, render_template, url_for, flash
 from services.dependency_inject.injector import Services
-from services.users.access_decorators import admin_required, decorator
+from services.interfaces.iauthorization import IAuthorization
+from services.users.access_decorators import AccessDecorators, decorator
 
 class UserAuthenticate:
+    authorizator = AccessDecorators(IAuthorization)
+
     @Services.get
     def __init__(self, authenticator : IAuthentication):
         self.authenticator = authenticator
@@ -21,7 +24,7 @@ class UserAuthenticate:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
-    @admin_required
+    @authorizator.admin_required
     def create(self):
         if request.method == "POST":
             email = request.form.get("email")

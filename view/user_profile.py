@@ -1,12 +1,15 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
+from services.interfaces.iauthorization import IAuthorization
 from services.users.authentication import Authentication
 from services.interfaces.iusers_repo import IUsersRepo
 from services.dependency_inject.injector import Services
 from models.user import User
 from services.interfaces.Ipassword_hash import IPassHash
-from services.users.access_decorators import owner_or_admin, admin_required, decorator
+from services.users.access_decorators import AccessDecorators, decorator
 
 class UserProfile:
+    authorizator = AccessDecorators(IAuthorization)
+
     @Services.get
     def __init__(self, repo : IUsersRepo, hasher : IPassHash):
         self.users = repo
@@ -59,7 +62,7 @@ class UserProfile:
         modified = logged.modified,
         posts = owned_posts)
  
-    @owner_or_admin
+    @authorizator.owner_or_admin
     def edit_user(self, user_id):
         user_id = int(user_id)
         editable : User = self.users.get_user_by(id = user_id)
@@ -75,14 +78,14 @@ class UserProfile:
     def get_all_users(self):
         return render_template("members.html", prefix = "view", allmembers = self.users.get_all())
 
-    @admin_required
+    @authorizator.admin_required
     def chose_users_list(self):
         return render_template("admin_choice.html")
 
     def get_all_inactive(self):
         return render_template("members.html", prefix = "view/archive", allmembers = self.users.get_all_inactive())
 
-    @admin_required
+    @authorizator.admin_required
     def inactive_user(self, email):
         if request.method == "POST":
             return self.check_for_log_out()

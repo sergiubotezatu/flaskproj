@@ -1,10 +1,13 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.post import Post
+from services.interfaces.iauthorization import IAuthorization
 from services.interfaces.ipost_repo import IPostRepo
 from services.dependency_inject.injector import Services
-from services.users.access_decorators import decorator, member_required, owner_or_admin
+from services.users.access_decorators import AccessDecorators, decorator
 
 class PostPage:
+    authorizator = AccessDecorators(IAuthorization)
+
     @Services.get
     def __init__(self, repo : IPostRepo):
         self.blogPosts = repo
@@ -21,7 +24,7 @@ class PostPage:
     def goto_db_setup(self):
         return redirect(url_for("db_setup.set_database"))
 
-    @member_required
+    @authorizator.member_required
     def create(self):
         if request.method == "POST":
             return redirect(f"/post/read/{self.create_new_post()}")
@@ -46,7 +49,7 @@ class PostPage:
             created = selected_post.created,
             modified = selected_post.modified)
 
-    @owner_or_admin
+    @authorizator.owner_or_admin
     def edit(self, post_id):
         selected_post = self.blogPosts.get_post(post_id)
         if request.method == "POST":
