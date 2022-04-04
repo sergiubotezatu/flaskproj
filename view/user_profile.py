@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
+from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
 from services.users.authentication import Authentication
 from services.interfaces.iusers_repo import IUsersRepo
 from services.dependency_inject.injector import Services
 from models.user import User
 from services.interfaces.Ipassword_hash import IPassHash
-from services.users.access_decorators import AccessDecorators, decorator
+from services.users.access_decorators import AccessDecorators
 
 class UserProfile:
     authorizator = AccessDecorators(IAuthorization)
@@ -27,9 +28,9 @@ class UserProfile:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
-    @decorator.only_once
     def goto_db_setup(self):
-        return redirect(url_for("db_setup.set_database"))
+        if DataBase.config.is_configured():
+            return redirect(url_for("db_setup.set_database"))
 
     def sign_up(self):
         if request.method == "POST":

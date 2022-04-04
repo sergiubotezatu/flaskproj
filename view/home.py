@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, url_for, redirect, Flask
+from services.database.database import DataBase
 from services.interfaces.ipost_repo import IPostRepo
 from services.posts.seed import placeholder
 from services.dependency_inject.injector import Services
-from services.users.access_decorators import decorator
 
 class Home:
     @Services.get
@@ -12,9 +12,9 @@ class Home:
         self.home = self.bp.route("/", methods = ["GET", "POST"])(self.front_page)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
 
-    @decorator.only_once
     def goto_db_setup(self):
-        return redirect(url_for("db_setup.set_database"))
+        if DataBase.config.is_configured():
+            return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):
         rows = len(self.blogPosts)

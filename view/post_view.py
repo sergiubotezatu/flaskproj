@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.post import Post
+from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
 from services.interfaces.ipost_repo import IPostRepo
 from services.dependency_inject.injector import Services
-from services.users.access_decorators import AccessDecorators, decorator
+from services.users.access_decorators import AccessDecorators
 
 class PostPage:
     authorizator = AccessDecorators(IAuthorization)
@@ -20,9 +21,9 @@ class PostPage:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
-    @decorator.only_once
     def goto_db_setup(self):
-        return redirect(url_for("db_setup.set_database"))
+        if DataBase.config.is_configured():
+            return redirect(url_for("db_setup.set_database"))
 
     @authorizator.member_required
     def create(self):

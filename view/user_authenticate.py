@@ -1,9 +1,10 @@
+from services.database.database import DataBase
 from services.interfaces.iauthentication import IAuthentication
 from models.user import User
 from flask import Blueprint, request, redirect, render_template, url_for, flash
 from services.dependency_inject.injector import Services
 from services.interfaces.iauthorization import IAuthorization
-from services.users.access_decorators import AccessDecorators, decorator
+from services.users.access_decorators import AccessDecorators
 
 class UserAuthenticate:
     authorizator = AccessDecorators(IAuthorization)
@@ -17,9 +18,9 @@ class UserAuthenticate:
         self.logout = self.bp.route("/logout")(self.log_out)
         self.create_new = self.bp.route("/create")(self.create)
         
-    @decorator.only_once
     def goto_db_setup(self):
-        return redirect(url_for("db_setup.set_database"))
+        if DataBase.config.is_configured():
+            return redirect(url_for("db_setup.set_database"))
 
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
