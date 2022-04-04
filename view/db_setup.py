@@ -5,13 +5,17 @@ from services.interfaces.idata_base import IDataBase
 from services.dependency_inject.injector import Services
 from datetime import datetime
 
+from services.interfaces.idb_upgrade import IDataBaseUpgrade
+
 class DbSetUp:
     @Services.get
     def __init__(self, db : IDataBase, hasher : IPassHash):
         self.database = db
         self.hasher = hasher
+        self.upgrader : IDataBaseUpgrade = self.db.upgrader
         self.bp = Blueprint("db_setup", __name__)
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
+        self.upgrade_if_older()
         
     def set_database(self):
         if request.method == "POST":
@@ -32,3 +36,7 @@ class DbSetUp:
             request.form.get("user"),
             request.form.get("password")
         ]
+
+    def upgrade_if_older(self):
+        if self.database.config.is_configured and not self.upgrader.is_latest_version():
+            self.database.upgrade_db()
