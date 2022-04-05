@@ -21,16 +21,16 @@
                 <img src = "\static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>
                 Create new Post
             </a></li>
-            <li>
-                <a class = "option" href = "/view/community">
-                    <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
-                    Users</a>
-            </li>
             {%if "role" in session and session["role"] == "admin" or session["role"] == "default"%}
             <li>
                 <a class = "option" href = "/">
                     <img src = "\static\icons\create.png" style = "width:25px;height:30px;"></img>
                     Create new user</a>
+            </li>
+            <li>
+                <a class = "option" href = "/view/community">
+                    <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
+                    Users</a>
             </li>
             {%endif%}
             {%if "id" in session %}
@@ -73,11 +73,20 @@
                 <div class="dropdown-content">
                 <a class = "option" href="/">Home</a>
                 <a class = "option" href="{{'/%s'%path|urlencode }}">Create new Post</a>
-                <a class = "option" href="/view/community">
-                    <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
-                Users</a>
+                {%if "role" in session and session["role"] == "admin" or session["role"] == "default"%}
+                <a class = "option" href="/view/community">Users</a>
+                <a class = "option" href="/">Create new user</a>
                 </div>
-                <br>           
+                {%endif%}
+                {%if "id" in session %}
+                {%set user = session["username"]%}
+                {%set id = session["id"]%}
+                <a class = "option" href="{{ '/view/%s'%id|urlencode }}">{{user}}</a>
+                <a class = "option" href="javascript:void(0)" onclick = "MessOn('logoverlay')">Log out</a>
+                {%else%}
+                <a class = "option" href="/login">Log in</a>
+                <a class = "option" href="/signup">Sign up</a>
+                {%endif%}
             </li>
             {%block smallerEdit%}            
             {%endblock%}  

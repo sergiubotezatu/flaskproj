@@ -76,6 +76,7 @@ class UserProfile:
                 
         return render_template("edit_user.html", username = editable.name, email = editable.email)
 
+    @authorizator.admin_required
     def get_all_users(self):
         return render_template("members.html", prefix = "view", allmembers = self.users.get_all())
 
