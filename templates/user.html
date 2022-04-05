@@ -43,9 +43,9 @@
             <p>{%if modified != None and modified != ""%}last update: {{modified}}{%endif%}</p>
             {%if session["id"] == user_id or session["role"] == "admin" or session["role"] == "default"%}
             <a href = "{{ '/edit/%s'%user_id|urlencode }}">
-                <p class = "edituser" >Edit info</p>
+                <p class = "edituser" style = "margin-bottom:0;">Edit info</p>
             </a>
-            <a href = "javascript:void(0)" onclick = "MessOn('signoverlay')">
+            <a href = "javascript:void(0)" onclick = "MessOn('signoverlay')" style = "margin-top:0;">
                 <img src = "\static\icons\unfollow.png" style = "width:25px;height:30px;"></img>
                 Delete account</a>
             {%endif%}

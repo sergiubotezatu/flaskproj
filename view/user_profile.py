@@ -104,7 +104,7 @@ class UserProfile:
         new_name = request.form.get("username")
         new_mail = request.form.get("email", user_id)
         new_password = self.__hash_if_new_pass(request.form.get("pwd"))
-        session["name"] = new_name
+        session["username"] = new_name
         session["email"] = new_mail
         self.users.update_user(user_id, User(new_name, new_mail), new_password)
 

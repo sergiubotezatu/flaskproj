@@ -44,7 +44,7 @@ class UserAuthenticate:
         else:
             email = request.form.get("mail")
             password = request.form.get("pwd")
-            self.authenticator.log_in(email, password)
+            return self.authenticator.log_in(email, password)
 
     def log_out(self):
         self.authenticator.log_out()
