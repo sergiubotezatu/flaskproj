@@ -50,8 +50,6 @@ class UserProfile:
     def user_profile(self, user_id):
         user_id = int(user_id)
         logged = self.users.get_user_by(id = user_id)
-        print(user_id)
-        print(logged.name)
         owned_posts = self.users.get_posts(user_id)
         return render_template("user.html",
         user_id = logged.id,
@@ -74,7 +72,6 @@ class UserProfile:
                 
         return render_template("edit_user.html", username = editable.name, email = editable.email)
 
-    #@authorizator.admin_required
     def get_all_users(self):
         return render_template("members.html", prefix = "view", allmembers = self.users.get_all())
 
