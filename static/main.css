@@ -145,17 +145,43 @@ nav{
     }
 }
 
+form{
+    margin-top:0px;
+    text-align:center;
+    color:rgb(253, 253, 252);
+    font-weight:200px;
+    margin-top:50px;
+  }
+
 .submitBtn
 {
+    width:80px;
+    height:30px;
+    background-color:rgb(54, 211, 22);
     transition: 0.3s all;
+    font-size: large;
 }
 .submitBtn:hover
 {
     color:blue;
-    width:80px;
-    height:30px;
+    width:90px;
+    height:40px;
     box-shadow: 4px 6px 8px white;
     cursor: pointer;
+}
+
+.formtitle{
+    margin-left:auto;
+    margin-right:auto;
+    width: 200px;
+    color:white;
+    text-shadow: 4px 6px 10px black;
+}
+
+.field{
+    width:250px;
+    margin-top:15px;
+    margin-bottom:10px;
 }
 
 .field:hover
@@ -250,7 +276,7 @@ nav{
     width: 100%;
     display: block;
     margin-bottom: 20px;
-    }    
+    }
 }
 
 #create{
@@ -745,3 +771,5 @@ nav{
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
       }
+
+     

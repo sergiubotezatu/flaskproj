@@ -1,12 +1,6 @@
 {%extends "base.html"%}
 {%block title%}Sing_Up{%endblock%}
 {%block content%}
-<h3 
-style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
-Sign Up form
-</h3>
-<br>
-<h4>
 {%with messages = get_flashed_messages()%}
   {%if messages%}
     {%for note in messages%}
@@ -14,8 +8,11 @@ Sign Up form
     {%endfor%}
     {%endif%}
 {%endwith%}
-</h4>
-<form style="text-align:center" method = "Post">
+<form method = "Post">
+  <h3 class = "formtitle">
+    Sign up
+    </h3>
+    <br>
   <label for="username">Create an username:</label><br>
   <input id ="toCheck"
    class="field"
@@ -35,6 +32,7 @@ Sign Up form
   <label for="email">Email address</label><br>
   <input id ="mail"
     class="field"
+    style ="width:250px;"
     type="email"
     name="email"
     placeholder="John.Doe@domain.com"
@@ -64,6 +62,7 @@ Sign Up form
 
    <label for="pwd2">Confirm password</label><br>
   <input class="field"
+    style ="width:250px;"
    type="password"
    id="pwd2" 
    name="pwd2"
@@ -74,6 +73,6 @@ Sign Up form
    <br>
    <span id="diffPass" style="color:red;"></span> 
    <br>
-  <input class ="submitBtn" id="sub" type="submit" value="Sign Up" style = background-color:yellowgreen>
+  <input class ="submitBtn" id="sub" type="submit" value="Sign Up">
 </form>
 {%endblock%}

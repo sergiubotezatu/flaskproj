@@ -1,11 +1,6 @@
 {%extends "base.html"%}
 {%block title%}LogIn{%endblock%}
 {%block content%}
-<h2 
-style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
-Log in and start posting
-</h2>
-<br><br>
 {%with messages = get_flashed_messages()%}
   {%if messages%}
     {%for note in messages%}
@@ -15,6 +10,10 @@ Log in and start posting
     {%endif%}
 {%endwith%}
 <form style="text-align:center" method = "Post">
+  <h3 class = "formtitle">
+    Log in
+    </h3>
+    <br>
   <label for="mail">Email address:</label><br>
   <input class="field"
    type="email" 
@@ -30,7 +29,7 @@ Log in and start posting
    name="pwd"
    placeholder="Type in your password"
    required><br><br>
-  <input class ="submitBtn" type="submit" value="Log In" style = background-color:yellowgreen>
+  <input class ="submitBtn" type="submit" value="Log In">
 </form>
 <h3 style ="text-align:center; color:white; text-shadow: 4px 6px 10px black">
   Not a member? Press  <a id = "ToRegister" href="/signup">Here</a>  to sign up.
