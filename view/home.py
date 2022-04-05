@@ -13,7 +13,7 @@ class Home:
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
 
     def goto_db_setup(self):
-        if DataBase.config.is_configured:
+        if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):
