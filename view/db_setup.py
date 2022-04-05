@@ -12,7 +12,7 @@ class DbSetUp:
     def __init__(self, db : IDataBase, hasher : IPassHash):
         self.database = db
         self.hasher = hasher
-        self.upgrader : IDataBaseUpgrade = self.db.upgrader
+        self.upgrader : IDataBaseUpgrade = self.database.upgrader
         self.bp = Blueprint("db_setup", __name__)
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
         self.upgrade_if_older()

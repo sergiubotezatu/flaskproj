@@ -22,7 +22,7 @@ class PostPage:
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
     def goto_db_setup(self):
-        if DataBase.config.is_configured():
+        if DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
 
     @authorizator.member_required
