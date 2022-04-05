@@ -3,7 +3,7 @@ from models.logged_user import Logged_user
 
 class IAuthentication(metaclass = ABCMeta):
     @abstractmethod
-    def log_in_successful(self, id, email, username) -> bool:
+    def log_in(self, id, email, username) -> bool:
         pass
 
     @abstractmethod

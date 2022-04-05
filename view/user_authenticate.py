@@ -44,12 +44,7 @@ class UserAuthenticate:
         else:
             email = request.form.get("mail")
             password = request.form.get("pwd")
-            if not self.authenticator.log_in_successful(email, password):
-                return redirect(url_for(".log_in"))
-
-        found = self.authenticator.get_logged_user()
-        flash(f"Welcome back, {found.name}!")
-        return redirect(url_for("profile.user_profile", user_id = found.id))
+            self.authenticator.log_in(email, password)
 
     def log_out(self):
         self.authenticator.log_out()
