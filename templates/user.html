@@ -1,6 +1,5 @@
 {%extends "base.html"%}
-
-{%block title%}{{user}}{%endblock%}
+{%block title%}{{name}}{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}
@@ -33,11 +32,11 @@
     </div>
 
     <h3 id = "userposts"style="text-align:right; margin-right: 450px;color:white; text-shadow: 2px 4px 5px black">
-        {{user}}'s posts
+        {{name}}'s posts
     </h3>
     <div class="profile">
         <div class="profileinfo">
-            <p>{{user}}</p>
+            <p>{{name}}</p>
             <p>email:{{email}}</p>
             <p>member since:{{date}}</p>
             <p>{%if modified != None and modified != ""%}last update: {{modified}}{%endif%}</p>

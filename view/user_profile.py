@@ -50,10 +50,12 @@ class UserProfile:
     def user_profile(self, user_id):
         user_id = int(user_id)
         logged = self.users.get_user_by(id = user_id)
+        print(user_id)
+        print(logged.name)
         owned_posts = self.users.get_posts(user_id)
         return render_template("user.html",
         user_id = logged.id,
-        user= logged.name,
+        name= logged.name,
         email = logged.email,
         date = logged.created,
         modified = logged.modified,
