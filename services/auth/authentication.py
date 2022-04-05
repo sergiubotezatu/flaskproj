@@ -51,3 +51,4 @@ class Authentication(IAuthentication):
         session.pop("id")
         session.pop("username")
         session.pop("email")
+        session.pop("role")

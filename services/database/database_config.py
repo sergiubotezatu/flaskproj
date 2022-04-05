@@ -21,6 +21,7 @@ class DataBaseConfig(Config, IDataBaseConfig):
         params = super().load()
         for param in params:
             self.current_config[param[0]] = param[1]
+        self.is_configured = True
         
     def save(self):
         section = self.SECTION

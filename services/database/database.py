@@ -36,7 +36,7 @@ class DataBase(IDataBase):
                 self.connect()
                 for operation in self.upgrader.upgrade():
                     self.cursor.execute(operation, args)
-                    self.commit_and_close()
+                self.commit_and_close()
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
 

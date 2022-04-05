@@ -21,7 +21,6 @@ class UserProfile:
         self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.members = self.register("/view/community", self.get_all_users)
         self.signup = self.register("/signup", self.sign_up)
-        self.admin_choice = self.bp.route("/view/admin_choice")(self.chose_users_list)
         self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
         self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
        
@@ -50,9 +49,6 @@ class UserProfile:
 
     def user_profile(self, user_id):
         user_id = int(user_id)
-        if request.method == "POST":
-            return self.check_for_log_out()
-        
         logged = self.users.get_user_by(id = user_id)
         owned_posts = self.users.get_posts(user_id)
         return render_template("user.html",
@@ -76,7 +72,7 @@ class UserProfile:
                 
         return render_template("edit_user.html", username = editable.name, email = editable.email)
 
-    @authorizator.admin_required
+    #@authorizator.admin_required
     def get_all_users(self):
         return render_template("members.html", prefix = "view", allmembers = self.users.get_all())
 
