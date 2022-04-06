@@ -1,3 +1,5 @@
+
+
 class Services:
     container = {}
     dependencies = {}
@@ -5,15 +7,15 @@ class Services:
     @classmethod
     def get(cls, constructor):
         def wrapper(instance, *services):
-            if len(services) == 1 and services[0] == None:
-               return constructor(instance)
-            else:
-                next_inject = ()
-                injected = ()
-                for service in services:
+            next_inject = ()
+            injected = ()
+            for service in services:
+                if cls.dependencies[service] == None:
+                    injected += (cls.container[service](),)
+                else:
                     next_inject = Services.pack_if_needed(cls.dependencies[service])
                     injected += (cls.container[service](*next_inject),)
-                constructor(instance, *injected)
+            constructor(instance, *injected)
                 
         return wrapper
   

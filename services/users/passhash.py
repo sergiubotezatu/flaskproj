@@ -3,7 +3,6 @@ from services.interfaces.Ipassword_hash import IPassHash
 from services.dependency_inject.injector import Services
 
 class PassHash(IPassHash):
-    @Services.get
     def __init__(self):
         pass
     

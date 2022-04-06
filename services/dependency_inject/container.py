@@ -1,3 +1,4 @@
+from services.auth.session_manager import SessionMngr
 from services.interfaces.Ipassword_hash import IPassHash
 from services.database.db_upgrade import DataBaseUpgrade
 from services.interfaces.iauthentication import IAuthentication
@@ -5,6 +6,7 @@ from services.interfaces.iauthorization import IAuthorization
 from services.auth.authentication import Authentication
 from services.interfaces.idb_upgrade import IDataBaseUpgrade
 from services.auth.authorization import Authorization
+from services.interfaces.isession_mngr import ISessionMNGR
 from services.users.passhash import PassHash
 from services.posts.posts_db_repo import PostsDb
 from services.posts.posts_in_memo import Posts
@@ -28,6 +30,7 @@ class Container:
         IAuthentication : (IUsersRepo, IPassHash),
         IAuthorization : IAuthentication,
         IPassHash : None,
+        ISessionMNGR : None
         }
 
     prod_services = {
@@ -38,7 +41,8 @@ class Container:
         IUsersRepo : UsersDb,
         IAuthentication : Authentication,
         IPassHash : PassHash,
-        IAuthorization : Authorization
+        IAuthorization : Authorization,
+        ISessionMNGR : SessionMngr
         }
 
     test_services = {

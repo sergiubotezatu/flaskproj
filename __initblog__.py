@@ -5,6 +5,7 @@ from services.interfaces.idata_base import IDataBase
 from services.dependency_inject.injector import Services
 from services.dependency_inject.container import Container
 from services.interfaces.ipost_repo import IPostRepo
+from services.interfaces.isession_mngr import ISessionMNGR
 from services.interfaces.iusers_repo import IUsersRepo
 from datetime import timedelta
 
@@ -22,7 +23,7 @@ def create_blog(is_test_app = False):
     from view.db_setup import DbSetUp
     blog.register_blueprint(DbSetUp(IDataBase, IPassHash).bp)
     from view.user_profile import UserProfile
-    blog.register_blueprint(UserProfile(IUsersRepo, IPassHash).bp)
+    blog.register_blueprint(UserProfile(IUsersRepo, IPassHash, ISessionMNGR).bp)
     from view.user_authenticate import UserAuthenticate
     blog.register_blueprint(UserAuthenticate(IAuthentication).bp)
 

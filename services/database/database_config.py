@@ -6,7 +6,6 @@ from services.database.config import Config
 class DataBaseConfig(Config, IDataBaseConfig):
     is_configured = False
 
-    @Services.get
     def __init__(self):
         super().__init__()
         self.settings = None

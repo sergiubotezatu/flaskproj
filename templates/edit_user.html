@@ -16,7 +16,7 @@ Change profile information
 {%endwith%}
 </h4>
 <form style="text-align:center" method = "Post">
-  <label for="username">Create an username:</label><br>
+  <label for="username">Change username:</label><br>
   <input id ="toCheck"
    class="field"
    type="text"
@@ -43,15 +43,19 @@ Change profile information
     required>
     <br>
     <br>
-    
-    <label for="old">Verify it's you</label><br>
+   <label for="old">Verify it's you</label><br>
   <input class="field"
    style ="width:250px;"
    type="password"
    id="oldpass" 
    name="oldpass"
-   required
+    required
    >
+   {%if "role" in session and session["role"] == "admin" or session["role"] == "default"%}
+  <script>      
+    document.getElementById("oldpass").removeAttribute("required");
+  </script>
+  {%endif%}
    <br>
    <br>
 
@@ -65,7 +69,7 @@ Change profile information
    pattern="([a-zA-Z0-9]+)*[^A-Za-z0-9]([a-zA-Z0-9]+)*"
    title="Password must be 7 characters long and have 1 special character"
    minlength="7"
-   onfocus="RestoreAlerted()"
+   onfocus ="RestoreAlerted()"
    onblur="InvalidPass()">   
    <br>
    <span id="wrongFormat" style="color:red;"></span>
@@ -82,6 +86,6 @@ Change profile information
    <br>
    <span id="diffPass" style="color:red;"></span> 
    <br>
-  <input class ="submitBtn" id="sub" type="submit" value="Submit" style = background-color:yellowgreen>
+  <input class ="submitBtn" id="sub" type="submit" value="Submit">
 </form>
 {%endblock%}
