@@ -95,11 +95,16 @@ class UsersDb(IUsersRepo):
         """, user.name, user.email, user.created, usr_id)
 
     def get_all(self):
-        return self.db.perform("""
-        SELECT OwnerID, Name
-        FROM blog_users
-        ORDER BY OwnerID DESC;
-        """, fetch = "fetchall")
+        result = self.db.perform("""
+        SELECT u.OwnerID, u.Name,
+        CASE WHEN u.Email LIKE %s THEN 'admin'
+        ELSE ''
+        END AS SpecialRole
+        FROM blog_users u
+        ORDER BY u.OwnerID DESC;
+        """, "%@admin", fetch = "fetchall") + self.get_all_inactive()
+        print(result)
+        return result
 
     def get_all_inactive(self):
         displayed =  self.db.perform("""

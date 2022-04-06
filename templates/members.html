@@ -3,18 +3,28 @@
 {%block content%}
 <div class = "community">
         {%for member in allmembers%}
-        
-        <div class = "member">
-            {%if member[0] == member[1]%}
+        {%if member[0] == member[1]%}
+        <a href="{{ '/view/old_users/%s'%member[0]|urlencode }}">
+        <div class = "member" id = "inactive">
+                <h5 style = "text-align:center;color:black;">{{member[1]}}</h5>
+                <span class="tooltiptext">{{member[1]}}</span>
+        </div>
+            </a>
+            {%elif member|length > 2 and member[2] == 'admin'%}
             <a href="{{ '/view/old_users/%s'%member[0]|urlencode }}">
-                <p style = "text-align:center;color:white;">{{member[1]}}</p>
+                <div class = "member" id = "admin">
+                        <h5 style = "text-align:center;color:black;">{{member[1]}}</h5>
+                        <span class="tooltiptext">{{member[1]}}</span>
+                </div>
             </a>
             {%else%}
             <a href="{{ '/view/%s'%member[0]|urlencode }}">
-                <p style = "text-align:center;color:white;">{{member[1]}}</p>
-            </a>
-            {%endif%}
-        </div>
+        <div class = "member" id = "active">
+                <h5 style = "text-align:center;color:black">{{member[1]}}</h5>
+                <span class="tooltiptext">{{member[1]}}</span>
+           </div>
+        </a>
+        {%endif%}
         {%endfor%}
     </div>
 {%endblock%}

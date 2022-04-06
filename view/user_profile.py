@@ -76,14 +76,15 @@ class UserProfile:
         return render_template("edit_user.html", username = editable.name, email = editable.email)
 
     def get_all_users(self):
-        return render_template("members.html", prefix = "view", allmembers = self.users.get_all())
+        return render_template("members.html", allmembers = self.users.get_all())
 
     @authorizator.admin_required
     def chose_users_list(self):
         return render_template("admin_choice.html")
 
+    @authorizator.admin_required
     def get_all_inactive(self):
-        return render_template("members.html", prefix = "view/archive", allmembers = self.users.get_all_inactive())
+        return render_template("members.html", role = "view/archive", allmembers = self.users.get_all_inactive())
 
     @authorizator.admin_required
     def inactive_user(self, email):
@@ -130,5 +131,3 @@ class UserProfile:
         flash("This is your profile page. Here you can see all of your posts.")
         flash("Select Create new post to add a new post", "info")
         return True
-
-
