@@ -16,12 +16,13 @@ Create new user
 {%endwith%}
 </h4>
 <form style="text-align:center" method = "Post">
-<label class="container" id = "question">User is ADMIN
-    <input type="checkbox" onclick = "FillInEmail()">
-    <span class="checkmark"></span>
-</label>
-
-  <label for="username">Create an username:</label><br>
+  <label class="toggle" style = "margin-bottom:40px;">
+    <input type="checkbox">
+    <span class="slider"></span>
+      <span class="labels" data-on="Admin" data-off="Regular" onclick ="FillInEmail()"></span>
+      </label>
+      <br>
+    <label for="username">Create an username:</label><br>
   <input id ="toCheck"
    class="field"
    type="text"
@@ -44,7 +45,8 @@ Create new user
     name="email"
     placeholder="John.Doe@domain.com"
     minlength="4"
-    required>
+    required
+    oninput="InvalidMail()">
     <br>
     <br>
     
@@ -77,6 +79,6 @@ Create new user
    <br>
    <span id="diffPass" style="color:red;"></span> 
    <br>
-  <input class ="submitBtn" id="sub" type="submit" value="Sign Up" style = background-color:yellowgreen>
+  <input class ="submitBtn" id="sub" type="submit" value="Create">
 </form>
 {%endblock%}

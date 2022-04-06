@@ -16,27 +16,13 @@ class UserAuthenticate:
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.login = self.register("/login", self.log_in)
         self.logout = self.bp.route("/logout")(self.log_out)
-        self.create_new = self.bp.route("/create")(self.create)
-                
+        
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
 
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
-
-    @authorizator.admin_required
-    def create(self):
-        if request.method == "POST":
-            email = request.form.get("email")
-            pwd = request.form.get("pwd")
-            username = request.form.get("username")
-            if not self.authenticator.sign_up_successful(username, email, pwd):
-                return redirect(url_for(".sign_up"))
-            else:
-                signed_id = self.authenticator.get_logged_user().id              
-                return redirect(url_for("profile.user_profile", user_id = signed_id))
-        return render_template("create_users.html")
 
     def log_in(self):
         if request.method == "GET":

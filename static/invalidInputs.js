@@ -91,8 +91,10 @@ function FillInEmail()
     if (value == "")
     {
         autofill = "@admin";
-    }
+        }
+    
     document.getElementById("mail").value = autofill;
+    
 }
 
 function showOptions(){

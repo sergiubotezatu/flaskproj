@@ -25,6 +25,7 @@ class UserProfile:
         self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
         self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
         self.edit = self.register("/edit/<user_id>", self.edit_user)
+        self.create_new = self.bp.route("/create")(self.create)
        
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -41,7 +42,6 @@ class UserProfile:
             if not self.__sign_up_validated(username, email):
                 return redirect(url_for(".sign_up"))
             else:
-                print("YYY")
                 new_user = User(username, email)
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add_user(new_user)
@@ -75,6 +75,7 @@ class UserProfile:
                 
         return render_template("edit_user.html", username = editable.name, email = editable.email)
 
+    @authorizator.admin_required
     def get_all_users(self):
         return render_template("members.html", allmembers = self.users.get_all())
 
@@ -82,7 +83,7 @@ class UserProfile:
     def chose_users_list(self):
         return render_template("admin_choice.html")
 
-    @authorizator.admin_required
+    
     def get_all_inactive(self):
         return render_template("members.html", role = "view/archive", allmembers = self.users.get_all_inactive())
 
@@ -97,7 +98,23 @@ class UserProfile:
         email = email,
         date = "N/A",
         modified = None,
-        posts = removed_posts)        
+        posts = removed_posts)  
+
+    @authorizator.admin_required
+    def create(self):
+        if request.method == "POST":
+            email = request.form.get("email")
+            pwd = request.form.get("pwd")
+            username = request.form.get("username")
+            if not self.__sign_up_validated(username, email, pwd):
+                return redirect(url_for(".create"))
+            else:
+                new_user = User(username, email)
+                new_user.password = self.hasher.generate_pass(pwd)
+                new_user.id = self.users.add_user(new_user)
+                signed_id = new_user.id              
+                return redirect(url_for("profile.user_profile", user_id = signed_id))
+        return render_template("create_users.html")
 
     def __update_info(self, user_id):
         new_name = request.form.get("username")
