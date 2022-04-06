@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, url_for, redirect, request, sessio
 from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
 from services.auth.authentication import Authentication
+from services.interfaces.isession_mngr import ISessionMNGR
 from services.interfaces.iusers_repo import IUsersRepo
 from services.dependency_inject.injector import Services
 from models.user import User
@@ -12,17 +13,18 @@ class UserProfile:
     authorizator = AccessDecorators(IAuthorization)
 
     @Services.get
-    def __init__(self, repo : IUsersRepo, hasher : IPassHash):
+    def __init__(self, repo : IUsersRepo, hasher : IPassHash, active_usr : ISessionMNGR):
         self.users = repo
         self.hasher = hasher
+        self.active_usr = active_usr
         self.bp = Blueprint("profile", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.profile = self.register("/view/<user_id>", self.user_profile)
-        self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.members = self.register("/view/community", self.get_all_users)
         self.signup = self.register("/signup", self.sign_up)
         self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
         self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
+        self.edit = self.register("/edit/<user_id>", self.edit_user)
        
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -43,8 +45,8 @@ class UserProfile:
                 new_user = User(username, email)
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add_user(new_user)
-                Authentication.log_session(new_user.id, username, email)
-                return redirect(url_for("profile.user_profile", user_id = new_user.id))
+                self.active_usr.log_session(new_user.id, username, email)
+                return redirect(url_for(".user_profile", user_id = new_user.id))
         return render_template("signup.html")
 
     def user_profile(self, user_id):
@@ -64,7 +66,8 @@ class UserProfile:
         user_id = int(user_id)
         editable : User = self.users.get_user_by(id = user_id)
         if request.method == "POST":
-            if self.hasher.check_pass(editable.hashed_pass, request.form.get("oldpass")):
+            identity_checker = request.form.get("oldpass")
+            if identity_checker == "" or self.hasher.check_pass(editable.hashed_pass, identity_checker) :
                 self.__update_info(user_id)
                 return redirect(url_for(".user_profile", user_id = user_id))
             else:
@@ -99,8 +102,8 @@ class UserProfile:
         new_name = request.form.get("username")
         new_mail = request.form.get("email", user_id)
         new_password = self.__hash_if_new_pass(request.form.get("pwd"))
-        session["username"] = new_name
-        session["email"] = new_mail
+        if self.active_usr.get_logged_user().role == "regular":
+            self.active_usr.edit_logged(new_name, new_password)
         self.users.update_user(user_id, User(new_name, new_mail), new_password)
 
     def check_for_log_out(self):
@@ -108,7 +111,7 @@ class UserProfile:
             flash(f"You have been logged out. See you again soon!")
         else:
             to_delete = self.users.get_user_by(id = session["id"])
-            Authentication.log_out()
+            self.active_usr.log_out()
             flash(f"Your membership has been canceled.")
             self.users.remove_user(to_delete)
         return redirect(url_for("home.front_page"))

@@ -17,7 +17,7 @@ class UserAuthenticate:
         self.login = self.register("/login", self.log_in)
         self.logout = self.bp.route("/logout")(self.log_out)
         self.create_new = self.bp.route("/create")(self.create)
-        
+                
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
@@ -49,5 +49,4 @@ class UserAuthenticate:
     def log_out(self):
         self.authenticator.log_out()
         flash(f"You have been logged out. See you again soon!")
-        return redirect(url_for("home.front_page"))   
-    
+        return redirect(url_for("home.front_page"))

@@ -5,8 +5,9 @@ from services.interfaces.iusers_repo import IUsersRepo
 from services.interfaces.Ipassword_hash import IPassHash
 from services.dependency_inject.injector import Services
 from models.logged_user import Logged_user
+from services.auth.session_manager import SessionMngr
 
-class Authentication(IAuthentication):    
+class Authentication(SessionMngr, IAuthentication):    
     @Services.get
     def __init__(self, users : IUsersRepo, hasher : IPassHash):
         self.users = users
@@ -20,35 +21,23 @@ class Authentication(IAuthentication):
             "Click on \"HERE\" below the form if you don't have an account", "error")
             return redirect(url_for(".log_in"))
         
-        Authentication.log_session(found.id, found.name, found.email)
+        self.log_session(found.id, found.name, found.email)
         flash(f"Welcome back, {found.name}!")
         return redirect(url_for("profile.user_profile", user_id = found.id))
+
+    def is_logged_in(self, id) -> bool:
+        return "id" in session and session["id"] == int(id)
 
     def get_logged_user(self) -> Logged_user:
         if "id" in session:
             return Logged_user(session["id"], session["username"], session["email"], session["role"])
         return None
 
-    def is_logged_in(self, id) -> bool:
-        return "id" in session and session["id"] == int(id)
+    def edit_logged(self, username, email):
+        super().edit_logged(username, email)
 
-    @staticmethod
-    def log_session(id, username, email):
-        session["id"] = id
-        session["username"] = username
-        session["email"] = email
-        mail_sufix = email[-6:]
-        if mail_sufix != "@admin":
-            session["role"] = "regular"
-        elif id == 1:
-            session["role"] = "default"
-        else:
-            session["role"] = "admin"
-        session.permanent = True
+    def log_session(self, id, username, email):
+        super().log_session(id, username, email)
 
-    @staticmethod
-    def log_out():
-        session.pop("id")
-        session.pop("username")
-        session.pop("email")
-        session.pop("role")
+    def log_out(self):
+        super().log_out()
