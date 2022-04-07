@@ -1,9 +1,9 @@
 {%extends "base.html"%}
 {%block title%}Create new users{%endblock%}
 {%block content%}
-<h3 
+<h3 id = "role"
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
-Create new user
+Create basic user
 </h3>
 <br>
 <h4>
@@ -18,9 +18,9 @@ Create new user
 <form style="text-align:center" method = "Post">
   <h4>User Role</h4>
   <label class="toggle" style = "margin-bottom:40px;">
-    <input type="checkbox">
+    <input type="checkbox" id = "switch">
     <span class="slider"></span>
-      <span class="labels" data-on="Admin" data-off="Regular" onclick ="FillInEmail()"></span>
+      <span class="labels" data-on="Admin" data-off="Basic" onclick ="FillInEmail()"></span>
       </label>
       <br>
     <label for="username">Create an username:</label><br>
@@ -36,7 +36,7 @@ Create new user
    required
    oninput="InvalidUserName()">
    <br>
-   <span id="invalid" style="color:red;"></span>
+   <h4 id="invalid" style="color:red;"></h4>
    <br>
 
   <label for="email">Email address</label><br>

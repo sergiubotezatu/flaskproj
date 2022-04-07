@@ -29,10 +29,20 @@ function InvalidMail()
     document.getElementById("invalid").innerHTML = "";
     document.getElementById("mail").style.backgroundColor = "white";
     var input = document.getElementById("mail").value
-    if (input.lastIndexOf("@admin") != -1)
+    if(document.getElementById("role").innerHTML.indexOf("admin") != -1)
     {
-      document.getElementById("invalid").innerHTML = "@admin is for admin use only";
-      document.getElementById("mail").style.backgroundColor = "rgba(201, 37, 22, 0.7)";
+        if (input.slice(-6) != "@admin")
+        {
+          document.getElementById("invalid").innerHTML = "domain '@admin' is mandatory";
+          document.getElementById("mail").style.backgroundColor = "rgba(201, 37, 22, 0.7)";
+        }
+    }else
+    {
+      if (input.lastIndexOf("@admin") != -1)
+      {
+        document.getElementById("invalid").innerHTML = "@admin is for admin use only";
+        document.getElementById("mail").style.backgroundColor = "rgba(201, 37, 22, 0.7)";
+      }
     }
 }
 
@@ -86,15 +96,16 @@ function DifferentPass()
 
 function FillInEmail()
 {
-    var value = document.getElementById("mail").value;
+    var role = document.getElementById("role").innerHTML;
     var autofill = "";
-    if (value == "")
+    var title = "Create basic user"
+    if (role.indexOf("basic") != -1)
     {
         autofill = "@admin";
-        }
-    
+        title = "Create admin user"
+    }
     document.getElementById("mail").value = autofill;
-    
+    document.getElementById("role").innerHTML = title
 }
 
 function showOptions(){

@@ -25,7 +25,7 @@ class UserProfile:
         self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
         self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
         self.edit = self.register("/edit/<user_id>", self.edit_user)
-        self.create_new = self.bp.route("/create")(self.create)
+        self.create_new = self.register("/create", self.create)
        
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -106,7 +106,7 @@ class UserProfile:
             email = request.form.get("email")
             pwd = request.form.get("pwd")
             username = request.form.get("username")
-            if not self.__sign_up_validated(username, email, pwd):
+            if not self.__sign_up_validated(username, email):
                 return redirect(url_for(".create"))
             else:
                 new_user = User(username, email)
