@@ -13,18 +13,18 @@ class MockDbConfig(MockConfig, IDataBaseConfig):
     def __init__(self):
         pass
        
-    def save(self):
+    def save(self, settings):
         pass
 
-    def load(self):
-        pass
-
-    def add_settings(self):
+    def load(self, section):
         pass
 
     def get_db_version(self):
         pass
 
-    def set_db_version(self):
+    def set_db_version(self, version):
         pass
+
+    def section_exists(self, section : str):
+        return True
 

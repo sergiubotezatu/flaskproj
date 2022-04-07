@@ -52,7 +52,9 @@ class Container:
         IUsersRepo : Users,
         IAuthentication : Authentication,
         IPassHash: PassHash,
-        IDataBaseUpgrade : DataBaseUpgrade}
+        IDataBaseUpgrade : DataBaseUpgrade,
+        IAuthorization : Authorization,
+        ISessionMNGR : SessionMngr}
 
     def __init__(self, is_test):
         self.items = self.get(is_test)
