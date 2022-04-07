@@ -5,10 +5,6 @@ class IDataBase(metaclass = ABCMeta):
     config : DataBaseConfig
 
     @abstractmethod
-    def initialize_db(cls):
-        pass
-
-    @abstractmethod
     def upgrade_db(self):
         pass
 
@@ -22,4 +18,9 @@ class IDataBase(metaclass = ABCMeta):
 
     @abstractmethod
     def commit_and_close(self):
+        pass
+    
+    @classmethod
+    @abstractmethod
+    def set_db(cls):
         pass

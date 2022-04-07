@@ -9,10 +9,6 @@ class IDataBaseConfig(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def add_settings(cls):
-        pass
-
-    @abstractmethod
     def load(self, settings : DBSettings):
         pass
 

@@ -1,3 +1,4 @@
+from configparser import ConfigParser
 from models.db_settings import DBSettings
 from services.interfaces.idatabase_config import IDataBaseConfig
 from services.dependency_inject.injector import Services
@@ -8,44 +9,43 @@ class DataBaseConfig(Config, IDataBaseConfig):
 
     def __init__(self):
         super().__init__()
-        self.settings = None
-        self.current_config = None
-        self.load_existing_section()
-                
-    def add_settings(self, settings : DBSettings):
-        self.settings = settings
-                    
-    def load(self):
+        self.setting_options = ["dbname", "user", "password", "host"]
+                        
+    def load(self, section) -> DBSettings:
         self.current_config = {}
-        params = super().load()
+        params = super().load(section).items(section)
+        settings = [section]
         for param in params:
-            self.current_config[param[0]] = param[1]
-        self.is_configured = True
+            settings.append(param[1])
+        DataBaseConfig.is_configured = True
+        return DBSettings(settings)
         
-    def save(self):
-        section = self.SECTION
-        params = f"[{section}]\n"
-        for options in self.setting_options:
-            params += f"{options} = {getattr(self.settings, options)}\n"
-        with open(self.CONFIGFILE, "w") as writer:
-            writer.write(params)
-        super().save()
+    def save(self, settings : DBSettings):
+        if not self.section_exists(settings.section):
+            parser = ConfigParser()
+            parser.add_section(settings.section)
+            for i in range(4):
+                parser.set(settings.section,
+                self.setting_options[i] ,settings.configuration[self.setting_options[i]])
+            super().save(parser)        
 
-    def load_existing_section(self):
-        super().save()
-        if self.section_exists():            
-            self.load()
-            self.is_configured = True
-   
     def set_db_version(self, version):
-        if self.parser.has_section("version"):
-            self.parser.items("version")[0] = ("vers.", version)
+        parser = ConfigParser()
+        if self.section_exists("version"):
+            with open(self.CONFIGFILE, 'r+') as editter:
+                line = editter.readline()
+                while line:
+                    if line.startswith("vers."):
+                        editter.write(f"vers. = {version}")
         else:
             with open(self.CONFIGFILE, "a") as append:
-                append.write(f"[version]\nvers. = {version}")
-            super().save()
+                parser.add_section("version")
+                parser.set("version", "vers.", version)
+            super().save(parser)
             
     def get_db_version(self):
-        if self.parser.has_section("version"):
-            return self.parser.items("version")[0][1]
+        parser = ConfigParser()
+        if self.section_exists("version"):
+            parser.read(self.CONFIGFILE)
+            return parser.get("version", "vers.")
         return "1.0"
