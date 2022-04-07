@@ -21,7 +21,6 @@ class DbSetUp:
         self.upgrade_if_older()
         
     def set_database(self):
-        print(self.database.config.is_configured)
         if self.database.config.is_configured:
             return redirect(url_for("home.front_page"))
         if request.method == "POST":

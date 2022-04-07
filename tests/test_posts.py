@@ -43,8 +43,6 @@ class PostsTests(unittest.TestCase):
 
     @configure(False)
     def test_redirects_tosetup_if_not_first_time_access(self):
-        from services.access_decorators import decorator
-        decorator.redirects = 0
         result = self.test_app.get(self.BASE, follow_redirects = False)
         self.assertEqual(result.location, "http://localhost/config")
 
