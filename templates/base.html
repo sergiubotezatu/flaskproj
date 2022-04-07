@@ -14,22 +14,22 @@
         
         <ul class = "largerScreen" id ="opaque" >
             <li><a class = "option" href="/">
-                <img src = "\static\icons\home.png" style = "width:25px;height:30px;"></img>
+                <img src = "\static\icons\home.png" class = "icon"></img>
                 Home
             </a></li>
             <li><a class = "option" href="/post/create">
-                <img src = "\static\icons\fountain-pen-close-up.png" style = "width:25px;height:30px;"></img>
+                <img src = "\static\icons\fountain-pen-close-up.png" class = "icon"></img>
                 Create new Post
             </a></li>
             {%if "role" in session and session["role"] == "admin" or session["role"] == "default"%}
             <li>
                 <a class = "option" href = "/create">
-                    <img src = "\static\icons\create.png" style = "width:25px;height:30px;"></img>
+                    <img src = "\static\icons\create.png" class = "icon"></img>
                     Create new user</a>
             </li>
             <li>
                 <a class = "option" href = "/view/community">
-                    <img src = "\static\icons\team.png" style = "width:25px;height:30px;"></img>
+                    <img src = "\static\icons\team.png" class = "icon"></img>
                     Users</a>
             </li>
             {%endif%}
@@ -38,9 +38,11 @@
             {%set id = session["id"]%}
             <li style = "float:right">
                 <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
-                <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
-                <i id = "arr" class="arrow down"></i>
-                {{user}}</a>         
+                <img src = "\static\icons\profile.png" class = "icon"></img>
+                {{user}}
+                <img src = "\static\icons\downward-arrow.png" class = "icon"
+                id = "arr" class="down"></img>
+            </a>         
             </li>
         </ul>
         <ul id = "drop-log-sign"style = "float:right;width:150px;">
@@ -51,8 +53,9 @@
         {%else%}
         <li style = "float:right">
             <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
-            <img src = "\static\icons\profile.png" style = "width:25px;height:30px;"></img>
-            <i id = "arr" class="arrow down"></i>
+            <img src = "\static\icons\profile.png"></img>
+            <img src = "\static\icons\downward-arrow.png"
+                id = "arr" class="down"></img>
             Profile</a>
         </li>
         </ul>
