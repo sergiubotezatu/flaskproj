@@ -42,8 +42,8 @@ class DbSetUp:
     def upgrade_if_older(self):
         if self.database.config.section_exists("postgresql"):
             self.database.set_db()
-        if not self.upgrader.is_latest_version():
-            admin_pass = self.hasher.generate_pass('admin1')
-            dummy_pass = self.hasher.generate_pass('dummy')
-            admin_creation = datetime.now().strftime("%d/%b/%y %H:%M:%S")   
-            self.database.upgrade_db(admin_pass, admin_creation, dummy_pass)
+            if not self.upgrader.is_latest_version():
+                admin_pass = self.hasher.generate_pass('admin1')
+                dummy_pass = self.hasher.generate_pass('dummy')
+                admin_creation = datetime.now().strftime("%d/%b/%y %H:%M:%S")
+                self.database.upgrade_db((admin_pass, admin_creation), (dummy_pass,))
