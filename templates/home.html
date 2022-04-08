@@ -20,6 +20,27 @@
   </div>
   </div>
 </div>
+  <span style = "color:white;position:absolute;top:175px;left:20px;margin-right:20px">Filter posts</span>
+  <div class = "filter-field">
+    <div class = "filters">
+      <form method="post">
+      {%for filtered in filters%}
+      <span style = "border:1px solid steelblue;padding:3px;">{{filtered[1]}}
+        <input type = "hidden" name = "name" value = {{filtered[1]}}>
+        <input type = "hidden" id = "id" name = "id" value = {{filtered[0]}}>
+        <input type="submit" id="filter" name="user" value="x">
+      </span>
+      {%endfor%}
+      <i class = "arrow" ></i></form>
+  </div>
+  {%for notfiltered in users%}
+    <form id = "test" method ="post">
+    <input type = "hidden" name ="name" value = {{notfiltered[1]}}>
+    <input type="checkbox" id="filter-name" name="user" value = {{notfiltered[0]}}
+    onchange="document.getElementById('test').submit()">{{notfiltered[1]}}</input>
+  </form>
+  {%endfor%}
+</div>
   <div class="row">
       {% for item in allposts%}
       <div class="column">
