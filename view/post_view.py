@@ -17,6 +17,7 @@ class PostPage:
         self.creation = self.register("/create",self.create)
         self.reading = self.register("/read/<post_id>", self.read)
         self.update = self.register("/edit/<post_id>", self.edit)
+        self.activate_deleted = self.register("/unarchive/<id>/<name>/<email>", self.unarchive)
 
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -75,3 +76,11 @@ class PostPage:
         content = request.form.get("post")
         editted = Post(author, title, content)
         self.blogPosts.replace(post_id, editted)
+
+    @authorizator.admin_required
+    def unarchive(self, **kwargs):
+        id = kwargs["id"]
+        name = kwargs["name"]
+        email = kwargs["email"]
+        self.blogPosts.unarchive_content(id, name, email)
+        return redirect(url_for("profile.user_profile", user_id = id))

@@ -3,7 +3,6 @@ from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idata_base import IDataBase
 from models.post import Post
 from services.dependency_inject.injector import Services
-from services.database.repos_queries import queries, fetch_if_needed
 
 class PostsDb(IPostRepo):
     @Services.get
@@ -82,6 +81,21 @@ class PostsDb(IPostRepo):
             ON p.OwnerID = u.OwnerID 
             ORDER BY p.PostID DESC;
             """, fetch = "fetchall"))
+
+    def unarchive_content(self, id, name, email):
+        result = self.db.perform("""
+        SELECT Content
+        FROM deleted_users
+        WHERE Email = %s;
+        """, email, fetch = "fetchall")
+        i = 1
+        for record in result:
+            self.add_post(Post(name, f"post no {i}", record[0], owner_id = id))
+            i += 1
+        self.db.perform("""
+        DELETE FROM deleted_users
+        WHERE Email = %s;
+        """, email)
 
     def __get_fetched(self, fetched):
         result = []

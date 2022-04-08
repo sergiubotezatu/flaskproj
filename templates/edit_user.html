@@ -6,6 +6,7 @@ style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
 Change profile information
 </h3>
 <br>
+<span id = "role" style ="visibility: hidden;">basic user</span>
 <h4>
 {%with messages = get_flashed_messages()%}
   {%if messages%}
@@ -14,8 +15,14 @@ Change profile information
     {%endfor%}
     {%endif%}
 {%endwith%}
-</h4>
 <form style="text-align:center" method = "Post">
+  <h4>User Role</h4>
+  <label class="toggle" style = "margin-bottom:40px;">
+    <input type="checkbox" id = "switch">
+    <span class="slider"></span>
+      <span class="labels" data-on="Admin" data-off="Basic" onclick ="FillInEmail()"></span>
+      </label>
+      <br>
   <label for="username">Change username:</label><br>
   <input id ="toCheck"
    class="field"
@@ -40,7 +47,8 @@ Change profile information
     minlength="4"
     autofocus
     value = "{{email}}"
-    required>
+    required
+    oninput="InvalidMail()">
     <br>
     <br>
    <label for="old">Verify it's you</label><br>

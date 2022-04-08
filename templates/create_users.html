@@ -23,6 +23,7 @@ Create basic user
       <span class="labels" data-on="Admin" data-off="Basic" onclick ="FillInEmail()"></span>
       </label>
       <br>
+    {%if email == ''%}
     <label for="username">Create an username:</label><br>
   <input id ="toCheck"
    class="field"
@@ -50,6 +51,34 @@ Create basic user
     oninput="InvalidMail()">
     <br>
     <br>
+    {%else%}
+    <label for="username">Create an username:</label><br>
+  <input id ="toCheck"
+   class="field"
+   type="text"
+   name="username"
+   value = {{name}}
+   pattern="[a-zA-Z0-9]+" 
+   title="Name should be at least 4 characters long."
+   minlength="4"
+   autofocus
+   required
+   oninput="InvalidUserName()">
+   <br>
+   <h4 id="invalid" style="color:red;"></h4>
+   <br>
+    <label for="email">Email address</label><br>
+  <input id ="mail"
+    class="field"
+    type="email"
+    name="email"
+    value = {{email}}
+    minlength="4"
+    required
+    oninput="InvalidMail()">
+    <br>
+    <br>
+    {%endif%}
     
   <label for="pwd">Create a password</label><br>
   <input class="field"

@@ -41,9 +41,15 @@
             <p>member since:{{date}}</p>
             <p>{%if modified != None and modified != ""%}last update: {{modified}}{%endif%}</p>
             {%if session["id"] == user_id or session["role"] == "admin" or session["role"] == "default"%}
+            {%if user_id != email%}
             <a href = "{{ '/edit/%s'%user_id|urlencode }}">
                 <p class = "edituser" style = "margin-bottom:0;">Edit info</p>
             </a>
+            {%else%}
+            <a href = "{{ '/activate/%s'%user_id|urlencode }}">
+                <p class = "edituser" style = "margin-bottom:0;">Activate account</p>
+            </a>
+            {%endif%}
             <a href = "javascript:void(0)" onclick = "MessOn('signoverlay')" style = "margin-top:0;">
                 <img src = "\static\icons\unfollow.png" style = "width:25px;height:30px;"></img>
                 Delete account</a>

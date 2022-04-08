@@ -140,11 +140,21 @@ class UsersDb(IUsersRepo):
 
     def has_account(self, user_id) -> bool:
         return self.db.perform("""
-    SELECT EXISTS(
+        SELECT EXISTS(
         SELECT OwnerID
         FROM blog_users
         WHERE OwnerID = %s)
     """, user_id, fetch = "fetchone")
+
+    def get_inactive(self, email):
+        result = self.db.perform("""
+        SELECT Email
+        FROM deleted_users
+        WHERE Email = %s;
+        """, email, fetch = "fetchone")
+        email : str = result[0]
+        name = email[0:email.index("@")]
+        return User(name, email)
 
     def __cut_poem_newlines(self, content):
         if content == None:

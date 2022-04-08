@@ -22,10 +22,11 @@ class UserProfile:
         self.profile = self.register("/view/<user_id>", self.user_profile)
         self.members = self.register("/view/community", self.get_all_users)
         self.signup = self.register("/signup", self.sign_up)
-        self.removed_users = self.bp.route("/view/inactive")(self.get_all_inactive)
         self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
         self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.create_new = self.register("/create", self.create)
+        self.activate_old = self.register("/create/<name>/<email>", self.create)
+        self.activate_old = self.register("/activate/<user_id>", self.activate)
        
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -51,14 +52,14 @@ class UserProfile:
 
     def user_profile(self, user_id):
         user_id = int(user_id)
-        logged = self.users.get_user_by(id = user_id)
+        displayed = self.users.get_user_by(id = user_id)
         owned_posts = self.users.get_posts(user_id)
         return render_template("user.html",
-        user_id = logged.id,
-        name= logged.name,
-        email = logged.email,
-        date = logged.created,
-        modified = logged.modified,
+        user_id = displayed.id,
+        name= displayed.name,
+        email = displayed.email,
+        date = displayed.created,
+        modified = displayed.modified,
         posts = owned_posts)
  
     @authorizator.owner_or_admin
@@ -83,10 +84,6 @@ class UserProfile:
     def chose_users_list(self):
         return render_template("admin_choice.html")
 
-    
-    def get_all_inactive(self):
-        return render_template("members.html", role = "view/archive", allmembers = self.users.get_all_inactive())
-
     @authorizator.admin_required
     def inactive_user(self, email):
         if request.method == "POST":
@@ -101,20 +98,27 @@ class UserProfile:
         posts = removed_posts)  
 
     @authorizator.admin_required
-    def create(self):
+    def create(self, name = "", email = ""):
         if request.method == "POST":
-            email = request.form.get("email")
+            mail = request.form.get("email")
             pwd = request.form.get("pwd")
             username = request.form.get("username")
-            if not self.__sign_up_validated(username, email):
+            if not self.__sign_up_validated(username, mail):
                 return redirect(url_for(".create"))
             else:
-                new_user = User(username, email)
+                new_user = User(username, mail)
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add_user(new_user)
-                signed_id = new_user.id              
-                return redirect(url_for("profile.user_profile", user_id = signed_id))
-        return render_template("create_users.html")
+                signed_id = new_user.id
+                if (name != ""):
+                    return redirect(url_for("posts.unarchive", id = signed_id, name = username, email = email))
+                return redirect(url_for(".user_profile", user_id = signed_id))
+        return render_template("create_users.html", name = name, email = email)
+
+    @authorizator.admin_required
+    def activate(self, user_id):
+        inactive = self.users.get_inactive(user_id)
+        return redirect(url_for(".create", name = inactive.name, email = inactive.email))
 
     def __update_info(self, user_id):
         new_name = request.form.get("username")
@@ -147,4 +151,4 @@ class UserProfile:
         flash(f"Welcome, {name}!")
         flash("This is your profile page. Here you can see all of your posts.")
         flash("Select Create new post to add a new post", "info")
-        return True
+        return True       
