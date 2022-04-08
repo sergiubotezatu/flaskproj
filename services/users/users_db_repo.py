@@ -132,12 +132,6 @@ class UsersDb(IUsersRepo):
             posts.append((email, Post(email, "No title", record[0], owner_id = email)))
         return posts       
 
-    def delete_from_archive(self, email):
-        return self.db.perform(f"""
-            DELETE FROM deleted_users
-            WHERE Email = {email};
-            """)
-
     def has_account(self, user_id) -> bool:
         return self.db.perform("""
         SELECT EXISTS(
