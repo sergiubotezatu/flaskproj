@@ -110,6 +110,7 @@ def get_queries():
            DO $$
                 declare
                     mail text := '@dummy.com';
+                    pass text := %s;
             BEGIN
                 if exists(SELECT *
                     FROM information_schema.columns 
@@ -118,7 +119,7 @@ def get_queries():
                     column_name='author')
                 then      
                     INSERT INTO blog_users (Name, Email, Password)
-                    SELECT Author, Author || mail, Author
+                    SELECT Author, Author || mail, pass
                     FROM blog_posts
                     WHERE blog_posts.OwnerID is Null;
 
@@ -137,4 +138,3 @@ def get_queries():
         $$
         LANGUAGE plpgsql;
         """,)]
-

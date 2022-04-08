@@ -13,7 +13,7 @@ class Authentication(SessionMngr, IAuthentication):
         self.users = users
         self.hasher = hasher
         
-    def log_in(self, email, password) -> bool:       
+    def log_in(self, email, password) -> bool:
         found : User = self.users.get_user_by(mail = email)
         if found == None or not self.hasher.check_pass(found.hashed_pass, password):
             flash("Incorrect Password or Email. Please try again", "error")

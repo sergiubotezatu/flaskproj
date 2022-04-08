@@ -12,7 +12,7 @@
         </div>
             </a>
             {%elif member|length > 2 and member[2] == 'admin'%}
-            <a href="{{ '/view/old_users/%s'%member[0]|urlencode }}">
+            <a href="{{ '/view/%s'%member[0]|urlencode }}">
                 <div class = "member" id = "admin">
                         <h5 style = "text-align:center;color:white;
                         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">{{member[1]}}</h5>

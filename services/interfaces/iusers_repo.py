@@ -20,7 +20,7 @@ class IUsersRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def update_user(self, user, pwd):
+    def update_user(self, usr_id, user, pwd):
         pass
 
     @abstractmethod
