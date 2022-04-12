@@ -20,6 +20,7 @@ class Home:
             return redirect(url_for("db_setup.set_database"))
     
     def front_page(self):
+        id = None
         if request.method == "POST":
             id = request.form.get("user")
             name = request.form.get("name")
