@@ -23,21 +23,23 @@
   <span style = "color:white;position:absolute;top:175px;left:20px;margin-right:20px">Filter posts</span>
   <div class = "filter-field">
     <div class = "filters">
-      <form method="post">
       {%for filtered in filters%}
+      <form method="post">
       <span style = "border:1px solid steelblue;padding:3px;">{{filtered[1]}}
         <input type = "hidden" name = "name" value = {{filtered[1]}}>
-        <input type = "hidden" id = "id" name = "id" value = {{filtered[0]}}>
-        <input type="submit" id="filter" name="user" value="x">
+        <input type = "hidden" id = "id" name = "rmv_id" value = {{filtered[0]}}>
+        <input type = "hidden" id = "remove" name = "id" value = "x">
+        <input type="submit" id="unfilter" value="x">
       </span>
+    </form>
       {%endfor%}
-      <i class = "arrow" ></i></form>
+      <i class = "arrow" ></i>
   </div>
   {%for notfiltered in users%}
-    <form id = "test" method ="post">
+    <form id = "not-filtered" method ="post">
     <input type = "hidden" name ="name" value = {{notfiltered[1]}}>
-    <input type="checkbox" id="filter-name" name="user" value = {{notfiltered[0]}}
-    onchange="document.getElementById('test').submit()">{{notfiltered[1]}}</input>
+    <input type="checkbox" id="filter-name" name="id" value = {{notfiltered[0]}}
+    onchange="document.getElementById('not-filtered').submit()">{{notfiltered[1]}}</input>
   </form>
   {%endfor%}
 </div>

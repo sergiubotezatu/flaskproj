@@ -37,7 +37,7 @@
             {%set user = session["username"]%}
             {%set id = session["id"]%}
             <li style = "float:right">
-                <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
+                <a class = "option drop-user" href="javascript:void(0)" onfocus = "showOptions()">            
                 <img src = "\static\icons\profile.png" class = "icon"></img>
                 {{user}}
                 <img src = "\static\icons\downward-arrow.png"
@@ -52,7 +52,7 @@
         </ul>
         {%else%}
         <li style = "float:right">
-            <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
+            <a class = "option drop-user" href="javascript:void(0)" onfocus = "showOptions()">            
             <img src = "\static\icons\profile.png" class = "icon"></img>
             Profile
             <img src = "\static\icons\downward-arrow.png"

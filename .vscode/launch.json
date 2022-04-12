@@ -1,17 +1,15 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [    
+
         {
-            "name": "Python: Current File",
+            "name": "Flask",
             "type": "python",
             "request": "launch",
-            "program": "tests\\test_posts.py",              
+            "program": "blog.py",              
             "env": {
                 "FLASK_APP": "blog.py",
-                "PYTHONPATH": "C:\\Users\\Cristina\\Desktop\\flaskBlog"},
+                "PYTHONPATH": "C:\\Users\\Cristina\\Desktop\\flaskBlog\\blog.py"},
             "console": "integratedTerminal",
             "justMyCode": false
         }
