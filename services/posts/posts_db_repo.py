@@ -68,19 +68,36 @@ class PostsDb(IPostRepo):
         post.modified = displayed[5]
         return post
 
-    def get_all(self):
+    def get_all(self, filters = None):
+        if filters != None:
+            to_format = ""
+            for filter in filters:
+                to_format += filter if to_format == "" else f",{filter}"
+            return self.__get_fetched(self.db.perform(f"""
+                SELECT p.PostID,
+                u.Name,
+                p.Title,
+                SUBSTRING(p.Content, 1, 150),
+                p.OwnerID,
+                p.Date
+                FROM blog_posts p
+                INNER JOIN blog_users u
+                ON p.OwnerID = u.OwnerID
+                AND p.OwnerID IN ({to_format})
+                ORDER BY p.PostID DESC;
+                """, fetch = "fetchall"))
         return self.__get_fetched(self.db.perform("""
-            SELECT p.PostID,
-            u.Name,
-            p.Title,
-            SUBSTRING(p.Content, 1, 150),
-            p.OwnerID,
-            p.Date
-            FROM blog_posts p
-            INNER JOIN blog_users u
-            ON p.OwnerID = u.OwnerID 
-            ORDER BY p.PostID DESC;
-            """, fetch = "fetchall"))
+                SELECT p.PostID,
+                u.Name,
+                p.Title,
+                SUBSTRING(p.Content, 1, 150),
+                p.OwnerID,
+                p.Date
+                FROM blog_posts p
+                INNER JOIN blog_users u
+                ON p.OwnerID = u.OwnerID
+                ORDER BY p.PostID DESC;
+                """, fetch = "fetchall"))
 
     def unarchive_content(self, id, name, email):
         result = self.db.perform("""
@@ -114,12 +131,9 @@ class PostsDb(IPostRepo):
 
     def get_with_posts(self):
         return self.db.perform("""
-            SELECT DISTINCT p.OwnerID,
-            u.Name
-            FROM blog_posts p
-            INNER JOIN blog_users u
-            ON p.OwnerID = u.OwnerID
-            """, id, fetch = "fetchall")
+            SELECT OwnerId, Name
+            FROM blog_users;
+            """, fetch = "fetchall")
 
     def __get_fetched(self, fetched):
         result = []
