@@ -131,5 +131,13 @@ class PostsDb(IPostRepo):
     def __get_fetched(self, fetched):
         result = []
         for post in fetched:
-            result.append((post[0], Post(post[1], post[2], post[3], owner_id= post[4], date = post[5])))
+            result.append((post[0], Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5])))
         return result
+
+    def __cut_poem_newlines(self, content):
+        print("Y---", type(content))
+        lines_count = content.count("\n")
+        if lines_count > 0:
+            chunk = lines_count * 3
+            return content[:-chunk] + "[...]"
+        return content + "[...]"
