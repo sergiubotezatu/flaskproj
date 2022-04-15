@@ -68,13 +68,14 @@ class PostsDb(IPostRepo):
         post.modified = displayed[5]
         return post
 
-    def get_all(self, filters : list = []):
-        to_format = ""
+    def get_all(self, page = 0, filters : list = []):
+        applied = ""
+        offset = f"OFFSET {page * 5 - 5}" if page != 0 else ""
         if len(filters) > 0:
-            to_format = "AND p.OwnerID IN ("
+            applied = "AND p.OwnerID IN ("
             for filter in filters:
-                to_format += filter if to_format.endswith("(") else f",{filter}"
-            to_format = to_format + ")"
+                applied += filter if applied.endswith("(") else f",{filter}"
+            applied = applied + ")"
         return self.__get_fetched(self.db.perform(f"""
             SELECT p.PostID,
             u.Name,
@@ -85,8 +86,10 @@ class PostsDb(IPostRepo):
             FROM blog_posts p
             INNER JOIN blog_users u
             ON p.OwnerID = u.OwnerID
-            {to_format}
-            ORDER BY p.PostID DESC;
+            {applied}
+            ORDER BY p.PostID DESC
+            {offset}
+            LIMIT 5;
             """, fetch = "fetchall"))
         
     def unarchive_content(self, id, name, email):

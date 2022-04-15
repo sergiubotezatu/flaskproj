@@ -884,3 +884,14 @@ form{
         font-size: 70%;
         cursor: pointer;
     }
+    
+    .pg-arr{
+        border:2px solid steelblue;
+        border-radius: 5px;
+        padding:3px;
+        text-decoration: none;
+        color:white;
+    }
+    .pages{
+        text-align:center;
+    }

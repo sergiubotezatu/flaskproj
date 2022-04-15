@@ -27,13 +27,19 @@ class Home:
         if rows > 0 :
             filtered_ids = filters["user_id"]
             filtered_names = filters["name"]
+            page = filters["pg"]
+            if len(page) == 0:
+                page = 1
+            else:
+                page = int(page[0])
             self.__update_not_filtered(filtered_ids, filtered_names)
-            posts = self.blogPosts.get_all(filtered_ids)
+            posts = self.blogPosts.get_all(page, filtered_ids)
         else:
-            posts = placeholder.get_all()
+            posts = placeholder.get_all(page)
         if request.method == "POST":
             return self.__add_remove_filters(filtered_ids, filtered_names, filters)
-        return render_template("home.html", allposts = posts, filters = filters, users = self.not_filtered)
+        next_page : bool = len(posts) > 5 * page
+        return render_template("home.html", allposts = posts, filters = filters, users = self.not_filtered, next = next_page)
 
     def get_not_filtered_users(self) -> set:
         result = set()
