@@ -23,24 +23,31 @@
   <span style = "color:white;position:absolute;top:175px;left:20px;margin-right:20px">Filter posts</span>
   <div class = "filter-field">
     <div class = "filters">
-      {%for filtered in filters%}
-      <form method="post">
-      <span style = "border:1px solid steelblue;padding:3px;">{{filtered[1]}}
-        <input type = "hidden" name = "name" value = {{filtered[1]}}>
-        <input type = "hidden" id = "id" name = "rmv_id" value = {{filtered[0]}}>
-        <input type = "hidden" id = "remove" name = "id" value = "x">
-        <input type="submit" id="unfilter" value="x">
-      </span>
+      {%for i in range(filters["user_id"]|length)%}
+      {%set name = filters["name"][i]%}
+      {%set userid = filters["user_id"][i] %}
+      <form method = "post">
+        {%if i == 0%}
+        <span class = "applied-filt">Clear all
+          <a href = "/" id = "fullx"><input type = "button" value = "X"></a></span>
+        {%endif%}
+      <span class = "applied-filt">{{name}}
+        <input type = "hidden" name = "name" value = {{name}}>
+        <input type = "hidden" id = "id" name = "rmv_id" value = {{userid}}>
+        <input type = "submit" id = "x" name = "user_id" value = "x">
+        </span>
     </form>
       {%endfor%}
       <i class = "arrow" ></i>
   </div>
+  {%set i = []%}
   {%for notfiltered in users%}
-    <form id = "not-filtered" method ="post">
+  <form class = "not-filtered" id = {{i|length}} method = "post">
     <input type = "hidden" name ="name" value = {{notfiltered[1]}}>
-    <input type="checkbox" id="filter-name" name="id" value = {{notfiltered[0]}}
-    onchange="document.getElementById('not-filtered').submit()">{{notfiltered[1]}}</input>
+    <input type="checkbox" id="filter-name" name="user_id" value = {{notfiltered[0]}}
+    onchange="document.getElementById('{{i|length}}').submit()">{{notfiltered[1]}}</input>
   </form>
+  {%set i = i.append(1)%}
   {%endfor%}
 </div>
   <div class="row">

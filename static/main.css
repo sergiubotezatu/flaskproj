@@ -250,6 +250,7 @@ form{
 
 .row:hover > *{
     opacity: 0.5;
+    z-index:-1;
 }
 
 .row:hover > *:hover {
@@ -257,7 +258,7 @@ form{
     opacity: 1;
     box-shadow: 10px 10px 10px 0px rgb(255, 255, 255);
     background-color: rgb(255, 244, 179);
-    z-index: -1;
+    z-index: 1;
     cursor: pointer;
   }
 
@@ -829,11 +830,11 @@ form{
         margin-top: 0px;
         display:inline-block;
       }
-    #not-filtered{
+    .not-filtered{
         display:none;
     }
 
-    .filter-field:hover > #not-filtered{
+    .filter-field:hover > .not-filtered{
         display:inline-block;
     }
 
@@ -855,11 +856,31 @@ form{
 
   .arrow {
       position:absolute;
-      top: 50px;
+      top: 53px;
       border: solid white;
       border-width: 0 3px 3px 0;
       display: inline-block;
       padding: 5px;
       transform: rotate(-80deg);
       -webkit-transform: rotate(-45deg);
+    }
+
+    .filters > form{
+        display:inline-block;
+    }
+
+    .applied-filt{
+        border:2px solid steelblue;
+        border-radius: 5px;
+        padding:3px;
+    }
+
+    .applied-filt > #x:hover{
+        font-size: 70%;
+        cursor: pointer;
+    }
+
+    #fullx:hover > input{
+        font-size: 70%;
+        cursor: pointer;
     }

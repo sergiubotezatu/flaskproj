@@ -68,37 +68,27 @@ class PostsDb(IPostRepo):
         post.modified = displayed[5]
         return post
 
-    def get_all(self, filters = None):
-        if filters != None:
-            to_format = ""
+    def get_all(self, filters : list = []):
+        to_format = ""
+        if len(filters) > 0:
+            to_format = "AND p.OwnerID IN ("
             for filter in filters:
-                to_format += filter if to_format == "" else f",{filter}"
-            return self.__get_fetched(self.db.perform(f"""
-                SELECT p.PostID,
-                u.Name,
-                p.Title,
-                SUBSTRING(p.Content, 1, 150),
-                p.OwnerID,
-                p.Date
-                FROM blog_posts p
-                INNER JOIN blog_users u
-                ON p.OwnerID = u.OwnerID
-                AND p.OwnerID IN ({to_format})
-                ORDER BY p.PostID DESC;
-                """, fetch = "fetchall"))
-        return self.__get_fetched(self.db.perform("""
-                SELECT p.PostID,
-                u.Name,
-                p.Title,
-                SUBSTRING(p.Content, 1, 150),
-                p.OwnerID,
-                p.Date
-                FROM blog_posts p
-                INNER JOIN blog_users u
-                ON p.OwnerID = u.OwnerID
-                ORDER BY p.PostID DESC;
-                """, fetch = "fetchall"))
-
+                to_format += filter if to_format.endswith("(") else f",{filter}"
+            to_format = to_format + ")"
+        return self.__get_fetched(self.db.perform(f"""
+            SELECT p.PostID,
+            u.Name,
+            p.Title,
+            SUBSTRING(p.Content, 1, 150),
+            p.OwnerID,
+            p.Date
+            FROM blog_posts p
+            INNER JOIN blog_users u
+            ON p.OwnerID = u.OwnerID
+            {to_format}
+            ORDER BY p.PostID DESC;
+            """, fetch = "fetchall"))
+        
     def unarchive_content(self, id, name, email):
         result = self.db.perform("""
         SELECT Content
