@@ -685,7 +685,7 @@ form{
       }
 
       #admin{
-        background-image: url("\\static\\icons\\admin.png");
+        background-image: url("../static/icons/admin.png");
         background-size: 85% 85%;
       }
 

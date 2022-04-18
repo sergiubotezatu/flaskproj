@@ -24,18 +24,18 @@ class Home:
         filters = defaultdict(lambda: [], request.args.to_dict(flat = False))
         rows = len(self.blogPosts)
         posts = None
+        page = filters["pg"]
+        if len(page) == 0:
+                page = 1
+        else:
+            page = int(page[0])
         if rows > 0 :
             filtered_ids = filters["user_id"]
             filtered_names = filters["name"]
-            page = filters["pg"]
-            if len(page) == 0:
-                page = 1
-            else:
-                page = int(page[0])
             self.__update_not_filtered(filtered_ids, filtered_names)
             posts = self.blogPosts.get_all(page, filtered_ids)
         else:
-            posts = placeholder.get_all(page)
+            posts = placeholder.get_all()
         if request.method == "POST":
             return self.__add_remove_filters(filtered_ids, filtered_names, filters)
         next_page : bool = len(posts) > 5 * page

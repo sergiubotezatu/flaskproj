@@ -54,8 +54,10 @@ class Posts(IPostRepo):
         self.__posts[post_id].modified = editted.created            
 
     def get_all(self):
+        result = []
         for posts in self:
-            yield (posts[0], Preview(posts[1]))
+            result.append((posts[0], Preview(posts[1])))
+        return result
     
     def delete_all(self):
         self.__posts = {}

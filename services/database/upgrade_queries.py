@@ -1,4 +1,9 @@
+from datetime import datetime
+from services.users.passhash import PassHash
 
+admin_pass = PassHash.generate_pass('admin1')
+dummy_pass = PassHash.generate_pass('dummy')
+admin_creation = datetime.now().strftime("%d/%b/%y %H:%M:%S")
 
 def get_queries():
     return [
@@ -74,12 +79,12 @@ def get_queries():
             AFTER INSERT ON deleted_users
             EXECUTE PROCEDURE delete_expired_archived();
         """),      
-        ("""    
+        (f"""    
             do $$
             declare
                 first_row record;
-                pass text := %s;
-                creation_date text := %s;
+                pass text := '{admin_pass}';
+                creation_date text := '{admin_creation}';
             begin
                 SELECT *
                 into first_row
@@ -106,11 +111,11 @@ def get_queries():
             $$
             LANGUAGE plpgsql;
         """,),        
-        ("""
+        (f"""
            DO $$
                 declare
                     mail text := '@dummy.com';
-                    pass text := %s;
+                    pass text := '{dummy_pass}';
             BEGIN
                 if exists(SELECT *
                     FROM information_schema.columns 

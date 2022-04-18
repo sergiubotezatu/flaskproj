@@ -25,12 +25,12 @@ class DataBase(IDataBase):
         self.cursor.close()
         self.conn.close()
 
-    def upgrade_db(self, *args):
+    def upgrade_db(self):
         if not self.upgrader.is_latest_version():
             try:
                 self.connect()
                 for operation in self.upgrader.upgrade():
-                    self.cursor.execute(operation, *args)
+                    self.cursor.execute(operation)
                 self.commit_and_close()
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
