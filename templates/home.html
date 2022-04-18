@@ -69,7 +69,13 @@
     {%endfor%}
   </div>
   <div class = "pages">
-  <a href="" class="pg-arr">&laquo; Previous</a>
-  <a href="" class="pg-arr">Next &raquo;</a>
-</div>
+  {%if pg != 1%}
+  {%set prev = pg - 1%}
+  <a href="{{ '/?pg=%s'%prev|urlencode }}" class="pg-arr">&laquo; Previous</a>
+  {%endif%}
+  {%if next%}
+  {%set next = pg + 1%}
+  <a href="{{ '/?pg=%s'%next|urlencode }}" class="pg-arr">Next &raquo;</a>
+  {%endif%}
+  </div>
 {%endblock%}

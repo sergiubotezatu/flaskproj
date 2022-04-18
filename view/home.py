@@ -38,8 +38,13 @@ class Home:
             posts = placeholder.get_all()
         if request.method == "POST":
             return self.__add_remove_filters(filtered_ids, filtered_names, filters)
-        next_page : bool = len(posts) > 5 * page
-        return render_template("home.html", allposts = posts, filters = filters, users = self.not_filtered, next = next_page)
+        next_page : bool = rows - 5 * page > 0
+        return render_template("home.html",
+        allposts = posts,
+        filters = filters,
+        users = self.not_filtered,
+        next = next_page,
+        pg = int(page))
 
     def get_not_filtered_users(self) -> set:
         result = set()
@@ -49,7 +54,7 @@ class Home:
         return result
 
     def __add_remove_filters(self, ids : list, names : list, filters : defaultdict):
-        query_url = "?"
+        query_url = ""
         id = request.form.get("user_id")
         name = request.form.get("name")
         if id == "x":
@@ -59,10 +64,10 @@ class Home:
             names.remove(name)
             filters.update({"user_id" : ids})
             filters.update({"name" : names})
-            query_url += urlencode(filters, doseq=True)
+            query_url += "?" + urlencode(filters, doseq=True)
         else:
             new_filter = f"user_id={id}&name={name}" if len(filters["user_id"]) == 0 else f"&user_id={id}&name={name}"
-            query_url += urlencode(filters, doseq=True) + new_filter
+            query_url += "?" + urlencode(filters, doseq=True) + new_filter
         return redirect(f"/{query_url}")
 
     def __update_not_filtered(self, ids, names):
