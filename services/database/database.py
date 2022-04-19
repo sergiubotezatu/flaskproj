@@ -49,5 +49,5 @@ class DataBase(IDataBase):
 
     @classmethod
     def set_db(cls):
-        cls.db_settings = cls.config.load("postgresql")
+        cls.db_settings = cls.config.load()
    

@@ -11,8 +11,9 @@ class DataBaseConfig(Config, IDataBaseConfig):
         super().__init__()
         self.setting_options = ["dbname", "user", "password", "host"]
                         
-    def load(self, section) -> DBSettings:
+    def load(self) -> DBSettings:
         self.current_config = {}
+        section = "postgresql"
         params = super().load(section).items(section)
         settings = [section]
         for param in params:
@@ -39,9 +40,8 @@ class DataBaseConfig(Config, IDataBaseConfig):
                     if line.startswith("vers."):
                         editter.write(f"vers. = {version}")
         else:
-            with open(self.CONFIGFILE, "a") as append:
-                parser.add_section("version")
-                parser.set("version", "vers.", version)
+            parser.add_section("version")
+            parser.set("version", "vers.", version)
             super().save(parser)
             
     def get_db_version(self):
