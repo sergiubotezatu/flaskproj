@@ -17,7 +17,7 @@ class DataBase(IDataBase):
         self.cursor = None
     
     def connect(self):
-        self.conn = psycopg2.connect(**DataBase.db_settings.configuration)
+        self.conn = psycopg2.connect(**DataBase.db_settings.to_dict())
         self.cursor = self.conn.cursor()
 
     def commit_and_close(self):

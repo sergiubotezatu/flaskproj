@@ -22,11 +22,12 @@ class DataBaseConfig(Config, IDataBaseConfig):
         
     def save(self, settings : DBSettings):
         if not self.section_exists(settings.section):
+            dict_settings = settings.to_dict()
             parser = ConfigParser()
             parser.add_section(settings.section)
             for i in range(4):
                 parser.set(settings.section,
-                self.setting_options[i] ,settings.configuration[self.setting_options[i]])
+                self.setting_options[i] ,dict_settings[self.setting_options[i]])
             super().save(parser)        
 
     def set_db_version(self, version):
