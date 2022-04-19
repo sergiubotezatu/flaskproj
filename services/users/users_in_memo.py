@@ -19,7 +19,7 @@ class Users(IUsersRepo):
                 user_posts.append((posts[0], Preview(posts[1])))
         return user_posts        
 
-    def get_user_by(self, **kwargs):
+    def get_by(self, **kwargs):
         match = self.same_id if "id" in kwargs else self.same_mail
         identifier = kwargs["id"] if "id" in kwargs else kwargs["mail"]
         for user in self.__users:
@@ -39,13 +39,13 @@ class Users(IUsersRepo):
             id_names.append((users.id, users.name))
         return id_names
 
-    def add_user(self, user : User):
+    def add(self, user : User):
         self.count += 1
         user.id = self.count
         self.__users.append(user)
         return user.id
         
-    def update_user(self, usr_id, editted, pwd = None):
+    def update(self, usr_id, editted, pwd = None):
         for users in self.__users:
             if users.id == usr_id:
                 if users.name != editted.name:
@@ -60,7 +60,7 @@ class Users(IUsersRepo):
         if pwd != None: 
             user.password = pwd
     
-    def remove_user(self, user: User):
+    def remove(self, user: User):
         self.deleted[user.email] = []
         for posts in self.all_posts:
             if user.id == posts.owner_id:

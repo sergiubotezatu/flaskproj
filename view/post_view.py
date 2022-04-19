@@ -40,7 +40,7 @@ class PostPage:
             flash("Your post has been successfully removed.", "info")
             return redirect(url_for("home.front_page"))
         
-        selected_post = self.blogPosts.get_post(post_id)
+        selected_post = self.blogPosts.get(post_id)
         return render_template(
             "read.html",
             editable = post_id,
@@ -53,7 +53,7 @@ class PostPage:
 
     @authorizator.owner_or_admin
     def edit(self, post_id):
-        selected_post = self.blogPosts.get_post(post_id)
+        selected_post = self.blogPosts.get(post_id)
         if request.method == "POST":
             self.edit_post(post_id)
             return redirect(f"/post/read/{post_id}")
@@ -68,7 +68,7 @@ class PostPage:
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
-        return self.blogPosts.add_post(Post(author, title, content, owner_id = session["id"]))
+        return self.blogPosts.add(Post(author, title, content, owner_id = session["id"]))
 
     def edit_post(self, post_id):
         author = request.form.get("author")

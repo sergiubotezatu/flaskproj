@@ -4,7 +4,7 @@ from models.post import Post
 class IPostRepo(metaclass = ABCMeta):
     
     @abstractmethod
-    def add_post(self, post):
+    def add(self, post):
         pass
 
     @abstractmethod
@@ -16,13 +16,9 @@ class IPostRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_post(self, post_id) -> Post:
+    def get(self, post_id) -> Post:
         pass
 
     @abstractmethod
     def get_all(self):
-        pass
-
-    @abstractmethod
-    def get_with_posts(self):
         pass

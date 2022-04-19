@@ -4,7 +4,7 @@ from models.user import User
 class IUsersRepo(metaclass = ABCMeta):
     
     @abstractmethod
-    def add_user(self, user):
+    def add(self, user):
         pass
 
     @abstractmethod
@@ -12,15 +12,15 @@ class IUsersRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_user_by(self, **kwargs) -> User:
+    def get_by(self, **kwargs) -> User:
         pass
 
     @abstractmethod
-    def remove_user(self, user):
+    def remove(self, user):
         pass
 
     @abstractmethod
-    def update_user(self, usr_id, user, pwd):
+    def update(self, usr_id, user, pwd):
         pass
 
     @abstractmethod

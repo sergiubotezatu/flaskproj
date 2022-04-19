@@ -45,14 +45,14 @@ class UserProfile:
             else:
                 new_user = User(username, email)
                 new_user.password = self.hasher.generate_pass(pwd)
-                new_user.id = self.users.add_user(new_user)
+                new_user.id = self.users.add(new_user)
                 self.active_usr.log_session(new_user.id, username, email)
                 return redirect(url_for(".user_profile", user_id = new_user.id))
         return render_template("signup.html")
 
     def user_profile(self, user_id):
         user_id = int(user_id)
-        displayed = self.users.get_user_by(id = user_id)
+        displayed = self.users.get_by(id = user_id)
         owned_posts = self.users.get_posts(user_id)
         return render_template("user.html",
         user_id = displayed.id,
@@ -65,7 +65,7 @@ class UserProfile:
     @authorizator.owner_or_admin
     def edit_user(self, user_id):
         user_id = int(user_id)
-        editable : User = self.users.get_user_by(id = user_id)
+        editable : User = self.users.get_by(id = user_id)
         if request.method == "POST":
             identity_checker = request.form.get("oldpass")
             if identity_checker == "" or self.hasher.check_pass(editable.hashed_pass, identity_checker) :
@@ -108,7 +108,7 @@ class UserProfile:
             else:
                 new_user = User(username, mail)
                 new_user.password = self.hasher.generate_pass(pwd)
-                new_user.id = self.users.add_user(new_user)
+                new_user.id = self.users.add(new_user)
                 signed_id = new_user.id
                 if (name != ""):
                     return redirect(url_for("posts.unarchive", id = signed_id, name = username, email = email))
@@ -126,16 +126,16 @@ class UserProfile:
         new_password = self.__hash_if_new_pass(request.form.get("pwd"))
         if self.active_usr.get_logged_user().role == "regular":
             self.active_usr.edit_logged(new_name, new_password)
-        self.users.update_user(user_id, User(new_name, new_mail), new_password)
+        self.users.update(user_id, User(new_name, new_mail), new_password)
 
     def check_for_log_out(self):
         if request.form.get("action") == "logout":
             flash(f"You have been logged out. See you again soon!")
         else:
-            to_delete = self.users.get_user_by(id = session["id"])
+            to_delete = self.users.get_by(id = session["id"])
             self.active_usr.log_out()
             flash(f"Your membership has been canceled.")
-            self.users.remove_user(to_delete)
+            self.users.remove(to_delete)
         return redirect(url_for("home.front_page"))
 
     def __hash_if_new_pass(self, input):
@@ -144,7 +144,7 @@ class UserProfile:
         return input
 
     def __sign_up_validated(self, name, email):
-        if self.users.get_user_by(mail = email) != None:
+        if self.users.get_by(mail = email) != None:
             flash(f"Email {email} is already assigned to another user.")
             flash(f"Please use an unregistered email or if you have an account go to login.", "error")
             return False

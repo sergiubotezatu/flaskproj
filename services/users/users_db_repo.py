@@ -9,7 +9,7 @@ class UsersDb(IUsersRepo):
     def __init__(self, db : IDataBase):
         self.db = db
         
-    def add_user(self, user : User):
+    def add(self, user : User):
         return self.db.perform("""
     INSERT INTO blog_users      
     VALUES (DEFAULT, %s, %s, %s, %s)
@@ -43,7 +43,7 @@ class UsersDb(IUsersRepo):
                 )
         return posts
 
-    def get_user_by(self, **kwargs):
+    def get_by(self, **kwargs):
         identifier = ""
         ident_value = None
         if "mail" in kwargs:
@@ -67,7 +67,7 @@ class UsersDb(IUsersRepo):
         user.id = displayed[0]
         return user
 
-    def remove_user(self, user : User):
+    def remove(self, user : User):
         self.db.perform("""
         INSERT INTO deleted_users
         SELECT u.Email, p.Content 
@@ -82,7 +82,7 @@ class UsersDb(IUsersRepo):
         CASCADE;
         """, user.id)
 
-    def update_user(self, usr_id, user : User, pwd = ""):
+    def update(self, usr_id, user : User, pwd = ""):
         if pwd != "":
             self.db.perform("""
         UPDATE blog_users

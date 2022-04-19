@@ -27,7 +27,7 @@ class PostsDb(IPostRepo):
     def __len__(self):
         return self.count
     
-    def add_post(self, post : Post):
+    def add(self, post : Post):
         self.count += 1
         return self.db.perform("""
         INSERT INTO blog_posts (PostID, Title, Content, Date, OwnerID)     
@@ -49,7 +49,7 @@ class PostsDb(IPostRepo):
             WHERE PostID = %s;
             """, id)   
     
-    def get_post(self, id) -> Post:
+    def get(self, id) -> Post:
         displayed = self.db.perform("""
            SELECT
                 u.Name,
@@ -92,18 +92,6 @@ class PostsDb(IPostRepo):
             {offset}
             {limit};
             """, fetch = "fetchall"))
-
-    def __check_if_next(self, filters):
-        applied = "WHERE OwnerID IN ("
-        for filter in filters:
-                applied += filter if applied.endswith("(") else f",{filter}"
-        applied = applied + ")"
-        return f"""
-        SELECT PostID
-        from blog_posts
-        {applied}
-        OFFSET 6
-        LIMIT 1"""
         
     def unarchive_content(self, id, name, email):
         result = self.db.perform("""
@@ -119,12 +107,6 @@ class PostsDb(IPostRepo):
         DELETE FROM deleted_users
         WHERE Email = %s;
         """, email)
-
-    def get_with_posts(self):
-        return self.db.perform("""
-            SELECT OwnerId, Name
-            FROM blog_users;
-            """, fetch = "fetchall")
 
     def __get_fetched(self, fetched):
         result = []

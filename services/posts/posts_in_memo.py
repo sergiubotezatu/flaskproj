@@ -30,12 +30,12 @@ class Posts(IPostRepo):
     def __init__(self):
         self.__posts = {}
         
-    def add_post(self, post):
+    def add(self, post):
         post_id = post.auth[:2] + str(len(self.__posts) + 1)
         self.__posts.update({post_id : post})
         return post_id
 
-    def get_post(self, post_id) -> Post:
+    def get(self, post_id) -> Post:
         return self.__posts[post_id]
 
     def __len__(self):
@@ -61,9 +61,6 @@ class Posts(IPostRepo):
     
     def delete_all(self):
         self.__posts = {}
-
-    def get_with_posts(self):
-        return super().get_with_posts()
     
     def reflect_user_changes(self, id, new_name):
         for posts in self:
