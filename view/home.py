@@ -15,6 +15,7 @@ class Home:
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.filtered = set()
         self.not_filtered = set()
+        self.PG_LIMIT = 5
         
     def goto_db_setup(self):
         if not DataBase.config.is_configured:
@@ -38,7 +39,7 @@ class Home:
             posts = placeholder.get_all()
         if request.method == "POST":
             return self.__add_remove_filters(filtered_ids, filtered_names, filters)
-        next_page : bool = rows - 5 * page > 0
+        next_page : bool = rows - self.PG_LIMIT * page > 0
         return render_template("home.html",
         allposts = posts,
         filters = filters,

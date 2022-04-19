@@ -68,15 +68,15 @@ class PostsDb(IPostRepo):
         post.modified = displayed[5]
         return post
 
-    def get_all(self, page = 0, filters : list = [], pagination : bool = True):
+    def get_all(self, page = 0, filters : list = [], pagination : bool = True, max = 5):
         applied = ""
-        offset = f"OFFSET {page * 5 - 5}" if page != 0 else ""
+        offset = f"OFFSET {page * max - max}" if page != 0 else ""
         if len(filters) > 0:
             applied = "AND p.OwnerID IN ("
             for filter in filters:
                 applied += filter if applied.endswith("(") else f",{filter}"
             applied = applied + ")"
-        limit = "LIMIT 5" if pagination else ""
+        limit = f"LIMIT {max}" if pagination else ""
         return self.__get_fetched(self.db.perform(f"""
             SELECT p.PostID,
             u.Name,
