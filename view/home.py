@@ -50,7 +50,7 @@ class Home:
     def get_not_filtered_users(self) -> set:
         result = set()
         if len(self.blogPosts) > 0:
-            for post in self.blogPosts.get_all():
+            for post in self.blogPosts.get_all(pagination = False):
                 result.add((str(post[1].owner_id), post[1].auth))
         return result
 

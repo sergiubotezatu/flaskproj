@@ -68,7 +68,7 @@ class PostsDb(IPostRepo):
         post.modified = displayed[5]
         return post
 
-    def get_all(self, page = 0, filters : list = []):
+    def get_all(self, page = 0, filters : list = [], pagination : bool = True):
         applied = ""
         offset = f"OFFSET {page * 5 - 5}" if page != 0 else ""
         if len(filters) > 0:
@@ -76,6 +76,7 @@ class PostsDb(IPostRepo):
             for filter in filters:
                 applied += filter if applied.endswith("(") else f",{filter}"
             applied = applied + ")"
+        limit = "LIMIT 5" if pagination else ""
         return self.__get_fetched(self.db.perform(f"""
             SELECT p.PostID,
             u.Name,
@@ -89,8 +90,20 @@ class PostsDb(IPostRepo):
             {applied}
             ORDER BY p.PostID DESC
             {offset}
-            LIMIT 5;
+            {limit};
             """, fetch = "fetchall"))
+
+    def __check_if_next(self, filters):
+        applied = "WHERE OwnerID IN ("
+        for filter in filters:
+                applied += filter if applied.endswith("(") else f",{filter}"
+        applied = applied + ")"
+        return f"""
+        SELECT PostID
+        from blog_posts
+        {applied}
+        OFFSET 6
+        LIMIT 1"""
         
     def unarchive_content(self, id, name, email):
         result = self.db.perform("""

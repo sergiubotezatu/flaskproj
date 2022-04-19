@@ -50,8 +50,13 @@
   {%set i = i.append(1)%}
   {%endfor%}
 </div>
-  <div class="row">
-      {% for item in allposts%}
+<div class="row">
+  {%if allposts|length == 0%}
+  <div class = "post">
+    <h3 class = "item" style ="margin-left:auto;margin-right:auto;">Filtered users have no more posts</h3>
+  </div>
+  {%endif%}
+{% for item in allposts%}
       <div class="column">
       {%if item[0] == "Ch1"%}
       <a href= "/post/create" style ="color:black; text-decoration:none; ">
