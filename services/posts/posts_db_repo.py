@@ -135,7 +135,6 @@ class PostsDb(IPostRepo):
         return result
 
     def __cut_poem_newlines(self, content):
-        print("Y---", type(content))
         lines_count = content.count("\n")
         if lines_count > 0:
             chunk = lines_count * 3

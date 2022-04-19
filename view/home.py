@@ -44,7 +44,8 @@ class Home:
         filters = filters,
         users = self.not_filtered,
         next = next_page,
-        pg = int(page))
+        pg = int(page),
+        url = request.full_path.replace(f"pg={page}&", ""))
 
     def get_not_filtered_users(self) -> set:
         result = set()
@@ -54,7 +55,7 @@ class Home:
         return result
 
     def __add_remove_filters(self, ids : list, names : list, filters : defaultdict):
-        query_url = "?"
+        query_url = request.full_path
         id = request.form.get("user_id")
         name = request.form.get("name")
         if id == "x":
@@ -62,13 +63,11 @@ class Home:
             self.not_filtered.add((id, name))
             ids.remove(id)
             names.remove(name)
-            filters.update({"user_id" : ids})
-            filters.update({"name" : names})
-            query_url += urlencode(filters, doseq=True)
+            query_url = query_url.replace(f"user_id={id}&name={name}&", "")
         else:
-            new_filter = f"user_id={id}&name={name}" if len(filters["user_id"]) == 0 else f"&user_id={id}&name={name}"
-            query_url += urlencode(filters, doseq=True) + new_filter
-        return redirect(f"/{query_url}")
+            new_filter = f"user_id={id}&name={name}&"
+            query_url += new_filter
+        return redirect(query_url)
 
     def __update_not_filtered(self, ids, names):
         if ids == []:

@@ -69,13 +69,18 @@
     {%endfor%}
   </div>
   <div class = "pages">
+    {%if '?' in url%}
+    {%set ns = namespace(path = url)%}
+    {%else%}
+    {%set ns = namespace(path = '?')%}
+    {%endif%}
   {%if pg != 1%}
-  {%set prev = pg - 1%}
-  <a href="{{ '/?pg=%s'%prev|urlencode }}" class="pg-arr">&laquo; Previous</a>
+  {%set prev = (pg - 1)|string%}
+  <a href="{{ '%spg=%s&'|format(ns.path, prev) }}" class="pg-arr">&laquo; Previous</a>
   {%endif%}
   {%if next%}
-  {%set next = pg + 1%}
-  <a href="{{ '/?pg=%s'%next|urlencode }}" class="pg-arr">Next &raquo;</a>
+  {%set next = (pg + 1)|string%}
+  <a href="{{ '%spg=%s&'|format(ns.path, next) }}" class="pg-arr">Next &raquo;</a>
   {%endif%}
   </div>
 {%endblock%}
