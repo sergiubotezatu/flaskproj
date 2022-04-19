@@ -62,9 +62,6 @@ class Posts(IPostRepo):
     def delete_all(self):
         self.__posts = {}
 
-    def get_user_posts(self, id):
-        return super().get_user_posts(id)
-
     def get_with_posts(self):
         return super().get_with_posts()
     

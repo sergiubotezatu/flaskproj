@@ -17,8 +17,7 @@ class Users(IUsersRepo):
         for posts in self.all_posts:
             if posts[1].owner_id == user_id:
                 user_posts.append((posts[0], Preview(posts[1])))
-        return user_posts  
-        
+        return user_posts        
 
     def get_user_by(self, **kwargs):
         match = self.same_id if "id" in kwargs else self.same_mail

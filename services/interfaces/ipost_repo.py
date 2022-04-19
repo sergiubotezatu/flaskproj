@@ -24,9 +24,5 @@ class IPostRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_user_posts(self, id):
-        pass
-
-    @abstractmethod
     def get_with_posts(self):
         pass

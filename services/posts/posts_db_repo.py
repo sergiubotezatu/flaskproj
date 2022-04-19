@@ -120,21 +120,6 @@ class PostsDb(IPostRepo):
         WHERE Email = %s;
         """, email)
 
-    def get_user_posts(self, id):
-        return self.__get_fetched(self.db.perform("""
-            SELECT p.PostID,
-            u.Name,
-            p.Title,
-            SUBSTRING(p.Content, 1, 150),
-            p.OwnerID,
-            p.Date
-            FROM blog_posts p
-            INNER JOIN blog_users u
-            ON p.OwnerID = u.OwnerID
-            AND p.OwnerID = %s
-            ORDER BY p.PostID DESC;
-            """, id, fetch = "fetchall"))
-
     def get_with_posts(self):
         return self.db.perform("""
             SELECT OwnerId, Name
