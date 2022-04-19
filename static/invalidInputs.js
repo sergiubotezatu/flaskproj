@@ -131,3 +131,15 @@ function hideOptions()
   }
 
 }
+
+function hideDrop(event)
+{
+   var target = event.target.id
+   var arrow = document.getElementById("arr");
+    if(target != "arr" && target != "show" && target != "drop-log-sign")
+    {
+      document.getElementById("drop-log-sign").style.display = "none";
+      arrow.classList.remove("up");
+      arrow.classList.add("down");
+    }
+}

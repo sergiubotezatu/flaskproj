@@ -9,7 +9,7 @@
         <title>{%block title%}{%endblock%}</title>
     </head>
 
-    <body onresize="hideOptions()">
+    <body onresize="hideOptions()" onclick="hideDrop(event)">
         <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
 
         
@@ -37,13 +37,12 @@
             {%if "id" in session %}
             {%set user = session["username"]%}
             {%set id = session["id"]%}
-            <li style = "float:right">
-                <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
-                <img src = "\static\icons\profile.png" class = "icon"></img>
+            <li style = "float:right" onclick = "showOptions()">
+                <a class = "option drop-user"  href="javascript:void(0)" id = "show" >            
+                <img src = "\static\icons\profile.png" class = "icon" id = "show"></img>
                 {{user}}
                 <img src = "\static\icons\downward-arrow.png"
-                id = "arr" class="down"></img>
-            </a>         
+                id = "arr" class="down"></img></a>
             </li>
         </ul>
         <ul id = "drop-log-sign"style = "float:right;width:150px;">
@@ -53,12 +52,11 @@
         </ul>
         {%else%}
         <li style = "float:right">
-            <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
-            <img src = "\static\icons\profile.png" class = "icon"></img>
+            <a class = "option drop-user" id = "show" href="javascript:void(0)" onclick = "showOptions()">            
+            <img src = "\static\icons\profile.png" id = "show" class = "icon"/>
             Profile
             <img src = "\static\icons\downward-arrow.png"
-                id = "arr" class="down"></img>
-            </a>
+                id = "arr" class="down"></img></a>
         </li>
         </ul>
         <ul id = "drop-log-sign"style = "float:right;width:150px;">
@@ -97,7 +95,15 @@
             {%endblock%}  
         </ul>
         <br id ="space">
-         
+        <div id="logoverlay" onclick="MessOff(this.id)">
+            <div id="box">
+            <p id ="mess">Are you sure you want to logout?</p>
+            <div id = "requestDel" method = "Post">  
+                <a href = "/logout"><input type = "button" id = "yes" value ="Yes"></a>
+                <input type="button" id = "no" value ="No" onclick="MessOff('overlay')">
+            </div>
+            </div>
+        </div>
         {%block content%}
         {%endblock%}                    
     </body>

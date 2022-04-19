@@ -5,22 +5,14 @@
   {%if messages%}
     {%for note in messages%}
     <div class="success">
-    </br>
+   </br>
       <strong><p>{{note}}</p></strong>
     </div>
     {%endfor%}
     {%endif%}
 {%endwith%}
-<div id="logoverlay" onclick="MessOff(this.id)">
-  <div id="box">
-  <p id ="mess">Are you sure you want to logout?</p>
-  <div id = "requestDel" method = "Post">  
-      <a href = "/logout"><input type = "button" id = "yes" value ="Yes"></a>
-      <input type="button" id = "no" value ="No" onclick="MessOff('overlay')">
-  </div>
-  </div>
 </div>
-  <span style = "color:white;position:absolute;top:175px;left:20px;margin-right:20px">Filter posts</span>
+  <span style = "color:white;position:absolute;top:175px;left:20px;margin-right:20px;margin-top:15px;">Filter posts</span>
   <div class = "filter-field">
     <div class = "filters">
       {%for i in range(filters["user_id"]|length)%}

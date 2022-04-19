@@ -94,7 +94,11 @@ nav{
 
   #drop-log-sign{
       display:none;
-  }
+      position:sticky;
+      top:4.7rem;
+    }
+
+
 
   .dropdown-content
 {                
@@ -239,6 +243,7 @@ form{
     grid-column-gap: 10px;
     padding: 10px;
     pointer-events: none;
+    margin-top:40px;
 }
 
 .row > *{
@@ -825,6 +830,7 @@ form{
         left:110px;
         height:20px;
         color:white;
+        margin-top:15px;
     }
     .filters{
         margin-top: 0px;
