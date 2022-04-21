@@ -129,7 +129,6 @@ function hideOptions()
     document.getElementById("drop-log-sign").style.display = "none";
     var arrow = document.getElementById("arr");
   }
-
 }
 
 function hideDrop(event)

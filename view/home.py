@@ -38,7 +38,7 @@ class Home:
         else:
             posts = placeholder.get_all()
         if request.method == "POST":
-            return self.__add_remove_filters(filtered_ids, filtered_names, filters)
+            return self.__remove_filters(filtered_ids, filtered_names, filters)
         next_page : bool = rows - self.PG_LIMIT * page > 0
         return render_template("home.html",
         allposts = posts,
@@ -55,19 +55,11 @@ class Home:
                 result.add((str(post[1].owner_id), post[1].auth))
         return result
 
-    def __add_remove_filters(self, ids : list, names : list, filters : defaultdict):
+    def __remove_filters(self, ids : list, names : list, filters : defaultdict):
         query_url = request.full_path
         id = request.form.get("user_id")
         name = request.form.get("name")
-        if id == "x":
-            id = request.form.get("rmv_id")
-            self.not_filtered.add((id, name))
-            ids.remove(id)
-            names.remove(name)
-            query_url = query_url.replace(f"user_id={id}&name={name}&", "")
-        else:
-            new_filter = f"user_id={id}&name={name}&"
-            query_url += new_filter
+        query_url = query_url.replace(f"user_id={id}&name={name}&", "")
         return redirect(query_url)
 
     def __update_not_filtered(self, ids, names):

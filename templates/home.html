@@ -15,8 +15,29 @@
   <p style = "color:white;margin-top:24px;">Filter posts</p>
   <input type="text" placeholder="Search.." id="search" onkeyup="filterFunction()">
     <div id="found" class="users">
-    <a href="#about">About</a>
-    <a href="#base">Base</a>
+    {%if '?' in url%}
+    {%set ns = namespace(path = url)%}
+    {%else%}
+    {%set ns = namespace(path = '?')%}
+    {%endif%}
+      {%for i in range(filters["user_id"]|length)%}
+      {%set name = filters["name"][i]%}
+      {%set userid = filters["user_id"][i] %}
+      {%if i == 0%}
+        <span>Clear all<a href = "/" id = "x">x</a></span>
+        {%endif%}
+        <span>{{name}}
+          <form style = "display:inline"method = "Post">
+        <input type = "hidden" name = "name" value = {{name}}>
+        <input type = "hidden" id = "id" name = "user_id" value = {{userid}}>
+        <input type = "submit" id = "x" name = "rmv_id" value = "x">
+      </form>
+      </span>
+    </a>
+    {%endfor%}
+    {%for user in users%}
+    <a href="{{ '%suser_id=%s&name=%s&'|format(ns.path, user[0], user[1])}}">{{user[1]}}</a>
+    {%endfor%}
     </div>
 </div>
 <div class="row">
@@ -43,11 +64,6 @@
     {%endfor%}
   </div>
   <div class = "pages">
-    {%if '?' in url%}
-    {%set ns = namespace(path = url)%}
-    {%else%}
-    {%set ns = namespace(path = '?')%}
-    {%endif%}
   {%if pg != 1%}
   {%set prev = (pg - 1)|string%}
   <a href="{{ '%spg=%s&'|format(ns.path, prev) }}" class="pg-arr">&laquo; Previous</a>
