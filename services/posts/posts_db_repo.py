@@ -76,7 +76,7 @@ class PostsDb(IPostRepo):
             for filter in filters:
                 applied += filter if applied.endswith("(") else f",{filter}"
             applied = applied + ")"
-        limit = f"LIMIT {max}" if pagination else ""
+        limit = f"LIMIT {max + 1}" if pagination else ""
         return self.__get_fetched(self.db.perform(f"""
             SELECT p.PostID,
             u.Name,
@@ -110,8 +110,11 @@ class PostsDb(IPostRepo):
 
     def __get_fetched(self, fetched):
         result = []
+        count = 0
         for post in fetched:
-            result.append((post[0], Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5])))
+            count += 1
+            result.append((post[0], Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5]), count))
+        self.page_count = count
         return result
 
     def __cut_poem_newlines(self, content):

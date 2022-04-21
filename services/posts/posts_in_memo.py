@@ -28,6 +28,7 @@ def singleton(cls):
 class Posts(IPostRepo):
     @Services.get
     def __init__(self):
+        self.page_count = 0
         self.__posts = {}
         
     def add(self, post):
@@ -55,8 +56,10 @@ class Posts(IPostRepo):
 
     def get_all(self):
         result = []
+        count = 0
         for posts in self:
-            result.append((posts[0], Preview(posts[1])))
+            count += 1
+            result.append((posts[0], Preview(posts[1]), count))
         return result
     
     def delete_all(self):

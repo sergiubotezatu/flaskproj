@@ -13,8 +13,7 @@ class Home:
         self.bp = Blueprint("home", __name__)
         self.home = self.bp.route("/", methods = ["GET", "POST"])(self.front_page)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
-        self.filtered = set()
-        self.not_filtered = set()
+        self.not_filtered = self.get_not_filtered_users()
         self.PG_LIMIT = 5
         
     def goto_db_setup(self):
@@ -38,10 +37,10 @@ class Home:
         else:
             posts = placeholder.get_all()
         if request.method == "POST":
-            return self.__remove_filters(filtered_ids, filtered_names, filters)
-        next_page : bool = rows - self.PG_LIMIT * page > 0
+            return self.__remove_filters()
+        next_page : bool = posts[-1][2] > self.PG_LIMIT
         return render_template("home.html",
-        allposts = posts,
+        allposts = posts[0:self.PG_LIMIT],
         filters = filters,
         users = self.not_filtered,
         next = next_page,
@@ -55,7 +54,7 @@ class Home:
                 result.add((str(post[1].owner_id), post[1].auth))
         return result
 
-    def __remove_filters(self, ids : list, names : list, filters : defaultdict):
+    def __remove_filters(self):
         query_url = request.full_path
         id = request.form.get("user_id")
         name = request.form.get("name")
