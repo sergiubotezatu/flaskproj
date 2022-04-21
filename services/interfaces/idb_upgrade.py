@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class IDataBaseUpgrade:
+class IDataBaseUpgrade(metaclass = ABCMeta):
    
     @abstractmethod
     def is_latest_version(self):

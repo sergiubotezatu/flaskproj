@@ -4,6 +4,7 @@ from services.interfaces.iauthentication import IAuthentication
 from services.interfaces.idata_base import IDataBase
 from services.dependency_inject.injector import Services
 from services.dependency_inject.container import Container
+from services.interfaces.ifilters import IFilters
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.interfaces.iusers_repo import IUsersRepo
@@ -19,7 +20,7 @@ def create_blog(is_test_app = False):
     from view.db_setup import DbSetUp
     blog.register_blueprint(DbSetUp(IDataBase, IPassHash).bp)
     from view.home import Home
-    blog.register_blueprint(Home(IPostRepo).bp, url_prefix="/")
+    blog.register_blueprint(Home(IPostRepo, IFilters).bp, url_prefix="/")
     from view.post_view import PostPage
     blog.register_blueprint(PostPage(IPostRepo).bp, url_prefix="/post")
     from view.user_profile import UserProfile

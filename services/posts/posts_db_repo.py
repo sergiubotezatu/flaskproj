@@ -111,10 +111,10 @@ class PostsDb(IPostRepo):
     def __get_fetched(self, fetched):
         result = []
         count = 0
-        for post in fetched:
-            count += 1
-            result.append((post[0], Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5]), count))
-        self.page_count = count
+        if fetched != None:
+            for post in fetched:
+                count += 1
+                result.append((post[0], Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5]), count))
         return result
 
     def __cut_poem_newlines(self, content):
