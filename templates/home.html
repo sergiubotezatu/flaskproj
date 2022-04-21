@@ -11,36 +11,13 @@
     {%endfor%}
     {%endif%}
 {%endwith%}
-</div>
-  <span style = "color:white;position:absolute;top:175px;left:20px;margin-right:20px;margin-top:15px;">Filter posts</span>
-  <div class = "filter-field">
-    <div class = "filters">
-      {%for i in range(filters["user_id"]|length)%}
-      {%set name = filters["name"][i]%}
-      {%set userid = filters["user_id"][i] %}
-      <form method = "post">
-        {%if i == 0%}
-        <span class = "applied-filt">Clear all
-          <a href = "/" id = "fullx"><input type = "button" value = "X"></a></span>
-        {%endif%}
-      <span class = "applied-filt">{{name}}
-        <input type = "hidden" name = "name" value = {{name}}>
-        <input type = "hidden" id = "id" name = "rmv_id" value = {{userid}}>
-        <input type = "submit" id = "x" name = "user_id" value = "x">
-        </span>
-    </form>
-      {%endfor%}
-      <i class = "arrow" ></i>
-  </div>
-  {%set i = []%}
-  {%for notfiltered in users%}
-  <form class = "not-filtered" id = {{i|length}} method = "post">
-    <input type = "hidden" name ="name" value = {{notfiltered[1]}}>
-    <input type="checkbox" id="filter-name" name="user_id" value = {{notfiltered[0]}}
-    onchange="document.getElementById('{{i|length}}').submit()">{{notfiltered[1]}}</input>
-  </form>
-  {%set i = i.append(1)%}
-  {%endfor%}
+<div class="filters">
+  <p style = "color:white;margin-top:24px;">Filter posts</p>
+  <input type="text" placeholder="Search.." id="search" onkeyup="filterFunction()">
+    <div id="found" class="users">
+    <a href="#about">About</a>
+    <a href="#base">Base</a>
+    </div>
 </div>
 <div class="row">
   {%if allposts|length == 0%}
@@ -80,4 +57,10 @@
   <a href="{{ '%spg=%s&'|format(ns.path, next) }}" class="pg-arr">Next &raquo;</a>
   {%endif%}
   </div>
+  <script>
+  window.onload = function()
+  {
+    document.getElementById('myInput').setAttribute('autocomplete', 'off');
+  }
+  </script>
 {%endblock%}
