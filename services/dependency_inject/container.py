@@ -58,7 +58,8 @@ class Container:
         IPassHash: PassHash,
         IDataBaseUpgrade : DataBaseUpgrade,
         IAuthorization : Authorization,
-        ISessionMNGR : SessionMngr}
+        ISessionMNGR : SessionMngr,
+        IFilters : Filters}
 
     def __init__(self, is_test):
         self.items = self.get(is_test)

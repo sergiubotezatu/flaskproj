@@ -54,12 +54,16 @@ class Posts(IPostRepo):
         self.__posts[post_id].content = editted.content
         self.__posts[post_id].modified = editted.created            
 
-    def get_all(self):
+    def get_all(self, page = 0, filters : list = [], pagination : bool = True, max = 5):
         result = []
         count = 0
+        filter_match = lambda x : True if len(filters) == 0 else lambda x : x in filters
         for posts in self:
             count += 1
-            result.append((posts[0], Preview(posts[1]), count))
+            if filter_match(posts[0]):
+                result.append((posts[0], Preview(posts[1]), count))
+            if pagination == True and count == max + 1:
+                break
         return result
     
     def delete_all(self):

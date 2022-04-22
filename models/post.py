@@ -19,6 +19,7 @@ class Preview():
         self.auth = post.auth
         self.title = post.title
         self.content = self.truncate(post.content)
+        self.owner_id = post.owner_id
         self.created = post.created
         self.modified = post.modified
 

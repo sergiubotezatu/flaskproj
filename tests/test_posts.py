@@ -1,8 +1,7 @@
 import unittest
 from flask import url_for, current_app
-from services.database.database import DataBase
 from __initblog__ import create_blog
-
+from services.database.database import DataBase
 
 def configure(is_config = True):
     def decorator(test_func):

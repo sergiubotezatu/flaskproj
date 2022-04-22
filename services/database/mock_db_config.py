@@ -16,7 +16,7 @@ class MockDbConfig(MockConfig, IDataBaseConfig):
     def save(self, settings):
         pass
 
-    def load(self, section):
+    def load(self):
         pass
 
     def get_db_version(self):
