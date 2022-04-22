@@ -13,7 +13,7 @@
 {%endwith%}
 <div class="filters">
   <p style = "color:white;margin-top:24px;">Filter posts</p>
-  <input type="text" placeholder="Search.." id="search" onkeyup="filterFunction()">
+    <input type="text" placeholder="Search.." id="search" onkeyup="filterFunction()">
     <div id="found" class="users">
     {%if '?' in url%}
     {%set ns = namespace(path = url)%}

@@ -127,8 +127,7 @@ function hideOptions()
 {
   if (document.getElementById("drop-log-sign").style.display == "block"){
     document.getElementById("drop-log-sign").style.display = "none";
-    var arrow = document.getElementById("arr");
-  }
+    }
 }
 
 function hideDrop(event)
@@ -160,4 +159,4 @@ function filterFunction()
       a[i].style.display = "none";
     }
   }
-}  
+}
