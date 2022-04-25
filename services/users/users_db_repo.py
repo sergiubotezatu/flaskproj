@@ -79,7 +79,7 @@ class UsersDb(IUsersRepo):
         DELETE FROM 
         blog_users
         WHERE OwnerID = %s
-        CASCADE;
+        ;
         """, user.id)
 
     def update(self, usr_id, user : User, pwd = ""):

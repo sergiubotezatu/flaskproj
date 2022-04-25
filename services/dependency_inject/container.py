@@ -20,7 +20,7 @@ from services.database.database_config import DataBaseConfig
 from services.interfaces.iusers_repo import IUsersRepo
 from services.users.users_in_memo import Users
 from services.users.users_db_repo import UsersDb
-from services.database.mock_db_config import MockDbConfig
+from services.database.mock_db_config import MockDbConfig, MockUpgrade
 
 class Container:
     dependencies = {
@@ -56,7 +56,7 @@ class Container:
         IUsersRepo : Users,
         IAuthentication : Authentication,
         IPassHash: PassHash,
-        IDataBaseUpgrade : DataBaseUpgrade,
+        IDataBaseUpgrade : MockUpgrade,
         IAuthorization : Authorization,
         ISessionMNGR : SessionMngr,
         IFilters : Filters}

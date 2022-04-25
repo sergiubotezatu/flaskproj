@@ -63,7 +63,7 @@ class Users(IUsersRepo):
     def remove(self, user: User):
         self.deleted[user.email] = []
         for posts in self.all_posts:
-            if user.id == posts.owner_id:
+            if user.id == posts[1].owner_id:
                 self.deleted[user.email].append(posts)
         self.__users.remove(user)
 

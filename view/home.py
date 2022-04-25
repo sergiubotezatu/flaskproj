@@ -1,4 +1,3 @@
-from collections import defaultdict
 from flask import Blueprint, render_template, request, url_for, redirect, Flask
 from services.database.database import DataBase
 from services.interfaces.ifilters import IFilters
@@ -6,14 +5,13 @@ from services.interfaces.ipost_repo import IPostRepo
 from services.posts.filters import Filters
 from services.posts.seed import placeholder
 from services.dependency_inject.injector import Services
-from urllib.parse import urlencode
 
 class Home:
     @Services.get
     def __init__(self, repo : IPostRepo, filter : IFilters):
         self.blogPosts = repo
         self.bp = Blueprint("home", __name__)
-        self.home = self.bp.route("/", methods = ["GET", "POST"])(self.front_page)
+        self.home = self.bp.route("", methods = ["GET", "POST"])(self.front_page)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.filter = filter
         filter.set_not_filtered(repo)
