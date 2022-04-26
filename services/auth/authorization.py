@@ -18,7 +18,7 @@ class Authorization:
         
         if "post_id" in kwargs:
             post_id = kwargs["post_id"]
-            owner_id = posts_instance.blogPosts.get_post(post_id).owner_id
+            owner_id = posts_instance.blogPosts.get(post_id).owner_id
             return logged_id == owner_id
         if "user_id" in kwargs:
             print(kwargs["user_id"])
