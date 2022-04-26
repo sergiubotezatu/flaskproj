@@ -27,7 +27,7 @@ class Config:
             params += f"[{section}]\n"
             for item in existing_params.items(section):
                 params += f"{item[0]} = {item[1]}\n"
-        with open(self.CONFIGFILE, "w") as writer:
+        with open(self.CONFIGFILE, "w+") as writer:
                 writer.write(params)
        
     def section_exists(self, section : str):

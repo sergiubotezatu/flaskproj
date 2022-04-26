@@ -19,7 +19,7 @@ class DataBaseConfig(Config, IDataBaseConfig):
         for param in params:
             settings.append(param[1])
         DataBaseConfig.is_configured = True
-        return DBSettings(settings)
+        return DBSettings(*settings)
         
     def save(self, settings : DBSettings):
         if not self.section_exists(settings.section):

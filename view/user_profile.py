@@ -111,7 +111,6 @@ class UserProfile:
             if not self.__sign_up_validated(username, mail):
                 return redirect(url_for(".create"))
             else:
-                print(first_role)
                 new_user = User(username, mail, role = first_role)
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add(new_user)

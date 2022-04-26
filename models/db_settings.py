@@ -1,14 +1,14 @@
 
 class DBSettings:
-    def __init__(self, settings : list):
-        self.section : str = settings[0]
-        self.dbname = settings[1]
-        self.user = settings[2]
-        self.password = settings[3]
-        self.host = settings[4]
+    def __init__(self, section, dbname, user, password, host):
+        self.section : str = section
+        self.dbname = dbname
+        self.user = user
+        self.password = password
+        self.host = host
 
-    def to_dict(self):
-        return {"dbname " : self.dbname,
+    def to_dict(self) -> dict:
+        return {"dbname" : self.dbname,
                 "user": self.user,
                 "password": self.password,
                 "host" : self.host}

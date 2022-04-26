@@ -12,14 +12,14 @@ class Home:
         self.blogPosts = repo
         self.bp = Blueprint("home", __name__)
         self.home = self.bp.route("", methods = ["GET", "POST"])(self.front_page)
-        self.to_db_setup = self.bp.before_request(self.goto_db_setup)
+        self.to_db_setup = self.bp.before_request(self.setup_first)
         self.filter = filter
-        filter.set_not_filtered(repo)
         self.PG_LIMIT = 5
         
-    def goto_db_setup(self):
+    def setup_first(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
+        self.filter.set_not_filtered(self.blogPosts)
     
     def front_page(self):
         page = self.__get_current_page()

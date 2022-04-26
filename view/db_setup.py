@@ -23,20 +23,15 @@ class DbSetUp:
         if self.database.config.is_configured:
             return redirect(url_for("home.front_page"))
         if request.method == "POST":
-            settings = DBSettings(self.get_items())        
+            settings = DBSettings("postgresql",
+                        request.form.get("database"),
+                        request.form.get("user"),
+                        request.form.get("password"),
+                        request.form.get("host"))
             self.database.config.save(settings)
             self.upgrade_if_older()
             return redirect(url_for("home.front_page"))
         return render_template("db_setup.html")
-    
-    def get_items(self):
-        return [
-            "postgresql",
-            request.form.get("database"),
-            request.form.get("user"),
-            request.form.get("password"),
-            request.form.get("host")
-        ]
 
     def upgrade_if_older(self):
         if self.database.config.section_exists("postgresql"):
