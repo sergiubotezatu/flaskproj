@@ -9,16 +9,10 @@ class SessionMngr(ISessionMNGR):
         session["username"] = username
         session["email"] = email
         
-    def log_session(self, id, username, email):
+    def log_session(self, id, username, email, role):
         session["id"] = id
         session["username"] = username
         session["email"] = email
-        role = "regular"
-        mail_sufix = email[-6:]
-        if id == 1:
-            role = "default"
-        elif mail_sufix == "@admin":
-            role = "admin"        
         session["role"] = role
         session.permanent = True    
 

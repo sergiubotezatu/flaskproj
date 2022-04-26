@@ -3,7 +3,7 @@
 {%block content%}
 <h3 id = "role"
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
-Create basic user
+Create new user
 </h3>
 <br>
 <h4>
@@ -18,10 +18,10 @@ Create basic user
 <form style="text-align:center" method = "Post">
   <h4>User Role</h4>
   <label class="toggle" style = "margin-bottom:40px;">
-    <input type="checkbox" id = "switch">
+    <input type="checkbox" name = "usr_role" id = "role" value = "regular">
     <span class="slider"></span>
-      <span class="labels" data-on="Admin" data-off="Basic" onclick ="FillInEmail()"></span>
-      </label>
+   <span class="labels" data-on="Admin" data-off="Basic" onclick ="SwitchRole()"></span>
+    </label>
       <br>
     {%if email == ''%}
     <label for="username">Create an username:</label><br>
@@ -48,7 +48,7 @@ Create basic user
     placeholder="John.Doe@domain.com"
     minlength="4"
     required
-    oninput="InvalidMail()">
+    >
     <br>
     <br>
     {%else%}
@@ -75,7 +75,7 @@ Create basic user
     value = {{email}}
     minlength="4"
     required
-    oninput="InvalidMail()">
+    >
     <br>
     <br>
     {%endif%}

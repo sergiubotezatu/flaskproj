@@ -7,7 +7,7 @@ class ISessionMNGR(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def log_session(self, id, username, email):
+    def log_session(self, id, username, email, role):
         pass
 
     @abstractmethod

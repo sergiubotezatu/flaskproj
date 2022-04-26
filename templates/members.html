@@ -11,7 +11,7 @@
                 <span class="tooltiptext">{{member[1]}}</span>
         </div>
             </a>
-            {%elif member|length > 2 and member[2] == 'admin'%}
+            {%elif member[2] == 'admin' or member[2] == 'default'%}
             <a href="{{ '/view/%s'%member[0]|urlencode }}">
                 <div class = "member" id = "admin">
                         <h5 style = "text-align:center;color:white;

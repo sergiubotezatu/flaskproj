@@ -11,10 +11,10 @@ class UsersDb(IUsersRepo):
         
     def add(self, user : User):
         return self.db.perform("""
-    INSERT INTO blog_users      
-    VALUES (DEFAULT, %s, %s, %s, %s)
+    INSERT INTO blog_users(ownerID, Name, Email, Password, Date, Role)      
+    VALUES (DEFAULT, %s, %s, %s, %s, %s)
     RETURNING OwnerID;
-    """, user.name, user.email, user.hashed_pass, user.created, fetch="fetchone")[0]        
+    """, user.name, user.email, user.hashed_pass, user.created, user.role, fetch="fetchone")[0]        
 
     def get_posts(self, user_id):
         to_display = self.db.perform("""
@@ -61,7 +61,7 @@ class UsersDb(IUsersRepo):
         WHERE {identifier} = """ + "%s", value, fetch = "fetchone")
         if displayed == None:
             return displayed
-        user = User(displayed[1], displayed[2], displayed[4])
+        user = User(displayed[1], displayed[2], displayed[4], displayed[6])
         user.password = displayed[3]
         user.modified = displayed[5]
         user.id = displayed[0]
@@ -83,28 +83,20 @@ class UsersDb(IUsersRepo):
         """, user.id)
 
     def update(self, usr_id, user : User, pwd = ""):
-        if pwd != "":
-            self.db.perform("""
+        change_pass = f", Password = '{pwd}'"if pwd != "" else ""
+        change_role = f", Role = '{user.role}'" if user.role != None else ""
+        self.db.perform(f"""
         UPDATE blog_users
-        SET Password = %s
-        WHERE OwnerID = %s;
-        """, pwd, usr_id)
-        self.db.perform("""
-        UPDATE blog_users
-        SET Name = %s, Email= %s, Date_modified = %s
-        WHERE OwnerID = %s;
-        """, user.name, user.email, user.created, usr_id)
+        SET Name = '{user.name}', Email= '{user.email}', Date_modified = '{user.created}'{change_pass}{change_role}
+        WHERE OwnerID = {usr_id};
+        """)
 
     def get_all(self):
         result = self.db.perform("""
-        SELECT u.OwnerID, u.Name,
-        CASE WHEN u.Email LIKE %s THEN 'admin'
-        ELSE ''
-        END AS SpecialRole
+        SELECT u.OwnerID, u.Name, u.Role
         FROM blog_users u
         ORDER BY u.OwnerID DESC;
-        """, "%@admin", fetch = "fetchall") + self.get_all_inactive()
-        print(result)
+        """, fetch = "fetchall") + self.get_all_inactive()
         return result
 
     def get_all_inactive(self):

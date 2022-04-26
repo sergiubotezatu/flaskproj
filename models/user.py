@@ -1,13 +1,14 @@
 from datetime import datetime
 
 class User:
-    def __init__(self, userName, email, date = None):
+    def __init__(self, userName, email, date = None, role = "regular"):
         self.id = 0
         self.name = userName
         self.email = email
         self.hashed_pass = ""
         self.created = self.date_created(date)
         self.modified = ""
+        self.role = role
     
     @property
     def password(self):

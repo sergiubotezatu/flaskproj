@@ -21,7 +21,7 @@ class Authentication(SessionMngr, IAuthentication):
             "Click on \"HERE\" below the form if you don't have an account", "error")
             return redirect(url_for(".log_in"))
         
-        self.log_session(found.id, found.name, found.email)
+        self.log_session(found.id, found.name, found.email, found.role)
         flash(f"Welcome back, {found.name}!")
         return redirect(url_for("profile.user_profile", user_id = found.id))
 
@@ -36,8 +36,8 @@ class Authentication(SessionMngr, IAuthentication):
     def edit_logged(self, username, email):
         super().edit_logged(username, email)
 
-    def log_session(self, id, username, email):
-        super().log_session(id, username, email)
+    def log_session(self, id, username, email, role):
+        super().log_session(id, username, email, role)
 
     def log_out(self):
         super().log_out()

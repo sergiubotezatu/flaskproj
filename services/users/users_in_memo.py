@@ -59,6 +59,8 @@ class Users(IUsersRepo):
         user.modified = new_user.created
         if pwd != None: 
             user.password = pwd
+        if new_user.role != None:
+            user.role = new_user.role
     
     def remove(self, user: User):
         self.deleted[user.email] = []

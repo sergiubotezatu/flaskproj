@@ -24,28 +24,6 @@ function InvalidUserName()
     }
 }
 
-function InvalidMail() 
-{
-    document.getElementById("invalid").innerHTML = "";
-    document.getElementById("mail").style.backgroundColor = "white";
-    var input = document.getElementById("mail").value
-    if(document.getElementById("role").innerHTML.indexOf("admin") != -1)
-    {
-        if (input.slice(-6) != "@admin")
-        {
-          document.getElementById("invalid").innerHTML = "domain '@admin' is mandatory";
-          document.getElementById("mail").style.backgroundColor = "rgba(201, 37, 22, 0.7)";
-        }
-    }else
-    {
-      if (input.lastIndexOf("@admin") != -1)
-      {
-        document.getElementById("invalid").innerHTML = "@admin is for admin use only";
-        document.getElementById("mail").style.backgroundColor = "rgba(201, 37, 22, 0.7)";
-      }
-    }
-}
-
 function MessOn(id)
 {
   document.getElementById(id).style.display = "block";
@@ -94,18 +72,18 @@ function DifferentPass()
    }
 }
 
-function FillInEmail()
+function SwitchRole()
 {
-    var role = document.getElementById("role").innerHTML;
-    var autofill = "";
-    var title = "Create basic user"
-    if (role.indexOf("basic") != -1)
+    var role = document.getElementById("role").value;
+    var title = "regular"
+    if (role == "regular")
     {
-        autofill = "@admin";
-        title = "Create admin user"
+        title = "admin"
     }
-    document.getElementById("mail").value = autofill;
-    document.getElementById("role").innerHTML = title
+    if (role != "default")
+    {
+      document.getElementById("role").value = title
+    }
 }
 
 function showOptions(){
@@ -160,3 +138,4 @@ function filterFunction()
     }
   }
 }
+

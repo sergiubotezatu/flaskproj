@@ -46,7 +46,7 @@ class UserProfile:
                 new_user = User(username, email)
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add(new_user)
-                self.active_usr.log_session(new_user.id, username, email)
+                self.active_usr.log_session(new_user.id, username, email, new_user.role)
                 return redirect(url_for(".user_profile", user_id = new_user.id))
         return render_template("signup.html")
 
@@ -77,7 +77,7 @@ class UserProfile:
             else:
                 flash(f"Old password does not match current one. Please try again", "error")
                 
-        return render_template("edit_user.html", username = editable.name, email = editable.email)
+        return render_template("edit_user.html", username = editable.name, email = editable.email, role = editable.role)
 
     @authorizator.admin_required
     def get_all_users(self):
@@ -107,10 +107,12 @@ class UserProfile:
             mail = request.form.get("email")
             pwd = request.form.get("pwd")
             username = request.form.get("username")
+            first_role = request.form.get("usr_role")
             if not self.__sign_up_validated(username, mail):
                 return redirect(url_for(".create"))
             else:
-                new_user = User(username, mail)
+                print(first_role)
+                new_user = User(username, mail, role = first_role)
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add(new_user)
                 signed_id = new_user.id
@@ -128,9 +130,10 @@ class UserProfile:
         new_name = request.form.get("username")
         new_mail = request.form.get("email", user_id)
         new_password = self.__hash_if_new_pass(request.form.get("pwd"))
+        new_role = request.form.get("usr_role")
         if self.active_usr.get_logged_user().role == "regular":
             self.active_usr.edit_logged(new_name, new_password)
-        self.users.update(user_id, User(new_name, new_mail), new_password)
+        self.users.update(user_id, User(new_name, new_mail, role=new_role), new_password)
 
     def delete_user(self):
         to_delete = self.users.get_by(id = request.form.get("userID"))
