@@ -28,9 +28,9 @@ class Users(IUsersRepo):
         return None
 
     def same_id(self, user : User, id):
-        return user.id == id
+        return user.id == int(id)
 
-    def same_mail(user : User, mail):
+    def same_mail(self, user : User, mail):
         return user.email == mail
 
     def get_all(self):
@@ -53,7 +53,7 @@ class Users(IUsersRepo):
                 self.__change_user_info(users, editted, pwd)
                 break
 
-    def __change_user_info(user, new_user, pwd):
+    def __change_user_info(self, user, new_user, pwd):
         user.name = new_user.name
         user.email = new_user.email
         user.modified = new_user.created
