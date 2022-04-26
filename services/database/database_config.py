@@ -33,17 +33,10 @@ class DataBaseConfig(Config, IDataBaseConfig):
 
     def set_db_version(self, version):
         parser = ConfigParser()
-        if self.section_exists("version"):
-            with open(self.CONFIGFILE, 'r+') as editter:
-                line = editter.readline()
-                while line:
-                    if line.startswith("vers."):
-                        editter.write(f"vers. = {version}")
-        else:
-            parser.add_section("version")
-            parser.set("version", "vers.", version)
-            super().save(parser)
-            
+        parser.add_section("version")
+        parser.set("version", "vers.", version)
+        super().save(parser)
+
     def get_db_version(self):
         parser = ConfigParser()
         if self.section_exists("version"):

@@ -103,7 +103,9 @@ def get_queries():
                     ON CONFLICT ON CONSTRAINT blog_users_pkey
                     DO 
                     UPDATE SET NAME = 'Admin1', Email = 'default@admin', Password = pass, Date = creation_date;
-
+                END IF;
+                
+                IF first_row.ownerID = 1 THEN
                     INSERT INTO blog_users
                     VALUES(DEFAULT, first_row.NAME, first_row.Email, first_row.Password, first_row.Date, first_row.Date_modified);
                 END IF;
@@ -142,4 +144,19 @@ def get_queries():
         end;
         $$
         LANGUAGE plpgsql;
-        """,)]
+        """,),
+        (
+            """
+            ALTER TABLE blog_users
+            ADD Column IF NOT EXISTS
+            Role varchar(10);
+        """,
+        """
+        UPDATE blog_users
+        SET role = case
+        WHEN(email = 'default@admin') THEN 'default'
+        WHEN(email LIKE '%@admin') THEN 'admin'
+        ELSE 'regular'
+        END;
+        """,
+        )]

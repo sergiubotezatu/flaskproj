@@ -6,7 +6,7 @@ class DataBaseUpgrade:
     @Services.get
     def __init__(self, config : IDataBaseConfig):
         self.config = config
-        self.last_version = "1.4"
+        self.last_version = "1.5"
         self.current_version = self.config.get_db_version()
         
     def is_latest_version(self):
