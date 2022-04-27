@@ -11,6 +11,7 @@
 
     <body onresize="hideOptions()" onclick="hideDrop(event)">
         <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
+        
 
         
         <ul class = "largerScreen" id ="opaque" >
@@ -22,7 +23,7 @@
                 <img src = "\static\icons\fountain-pen-close-up.png" class = "icon"></img>
                 Create new Post
             </a></li>
-            {%if "role" in session and session["role"] == "admin" or session["role"] == "default"%}
+            {%if "role" in session and session["role"] in ("admin", "default")%}
             <li>
                 <a class = "option" href = "/create">
                     <img src = "\static\icons\create.png" class = "icon"></img>
@@ -76,7 +77,7 @@
                 <div class="dropdown-content">
                 <a class = "option" href="/">Home</a>
                 <a class = "option" href="{{'/%s'%path|urlencode }}">Create new Post</a>
-                {%if "role" in session and session["role"] == "admin" or session["role"] == "default"%}
+                {%if "role" in session and session["role"] in ("admin", "default")%}
                 <a class = "option" href="/view/community">Users</a>
                 <a class = "option" href="/">Create new user</a>
                 </div>
