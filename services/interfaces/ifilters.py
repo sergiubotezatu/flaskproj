@@ -1,24 +1,26 @@
 from abc import ABCMeta, abstractmethod
+from collections import defaultdict
 
 from services.interfaces.ipost_repo import IPostRepo
 
 class IFilters(metaclass = ABCMeta):
+    applied : defaultdict
+    available : set
+    filtered_ids : list
+    filtered_names : list
+
     @abstractmethod
-    def set_not_filtered(self, posts : IPostRepo) -> set:
-        pass
-    
-    @abstractmethod
-    def set_current_filters(self):
+    def set_newly_applied(self):
         pass
         
     @abstractmethod
-    def get_new_path(self) -> str:
+    def get_new_querystr(self) -> str:
         pass
 
     @abstractmethod
-    def update_not_filtered(self, repo):
+    def update_available(self, repo):
         pass
 
     @abstractmethod
-    def set_not_filtered(self, repo):
+    def reset_available(self, repo):
         pass

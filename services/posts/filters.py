@@ -5,31 +5,31 @@ from services.interfaces.ipost_repo import IPostRepo
 
 class Filters(IFilters):
     def __init__(self):
-        self.filters = defaultdict()
-        self.not_filtered = set()
-        self.ids = []
-        self.names = []
+        self.applied = defaultdict()
+        self.available = set()
+        self.filtered_ids = []
+        self.filtered_names = []
     
-    def set_current_filters(self):
-        self.filters = defaultdict(lambda: [], request.args.to_dict(flat = False))
-        self.ids = self.filters["user_id"]
-        self.names = self.filters["name"]
+    def set_newly_applied(self):
+        self.applied = defaultdict(lambda: [], request.args.to_dict(flat = False))
+        self.filtered_ids = self.applied["user_id"]
+        self.filtered_names = self.applied["name"]
         
-    def get_new_path(self) -> str:
+    def get_new_querystr(self) -> str:
         query_url = request.full_path
         id = request.form.get("user_id")
         name = request.form.get("name")
         query_url = query_url.replace(f"user_id={id}&name={name}&", "")
         return query_url
 
-    def update_not_filtered(self, repo):
-        if self.ids == []:
-            self.set_not_filtered(repo)
-        for i in range(0, len(self.ids)):
-            self.not_filtered.discard((self.ids[i], self.names[i]))
+    def update_available(self, repo : IPostRepo):
+        if self.filtered_ids == []:
+            self.reset_available(repo)
+        for i in range(0, len(self.filtered_ids)):
+            self.available.discard((self.filtered_ids[i], self.filtered_names[i]))
 
-    def set_not_filtered(self, posts : IPostRepo) -> set:
+    def reset_available(self, posts : IPostRepo):
         result = set()
         for post in posts.get_all(pagination = False):
                 result.add((str(post[1].owner_id), post[1].auth))
-        self.not_filtered = result
+        self.available = result
