@@ -16,6 +16,7 @@ Change profile information
     {%endif%}
 {%endwith%}
 <form style="text-align:center" method = "Post">
+  {%if is_admin%}
   <h4>User Role</h4>
   <label class="toggle" style = "margin-bottom:40px;">
     <input type="checkbox" name = "usr_role" id = "role" value = {{role}}>
@@ -25,8 +26,9 @@ Change profile information
     {%else%}
     <span class="labels" data-on="Admin" data-off="Basic" onclick ="SwitchRole()"></span>
     {%endif%}
-      </label>
-      <br>
+  </label>
+{%endif%}
+    <br>
   <label for="username">Change username:</label><br>
   <input id ="toCheck"
    class="field"
@@ -63,7 +65,7 @@ Change profile information
    name="oldpass"
     required
    >
-   {%if "role" in session and session["role"] == "admin" or session["role"] == "default"%}
+   {%if is_admin%}
   <script>      
     document.getElementById("oldpass").removeAttribute("required");
   </script>

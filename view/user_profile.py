@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session, flash
+from models.logged_user import Logged_user
 from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
 from services.auth.authentication import Authentication
@@ -57,13 +58,15 @@ class UserProfile:
         user_id = int(user_id)
         displayed = self.users.get_by(id = user_id)
         owned_posts = self.users.get_posts(user_id)
+        is_editter = self.__is_editter(self.active_usr.get_logged_user(), user_id)
         return render_template("user.html",
-        user_id = displayed.id,
-        name= displayed.name,
-        email = displayed.email,
-        date = displayed.created,
-        modified = displayed.modified,
-        posts = owned_posts)
+                                edit_allowed = is_editter,
+                                user_id = displayed.id,
+                                name= displayed.name,
+                                email = displayed.email,
+                                date = displayed.created,
+                                modified = displayed.modified,
+                                posts = owned_posts)
  
     @authorizator.owner_or_admin
     def edit_user(self, user_id):
@@ -76,8 +79,12 @@ class UserProfile:
                 return redirect(url_for(".user_profile", user_id = user_id))
             else:
                 flash(f"Old password does not match current one. Please try again", "error")
-                
-        return render_template("edit_user.html", username = editable.name, email = editable.email, role = editable.role)
+        
+        return render_template("edit_user.html",
+                                is_admin = self.__is_editter(self.active_usr.get_logged_user()),
+                                username = editable.name,
+                                email = editable.email,
+                                role = editable.role)
 
     @authorizator.admin_required
     def get_all_users(self):
@@ -153,4 +160,10 @@ class UserProfile:
         flash(f"Welcome, {name}!")
         flash("This is your profile page. Here you can see all of your posts.")
         flash("Select Create new post to add a new post", "info")
-        return True       
+        return True
+
+    def __is_editter(self, logged : Logged_user, usr_id = None) -> bool:
+        is_admin : bool = logged.role in ("default", "admin")
+        if usr_id == None:
+            return is_admin
+        return is_admin or logged.id == usr_id
