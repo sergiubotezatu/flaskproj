@@ -72,19 +72,21 @@ function DifferentPass()
    }
 }
 
-function SwitchRole()
+function SwitchRole(id)
 {
-    var role = document.getElementById("role").value;
+    var role = document.getElementById(id);
+    document.getElementById("y").innerHTML = role.value;
     var title = "regular";
-    if (role == "regular")
+    if (role.value == "regular")
     {
         title = "admin";
     }
-    if (role != "default")
+    if (role.value != "default")
     {
-      document.getElementById("role").value = title;
+      role.value = title;
     }
 }
+
 
 function showOptions(){
   

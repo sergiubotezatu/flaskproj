@@ -1,10 +1,6 @@
 {%extends "base.html"%}
 {%block title%}Create new users{%endblock%}
 {%block content%}
-<h3
-style="text-align:center; color:white; text-shadow: 4px 6px 10px black">
-Create new user
-</h3>
 <br>
 <h4>
 {%with messages = get_flashed_messages()%}
@@ -15,13 +11,18 @@ Create new user
     {%endif%}
 {%endwith%}
 </h4>
-<form style="text-align:center" method = "Post">
-  <h4>User Role</h4>
-  <label class="toggle" style = "margin-bottom:40px;">
-    <input type="checkbox" name = "usr_role" id = "role" value = "regular">
-    <span class="slider"></span>
-   <span class="labels" data-on="Admin" data-off="Basic" onclick ="SwitchRole()"></span>
-    </label>
+<form style = "text-align:center;"method = "post">
+  <div class = "role-box">
+  <h3>What type of user are you creating?</h3>
+  <label class="role-option">Basic
+    <input type="radio" checked="checked" name="usr_role" value = "regular">
+    <span class="select"></span>
+  </label>
+  <label class="role-option">Admin
+    <input type="radio" name="usr_role" value = "admin">
+    <span class="select"></span>
+  </label>
+  </div>
       <br>
     {%if email == ''%}
     <label for="username">Create an username:</label><br>
