@@ -75,14 +75,14 @@ function DifferentPass()
 function SwitchRole()
 {
     var role = document.getElementById("role").value;
-    var title = "regular"
+    var title = "regular";
     if (role == "regular")
     {
-        title = "admin"
+        title = "admin";
     }
     if (role != "default")
     {
-      document.getElementById("role").value = title
+      document.getElementById("role").value = title;
     }
 }
 
