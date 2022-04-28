@@ -836,8 +836,8 @@ form{
 
    #search {
         box-sizing: border-box;
-        background-image: url("\\static\\icons\\search.png");
-        background-position: 1px 1px;
+        background-image: url("\\static\\icons\\filters.png");
+        background-position: 10px 1px;
         background-repeat: no-repeat;
         background-size:contain;
         font-size: 14px;
@@ -854,14 +854,16 @@ form{
       }
       
       #search:focus {
+        background-image: url("\\static\\icons\\search.png");
+        background-position: 1px 1px;
         outline: 3px solid steelblue;
         width : 230px;}
-      #search:focus + .users{opacity: 1; height:300px; }
-
-      #found:hover{
-        display:block;
+      #search:focus + .users
+      {
+        opacity: 1;
+        height:250px;
       }
-      
+
       .filters {
         position: relative;
         display: inline-block;
@@ -890,7 +892,7 @@ form{
       }
 
       .users::-webkit-scrollbar {
-        width: 7px;
+        width: 10px;
       }
 
       .users::-webkit-scrollbar-track {
