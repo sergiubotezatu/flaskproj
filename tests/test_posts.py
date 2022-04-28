@@ -1,4 +1,5 @@
 import unittest
+from urllib.parse import urlparse
 from flask import request, session, url_for, current_app
 from __initblog__ import create_blog
 from services.database.database import DataBase
@@ -66,7 +67,7 @@ class PostsTests(unittest.TestCase):
 
         result = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=False)
         self.assertEqual(result.status_code, 302)
-        self.assertEqual(result.location, "/login")
+        self.assertEqual(urlparse(result.location).path, "/login")
     
     @log_user(2, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
@@ -137,7 +138,7 @@ class PostsTests(unittest.TestCase):
             data = {"postID" : "Gr3"},
             follow_redirects=False)
         self.assertEqual(result.status_code, 302)
-        self.assertEqual(result.location, "/")
+        self.assertEqual(urlparse(result.location).path, "/")
         
 if __name__ == "__main__":
     unittest.main()

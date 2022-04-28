@@ -51,7 +51,7 @@ class UserProfile:
                 new_user.password = self.hasher.generate_pass(pwd)
                 new_user.id = self.users.add(new_user)
                 self.active_usr.log_session(new_user.id, username, email, new_user.role)
-                return redirect(url_for(".user_profile", user_id = new_user.id))
+                return redirect(url_for(".user_profile", user_id = new_user.id, pg = "1"))
         return render_template("signup.html")
 
     def user_profile(self, user_id):

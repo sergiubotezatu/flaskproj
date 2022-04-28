@@ -1,4 +1,5 @@
 import unittest
+from urllib.parse import urlparse
 from flask import current_app, url_for
 from __initblog__ import create_blog
 from services.database.database import DataBase
@@ -8,7 +9,7 @@ def log_user(id, name, email, role):
     def decorator(test_func):
         def wrapper(self):
             with self.test_app.session_transaction() as session:
-                session["id"] = id
+                session["id"] = str(id)
                 session["username"] = name
                 session["email"] = email
                 session["role"] = role
@@ -47,10 +48,10 @@ class UsersTests(unittest.TestCase):
     @log_user(2, "John Doe", "JDoe@John", "regular")
     @configure(True)
     def test_delete_user(self):
-        read_user = self.test_app.get("view/2")
+        read_user = self.test_app.get("view/2/?pg=1")
         self.assertIn("John Doe", read_user.data.decode("UTF-8"))
-        result = self.test_app.post("view/2", data = {"userID" : "2"}, follow_redirects = False)
-        self.assertEqual("/", result.location)
+        result = self.test_app.post("view/2/?pg=1", data = {"userID" : "2"}, follow_redirects = False)
+        self.assertEqual("/", urlparse(result.location).path)
         self.assertNotIn("John Doe", result.data.decode("UTF-8"))
 
     @configure(True)
@@ -61,7 +62,7 @@ class UsersTests(unittest.TestCase):
         "pwd" : "password1@"
         }
         creation = self.test_app.post("/signup", data = user, follow_redirects=False)
-        self.assertEqual(creation.location, url_for("profile.user_profile", user_id = 1))
+        self.assertEqual(urlparse(creation.location).path, url_for("profile.user_profile", user_id = 1))
 
     @log_user(1, "Mark Doe", "JDoe@John", "regular")
     @configure(True)
@@ -74,12 +75,13 @@ class UsersTests(unittest.TestCase):
         }       
         
         self.test_app.post("/edit/1", data = edit, follow_redirects=True)
-        result = self.test_app.get("/view/1")
+        result = self.test_app.get("/view/1/?pg=1")
         self.assertIn(edit["username"], result.data.decode("UTF-8"))
 
     @configure(True)
+    @log_user(1, "Mark Doe", "JDoe@John", "regular")
     def test_read_user(self):
-        read_user = self.test_app.get("/view/1")
+        read_user = self.test_app.get("/view/1/?pg=1")
         self.assertIn("James Doe", read_user.data.decode("UTF-8"))
 
 if __name__ == "__main__":
