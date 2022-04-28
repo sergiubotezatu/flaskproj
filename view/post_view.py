@@ -44,7 +44,7 @@ class PostPage:
         return render_template(
             "read.html",
             editable = post_id,
-            owner = selected_post.owner_id,
+            owner = str(selected_post.owner_id),
             auth = selected_post.auth,
             title = selected_post.title,
             content = selected_post.content,
