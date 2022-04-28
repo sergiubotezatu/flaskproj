@@ -80,9 +80,44 @@ class UsersTests(unittest.TestCase):
 
     @configure(True)
     @log_user(1, "Mark Doe", "JDoe@John", "regular")
+    def test_profile_request(self):
+        result = self.test_app.get("/view/1/?pg=1")
+        self.assertEqual(result.status_code, 200)
+
+    @configure(True)
+    @log_user(1, "Mark Doe", "JDoe@John", "regular")
     def test_read_user(self):
         read_user = self.test_app.get("/view/1/?pg=1")
         self.assertIn("James Doe", read_user.data.decode("UTF-8"))
+
+    @configure(True)
+    @log_user(1, "Mark Doe", "JDoe@John", "admin")
+    def test_users_show_in_community(self):
+        read_users = self.test_app.get("/view/community")
+        self.assertIn("James Doe", read_users.data.decode("UTF-8"))
+
+    @configure(True)
+    @log_user(1, "Mark Doe", "JDoe@John", "admin")
+    def test_deleted_email_in_community(self):
+        read_users = self.test_app.get("/view/community")
+        self.assertIn("JDoe@John", read_users.data.decode("UTF-8"))
+
+    @configure(True)
+    @log_user(1, "Mark Doe", "JDoe@John", "admin")
+    def test_setuppage_redirects_if_configured(self):
+        result = self.test_app.get("/config", follow_redirects = False)
+        self.assertEqual(result.status_code, 302)
+        
+    @configure(False)
+    def test_setuppage_doesnt_redirect_if_notconfig(self):
+        result = self.test_app.get("/config", follow_redirects = False)
+        self.assertEqual(result.status_code, 200)
+        
+    @configure(False)
+    @log_user(1, "Mark Doe", "JDoe@John", "admin")
+    def test_home_redirects_tosetup_if_notConfig(self):
+        result = self.test_app.get("/view/1/?pg=1", follow_redirects = True)
+        self.assertIn("host", result.data.decode("UTF-8"))
 
 if __name__ == "__main__":
     unittest.main()

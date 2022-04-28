@@ -11,13 +11,6 @@ class Users(IUsersRepo):
         self.all_posts : IPostRepo = posts
         self.deleted = {}
         self.count = 0
-        
-    def get_posts(self, user_id):
-        user_posts = []
-        for posts in self.all_posts:
-            if posts[1].owner_id == user_id:
-                user_posts.append((posts[0], Preview(posts[1])))
-        return user_posts        
 
     def get_by(self, **kwargs):
         match = self.same_id if "id" in kwargs else self.same_mail
@@ -37,6 +30,8 @@ class Users(IUsersRepo):
         id_names = []
         for users in self.__users:
             id_names.append((users.id, users.name))
+        for deleted in self.deleted:
+            id_names.append((deleted, deleted))
         return id_names
 
     def add(self, user : User):
