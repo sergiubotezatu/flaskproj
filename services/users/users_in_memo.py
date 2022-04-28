@@ -2,8 +2,16 @@ from services.interfaces.iusers_repo import IUsersRepo
 from services.dependency_inject.injector import Services
 from services.interfaces.ipost_repo import IPostRepo
 from models.user import User
-from models.post import Preview
 
+def singleton(cls):
+    __instances = {}
+    def wrapper(*args, **kwargs):
+        if cls not in __instances:
+            __instances[cls] = cls(*args, **kwargs)
+        return __instances[cls]
+    return wrapper
+
+@singleton
 class Users(IUsersRepo):
     @Services.get
     def __init__(self, posts : IPostRepo):
