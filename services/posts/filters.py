@@ -1,15 +1,27 @@
 from collections import defaultdict
 from flask import request
+from services.dependency_inject.injector import Services
 from services.interfaces.ifilters import IFilters
 from services.interfaces.ipost_repo import IPostRepo
+from services.posts.seed import placeholder
 
 class Filters(IFilters):
-    def __init__(self):
+    @Services.get
+    def __init__(self, repo : IPostRepo):
+        self.repo = repo
         self.applied = defaultdict()
         self.available = set()
         self.filtered_ids = []
         self.filtered_names = []
-    
+
+    def apply(self, page : int) -> list:
+        if len(self.repo) > 0 :
+            self.set_newly_applied()
+            self.update_available()
+            return self.repo.get_all(page, self.filtered_ids)
+        else:
+            return placeholder.get_all()
+
     def set_newly_applied(self):
         self.applied = defaultdict(lambda: [], request.args.to_dict(flat = False))
         self.filtered_ids = self.applied["user_id"]
@@ -22,14 +34,14 @@ class Filters(IFilters):
         query_url = query_url.replace(f"user_id={id}&name={name}&", "")
         return query_url
 
-    def update_available(self, repo : IPostRepo):
+    def update_available(self):
         if self.filtered_ids == []:
-            self.reset_available(repo)
+            self.reset_available()
         for i in range(0, len(self.filtered_ids)):
             self.available.discard((self.filtered_ids[i], self.filtered_names[i]))
 
-    def reset_available(self, posts : IPostRepo):
+    def reset_available(self):
         result = set()
-        for post in posts.get_all(pagination = False):
+        for post in self.repo.get_all(pagination = False):
                 result.add((str(post[1].owner_id), post[1].auth))
         self.available = result

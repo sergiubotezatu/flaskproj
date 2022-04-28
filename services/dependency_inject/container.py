@@ -33,7 +33,7 @@ class Container:
         IAuthorization : IAuthentication,
         IPassHash : None,
         ISessionMNGR : None,
-        IFilters : None
+        IFilters : IPostRepo
         }
 
     prod_services = {

@@ -2,14 +2,12 @@ from flask import Blueprint, render_template, request, url_for, redirect, Flask
 from services.database.database import DataBase
 from services.interfaces.ifilters import IFilters
 from services.interfaces.ipost_repo import IPostRepo
-from services.posts.filters import Filters
 from services.posts.seed import placeholder
 from services.dependency_inject.injector import Services
 
 class Home:
     @Services.get
-    def __init__(self, repo : IPostRepo, filters : IFilters):
-        self.blogPosts = repo
+    def __init__(self, filters : IFilters):
         self.bp = Blueprint("home", __name__)
         self.home = self.bp.route("", methods = ["GET", "POST"])(self.front_page)
         self.to_db_setup = self.bp.before_request(self.setup_first)
@@ -19,11 +17,11 @@ class Home:
     def setup_first(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
-        self.filters.reset_available(self.blogPosts)
+        self.filters.reset_available()
     
     def front_page(self):
         page = self.__get_current_page()
-        posts = self.__get_displayed_posts(page)
+        posts = self.filters.apply(page)
         if request.method == "POST":
             return redirect(self.filters.get_new_querystr())
         next_page : bool = posts[-1][2] > self.PG_LIMIT
@@ -35,14 +33,6 @@ class Home:
                                 next = next_page,
                                 pg = int(page),
                                 url = request.full_path.replace(f"pg={page}&", ""))
-
-    def __get_displayed_posts(self, page):
-        if len(self.blogPosts) > 0 :
-            self.filters.set_newly_applied()
-            self.filters.update_available(self.blogPosts)
-            return self.blogPosts.get_all(page, self.filters.filtered_ids)
-        else:
-            return placeholder.get_all()
 
     def __get_current_page(self):
         requested = request.args.get("pg")

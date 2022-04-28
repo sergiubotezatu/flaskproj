@@ -8,6 +8,10 @@ class IFilters(metaclass = ABCMeta):
     available : set
     filtered_ids : list
     filtered_names : list
+    
+    @abstractmethod
+    def apply(self, page) -> list:
+        pass
 
     @abstractmethod
     def set_newly_applied(self):
@@ -18,9 +22,9 @@ class IFilters(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def update_available(self, repo):
+    def update_available(self):
         pass
 
     @abstractmethod
-    def reset_available(self, repo):
+    def reset_available(self):
         pass
