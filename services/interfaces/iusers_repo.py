@@ -8,10 +8,6 @@ class IUsersRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get_posts(self, user_id):
-        pass
-
-    @abstractmethod
     def get_by(self, **kwargs) -> User:
         pass
 

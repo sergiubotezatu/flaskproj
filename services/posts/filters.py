@@ -14,16 +14,16 @@ class Filters(IFilters):
         self.filtered_ids = []
         self.filtered_names = []
 
-    def apply(self, page : int) -> list:
+    def apply(self, query_params : dict, page : int) -> list:
         if len(self.repo) > 0 :
-            self.set_newly_applied()
+            self.set_newly_applied(query_params)
             self.update_available()
             return self.repo.get_all(page, self.filtered_ids)
         else:
             return placeholder.get_all()
 
-    def set_newly_applied(self):
-        self.applied = defaultdict(lambda: [], request.args.to_dict(flat = False))
+    def set_newly_applied(self, query_params : dict):
+        self.applied = defaultdict(lambda: [], query_params)
         self.filtered_ids = self.applied["user_id"]
         self.filtered_names = self.applied["name"]
         

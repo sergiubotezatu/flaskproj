@@ -24,7 +24,7 @@ def create_blog(is_test_app = False):
     from view.post_view import PostPage
     blog.register_blueprint(PostPage(IPostRepo).bp, url_prefix="/post")
     from view.user_profile import UserProfile
-    blog.register_blueprint(UserProfile(IUsersRepo, IPassHash, ISessionMNGR).bp)
+    blog.register_blueprint(UserProfile(IUsersRepo, IPassHash, ISessionMNGR, IFilters).bp)
     from view.user_authenticate import UserAuthenticate
     blog.register_blueprint(UserAuthenticate(IAuthentication).bp)
 

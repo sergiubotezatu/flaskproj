@@ -3,6 +3,7 @@ from models.logged_user import Logged_user
 from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
 from services.auth.authentication import Authentication
+from services.interfaces.ifilters import IFilters
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.interfaces.iusers_repo import IUsersRepo
 from services.dependency_inject.injector import Services
@@ -14,16 +15,17 @@ class UserProfile:
     authorizator = AccessDecorators(IAuthorization)
 
     @Services.get
-    def __init__(self, repo : IUsersRepo, hasher : IPassHash, active_usr : ISessionMNGR):
+    def __init__(self, repo : IUsersRepo, hasher : IPassHash, active_usr : ISessionMNGR, filter : IFilters):
         self.users = repo
         self.hasher = hasher
         self.active_usr = active_usr
+        self.filter = filter
         self.bp = Blueprint("profile", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
-        self.profile = self.register("/view/<user_id>", self.user_profile)
+        self.profile = self.register("/view/<user_id>/", self.user_profile)
         self.members = self.register("/view/community", self.get_all_users)
         self.signup = self.register("/signup", self.sign_up)
-        self.removed_user = self.register("/view/old_users/<email>", self.inactive_user)
+        self.removed_user = self.register("/view/old_users/<email>/", self.inactive_user)
         self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.create_new = self.register("/create", self.create)
         self.activate_old = self.register("/create/<name>/<email>", self.create)
@@ -55,9 +57,9 @@ class UserProfile:
         if request.method == "POST":
             self.delete_user()
             return redirect(url_for("home.front_page"))
-        user_id = int(user_id)
         displayed = self.users.get_by(id = user_id)
-        owned_posts = self.users.get_posts(user_id)
+        filter_params = {"user_id" : [user_id], "name" : [displayed.name]}
+        owned_posts = self.filter.apply(filter_params, int(request.args["pg"]))
         is_editter = self.__is_editter(self.active_usr.get_logged_user(), user_id)
         return render_template("user.html",
                                 edit_allowed = is_editter,
@@ -168,4 +170,4 @@ class UserProfile:
         is_admin : bool = logged.role in ("default", "admin")
         if usr_id == None:
             return is_admin
-        return is_admin or logged.id == usr_id
+        return is_admin or usr_id == logged.id

@@ -10,11 +10,11 @@ class IFilters(metaclass = ABCMeta):
     filtered_names : list
     
     @abstractmethod
-    def apply(self, page) -> list:
+    def apply(self, query_params, page) -> list:
         pass
 
     @abstractmethod
-    def set_newly_applied(self):
+    def set_newly_applied(self, query_params):
         pass
         
     @abstractmethod

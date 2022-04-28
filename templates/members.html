@@ -4,7 +4,7 @@
 <div class = "community">
         {%for member in allmembers%}
         {%if member[0] == member[1]%}
-        <a href="{{ '/view/old_users/%s'%member[0]|urlencode }}">
+        <a href="{{ '/view/old_users/%s/?pg=1'%member[0]|urlencode }}">
         <div class = "member" id = "inactive">
                 <h5 style = "text-align:center;color:white;
                 text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">{{member[1]}}</h5>
@@ -12,7 +12,7 @@
         </div>
             </a>
             {%elif member[2] == 'admin' or member[2] == 'default'%}
-            <a href="{{ '/view/%s'%member[0]|urlencode }}">
+            <a href="{{ '/view/%s/?pg=1'%member[0]|urlencode }}">
                 <div class = "member" id = "admin">
                         <h5 style = "text-align:center;color:white;
                         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">{{member[1]}}</h5>
@@ -20,7 +20,7 @@
                 </div>
             </a>
             {%else%}
-            <a href="{{ '/view/%s'%member[0]|urlencode }}">
+            <a href="{{ '/view/%s/?pg=1'%member[0]|urlencode }}">
         <div class = "member" id = "active">
                 <h5 style = "text-align:center;color:white;
                 text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">{{member[1]}}</h5>

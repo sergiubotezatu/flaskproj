@@ -47,7 +47,7 @@
             </li>
         </ul>
         <ul id = "drop-log-sign"style = "float:right;width:150px;">
-            <div><li style = "width:100%;margin-bottom:-5px;"><a class = "option" href="{{ '/view/%s'%id|urlencode }}">View Profile</a></li></div>
+            <div><li style = "width:100%;margin-bottom:-5px;"><a class = "option" href="{{ '/view/%s/?pg=1'%id|urlencode }}">View Profile</a></li></div>
             <div><li style = "width:100%;margin-top:-3px;"><a class = "option" id = "out" href="javascript:void(0)"
                 onclick = "MessOn('logoverlay')">Log out</a></li></div>
         </ul>
@@ -85,7 +85,7 @@
                 {%if "id" in session %}
                 {%set user = session["username"]%}
                 {%set id = session["id"]%}
-                <a class = "option" href="{{ '/view/%s'%id|urlencode }}">{{user}}</a>
+                <a class = "option" href="{{ '/view/%s/?pg=1'%id|urlencode }}">{{user}}</a>
                 <a class = "option" href="javascript:void(0)" onclick = "MessOn('logoverlay')">Log out</a>
                 {%else%}
                 <a class = "option" href="/login">Log in</a>

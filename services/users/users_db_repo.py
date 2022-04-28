@@ -16,33 +16,6 @@ class UsersDb(IUsersRepo):
     RETURNING OwnerID;
     """, user.name, user.email, user.hashed_pass, user.created, user.role, fetch="fetchone")[0]        
 
-    def get_posts(self, user_id):
-        to_display = self.db.perform("""
-            SELECT p.PostID,
-                u.Name,
-                p.Title,
-                SUBSTRING(p.Content, 1, 150),
-                p.OwnerID,
-                p.Date
-                FROM blog_posts p
-            INNER JOIN blog_users u
-                ON p.OwnerID = u.OwnerID
-                AND p.OwnerID = %s
-                ORDER BY p.PostID DESC;
-            """, user_id, fetch = "fetchall")
-        posts = []
-        for post in to_display:
-            posts.append((post[0],
-            Post(
-                post[1],
-                post[2],
-                self.__cut_poem_newlines(post[3]),
-                owner_id = user_id,
-                date = post[5]
-                ))
-                )
-        return posts
-
     def get_by(self, **kwargs):
         identifier = ""
         ident_value = None
