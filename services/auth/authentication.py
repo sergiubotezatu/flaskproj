@@ -23,7 +23,7 @@ class Authentication(SessionMngr, IAuthentication):
         
         self.log_session(found.id, found.name, found.email, found.role)
         flash(f"Welcome back, {found.name}!")
-        return redirect(url_for("profile.user_profile", user_id = found.id))
+        return redirect(url_for("profile.user_profile", user_id = found.id, pg = ["1"]))
 
     def is_logged_in(self, id) -> bool:
         return "id" in session and session["id"] == int(id)

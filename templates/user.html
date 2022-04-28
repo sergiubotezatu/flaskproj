@@ -68,6 +68,22 @@
         </div>
         </a>
         {%endfor%}
+        <div class = "pages">
+            {%if pg != 1%}
+            {%set prev = (pg - 1)|string%}
+            <form style = "display:none" id = "prev" method = "GET">
+            <input type = hidden name = "pg" value = {{prev}}>
+            </form>
+            <a href="javascript:void(0)" class="pg-arr" onclick = "document.getElementById('prev').submit()">&laquo; Previous</a>
+            {%endif%}
+            {%if next%}
+            {%set next = (pg + 1)|string%}
+            <form style = "display:none" id = "next" method = "GET">
+            <input type = hidden id = "next" name = "pg" value = {{next}}>
+            </form>
+            <a href="javascript:void(0)" class="pg-arr" onclick = "document.getElementById('next').submit()">Next &raquo;</a>
+            {%endif%}
+        </div>
         </div>
         {%else%}
         <div class="ownposts">

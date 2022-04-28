@@ -30,6 +30,7 @@ class UserProfile:
         self.create_new = self.register("/create", self.create)
         self.activate_old = self.register("/create/<name>/<email>", self.create)
         self.activate_old = self.register("/activate/<user_id>", self.activate)
+        self.DISPLAYED_LIMIT = 5
        
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
@@ -59,7 +60,8 @@ class UserProfile:
             return redirect(url_for("home.front_page"))
         displayed = self.users.get_by(id = user_id)
         filter_params = {"user_id" : [user_id], "name" : [displayed.name]}
-        owned_posts = self.filter.apply(filter_params, int(request.args["pg"]))
+        page = int(request.args["pg"])
+        owned_posts = self.filter.apply(filter_params, page)
         is_editter = self.__is_editter(self.active_usr.get_logged_user(), user_id)
         return render_template("user.html",
                                 edit_allowed = is_editter,
@@ -68,7 +70,9 @@ class UserProfile:
                                 email = displayed.email,
                                 date = displayed.created,
                                 modified = displayed.modified,
-                                posts = owned_posts)
+                                posts = owned_posts[0:self.DISPLAYED_LIMIT],
+                                pg = page,
+                                next = owned_posts[-1][2] > self.DISPLAYED_LIMIT)
  
     @authorizator.owner_or_admin
     def edit_user(self, user_id):
