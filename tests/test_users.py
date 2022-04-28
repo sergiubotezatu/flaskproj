@@ -3,7 +3,6 @@ from urllib.parse import urlparse
 from flask import current_app, url_for
 from __initblog__ import create_blog
 from services.database.database import DataBase
-from services.users.passhash import PassHash
 
 def log_user(id, name, email, role):
     def decorator(test_func):
@@ -102,20 +101,9 @@ class UsersTests(unittest.TestCase):
         read_users = self.test_app.get("/view/community")
         self.assertIn("JDoe@John", read_users.data.decode("UTF-8"))
 
-    @configure(True)
-    @log_user(1, "Mark Doe", "JDoe@John", "admin")
-    def test_setuppage_redirects_if_configured(self):
-        result = self.test_app.get("/config", follow_redirects = False)
-        self.assertEqual(result.status_code, 302)
-        
-    @configure(False)
-    def test_setuppage_doesnt_redirect_if_notconfig(self):
-        result = self.test_app.get("/config", follow_redirects = False)
-        self.assertEqual(result.status_code, 200)
-        
     @configure(False)
     @log_user(1, "Mark Doe", "JDoe@John", "admin")
-    def test_home_redirects_tosetup_if_notConfig(self):
+    def test_redirects_tosetup_if_notConfig(self):
         result = self.test_app.get("/view/1/?pg=1", follow_redirects = True)
         self.assertIn("host", result.data.decode("UTF-8"))
 
