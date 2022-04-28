@@ -1,7 +1,7 @@
 from functools import wraps
 from services.dependency_inject.injector import Services
 from services.interfaces.iauthorization import IAuthorization
-from flask import redirect, url_for
+from flask import flash, redirect, url_for
 
 class AccessDecorators:
     @Services.get
@@ -33,4 +33,16 @@ class AccessDecorators:
                 return routing(instance, **kwargs)
             else:
                 return "<h1>you do not have the necessary autorization.</h1>"
+        return wrapper
+
+    def logged_not_allowed(self, routing):
+        @wraps(routing)
+        def wrapper(*args, **Kwargs):
+                if self.authorizator.is_member():
+                    logged = self.authorizator.authenticator.get_logged_user()
+                    flash(f"You are already logged in with name {logged.name}")
+                    flash(f"If you want to log in with a different account, log out first.")
+                    return redirect(url_for("profile.user_profile", user_id = logged.id, pg = ["1"]))
+                else:
+                    return routing(*args, **Kwargs)
         return wrapper

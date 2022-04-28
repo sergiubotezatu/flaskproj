@@ -1,8 +1,10 @@
 from abc import ABCMeta, abstractmethod
 from models.user import User
+from services.interfaces.iauthentication import IAuthentication
 
 class IAuthorization(metaclass = ABCMeta):
-
+    authenticator : IAuthentication
+    
     @abstractmethod
     def is_owner(self, posts_instance, **kwargs):
         pass

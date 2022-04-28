@@ -24,6 +24,7 @@ class UserAuthenticate:
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get", "Post"])(func)
 
+    @authorizator.logged_not_allowed
     def log_in(self):
         if request.method == "GET":
             return render_template("login.html")
