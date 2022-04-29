@@ -74,7 +74,7 @@ class UserProfile:
                                 modified = displayed.modified,
                                 posts = owned_posts[0:self.DISPLAYED_LIMIT],
                                 pg = page,
-                                next = owned_posts[-1][2] > self.DISPLAYED_LIMIT)
+                                next = len(owned_posts) > 0 and owned_posts[-1][2] > self.DISPLAYED_LIMIT)
  
     @authorizator.owner_or_admin
     def edit_user(self, user_id):
