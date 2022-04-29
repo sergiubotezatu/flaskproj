@@ -55,6 +55,7 @@ class UserProfile:
                 return redirect(url_for(".user_profile", user_id = new_user.id, pg = ["1"]))
         return render_template("signup.html")
 
+    @authorizator.member_required
     def user_profile(self, user_id):
         if request.method == "POST":
             self.delete_user()

@@ -1,0 +1,23 @@
+{%extends "base.html"%}
+{%block content%}
+<div id="overlay" style = "display:block;height:fit-content;">
+    <div id="box">
+    {%if error == '405'%}
+    <h3 id ="mess">405 - Method Not Allowed</h3>
+    <h4>You do not have necessary authorization for editting.</h4>
+    <h3>Required roles: Admin, Owner</h3>
+    {%else%}
+    <h3 id ="mess">403 - Forbidden</h3>
+    <h4>We are sorry but only {{role}} have access to this page.</h4>
+    {%if role == 'admins'%}
+    <h4>If you are one</h4>
+    {%endif%}
+    <h3>Please Log in</h3>
+    {%endif%}
+</div>
+<script>
+    setTimeout(function(){
+        window.location.href = "/login";
+    }, 5000);
+</script>
+{%endblock%}
