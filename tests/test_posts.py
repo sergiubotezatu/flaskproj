@@ -56,7 +56,7 @@ class PostsTests(unittest.TestCase):
         result = self.test_app.get(self.BASE)
         self.assertEqual(result.status_code, 200)
         
-
+    @log_user(2, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
     def test_create_redirect(self):
         post = {
@@ -67,7 +67,7 @@ class PostsTests(unittest.TestCase):
 
         result = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=False)
         self.assertEqual(result.status_code, 302)
-        self.assertEqual(urlparse(result.location).path, "/login")
+        self.assertEqual(urlparse(result.location).path, "/post/read/Ma3")
     
     @log_user(2, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
@@ -120,7 +120,7 @@ class PostsTests(unittest.TestCase):
         self.assertIn(post["author"], creation.data.decode("UTF-8"))
         self.assertIn(post["title"], creation.data.decode("UTF-8"))
         self.assertIn(post["post"], creation.data.decode("UTF-8"))
-        result = self.test_app.post(self.BASE_POST + "read/Gr3", data = {"postID" : "Gr3"})
+        result = self.test_app.post(self.BASE_POST + "read/Gr4", data = {"postID" : "Gr4"})
         self.assertNotIn(post["author"], result.data.decode("UTF-8"))
 
     @log_user(1, "Greg Doe", "Greg@email.com", "regular")
@@ -134,8 +134,8 @@ class PostsTests(unittest.TestCase):
 
         self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=True)
         result = self.test_app.post(
-            self.BASE_POST + "read/Gr3",
-            data = {"postID" : "Gr3"},
+            self.BASE_POST + "read/Gr4",
+            data = {"postID" : "Gr4"},
             follow_redirects=False)
         self.assertEqual(result.status_code, 302)
         self.assertEqual(urlparse(result.location).path, "/")

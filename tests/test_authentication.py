@@ -5,9 +5,6 @@ from __initblog__ import create_blog
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
-from services.posts.posts_in_memo import Posts
-from services.users.users_in_memo import Users
-from tests.test_posts import PostsTests
 
 def log_user(id, name, email, role):
     def decorator(test_func):
