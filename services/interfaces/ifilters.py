@@ -4,10 +4,6 @@ from collections import defaultdict
 from services.interfaces.ipost_repo import IPostRepo
 
 class IFilters(metaclass = ABCMeta):
-    applied : defaultdict
-    available : set
-    filtered_ids : list
-    filtered_names : list
     
     @abstractmethod
     def apply(self, query_params, page) -> list:

@@ -11,21 +11,19 @@ class Filters(IFilters):
         self.repo = repo
         self.applied = defaultdict()
         self.available = set()
-        self.filtered_ids = []
-        self.filtered_names = []
-
+        
     def apply(self, query_params : dict, page : int) -> list:
+        ids = []
         if len(self.repo) > 0 :
             self.set_newly_applied(query_params)
             self.update_available()
-            return self.repo.get_all(page, self.filtered_ids)
+            ids += self.applied["user_id"]
+            return self.repo.get_all(page, ids)
         else:
             return placeholder.get_all()
 
     def set_newly_applied(self, query_params : dict):
         self.applied = defaultdict(lambda: [], query_params)
-        self.filtered_ids = self.applied["user_id"]
-        self.filtered_names = self.applied["name"]
         
     def get_new_querystr(self) -> str:
         query_url = request.full_path
@@ -35,13 +33,16 @@ class Filters(IFilters):
         return query_url
 
     def update_available(self):
-        if self.filtered_ids == []:
+        if len(self.applied) == 0:
             self.reset_available()
-        for i in range(0, len(self.filtered_ids)):
-            self.available.discard((self.filtered_ids[i], self.filtered_names[i]))
+        for keys in self.applied:
+            for items in self.applied[keys]:
+                self.available.discard((keys, items))
 
     def reset_available(self):
         result = set()
+        i = 0
         for post in self.repo.get_all():
-                result.add((str(post[1].owner_id), post[1].auth))
+            result.add((str(post[1].owner_id), post[1].auth))
         self.available = result
+        

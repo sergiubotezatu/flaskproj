@@ -74,9 +74,9 @@ class PostsDb(IPostRepo):
         if len(filters) > 0:
             applied = "AND p.OwnerID IN ("
             for filter in filters:
-                applied += filter if applied.endswith("(") else f",{filter}"
+                applied += filter if applied.endswith("(") else f", {filter}"
             applied = applied + ")"
-        limit = f"LIMIT {max + 1}" if page == 0 else ""
+        limit = f"LIMIT {max + 1}" if page > 0 else ""
         return self.__get_fetched(self.db.perform(f"""
             SELECT p.PostID,
             u.Name,
