@@ -29,9 +29,7 @@ class Authentication(SessionMngr, IAuthentication):
         return "id" in session and session["id"] == int(id)
 
     def get_logged_user(self) -> Logged_user:
-        if "id" in session:
-            return Logged_user(session["id"], session["username"], session["email"], session["role"])
-        return None
+        return super().get_logged_user()
 
     def edit_logged(self, username, email):
         super().edit_logged(username, email)

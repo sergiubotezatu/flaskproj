@@ -4,10 +4,11 @@ from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
 from services.interfaces.ipost_repo import IPostRepo
 from services.dependency_inject.injector import Services
+from services.interfaces.isession_mngr import ISessionMNGR
 from services.users.access_decorators import AccessDecorators
 
 class PostPage:
-    authorizator = AccessDecorators(IAuthorization)
+    authorizator = AccessDecorators(IAuthorization, ISessionMNGR)
 
     @Services.get
     def __init__(self, repo : IPostRepo):

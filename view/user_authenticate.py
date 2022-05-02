@@ -4,10 +4,11 @@ from models.user import User
 from flask import Blueprint, request, redirect, render_template, url_for, flash
 from services.dependency_inject.injector import Services
 from services.interfaces.iauthorization import IAuthorization
+from services.interfaces.isession_mngr import ISessionMNGR
 from services.users.access_decorators import AccessDecorators
 
 class UserAuthenticate:
-    authorizator = AccessDecorators(IAuthorization)
+    authorizator = AccessDecorators(IAuthorization, ISessionMNGR)
 
     @Services.get
     def __init__(self, authenticator : IAuthentication):

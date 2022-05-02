@@ -12,7 +12,7 @@ from services.interfaces.Ipassword_hash import IPassHash
 from services.users.access_decorators import AccessDecorators
 
 class UserProfile:
-    authorizator = AccessDecorators(IAuthorization)
+    authorizator = AccessDecorators(IAuthorization, ISessionMNGR)
 
     @Services.get
     def __init__(self, repo : IUsersRepo, hasher : IPassHash, active_usr : ISessionMNGR, filter : IFilters):
