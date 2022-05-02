@@ -70,6 +70,7 @@ class Users(IUsersRepo):
         for post in self.all_posts:
             if user.id == post.owner_id:
                 self.deleted[user.email].append(post)
+                self.all_posts.remove(post.id)
         self.__users.remove(user)
 
     def has_account(self, user_id) -> bool:

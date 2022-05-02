@@ -23,7 +23,7 @@ class Preview():
         self.owner_id = post.owner_id
         self.created = post.created
         self.modified = post.modified
-
+        
     def truncate(self, content):
         lines_count = content[:150].count("\n")
         chunk = 150 - (lines_count * 3)

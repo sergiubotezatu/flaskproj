@@ -146,7 +146,6 @@ class UserProfile:
         new_mail = request.form.get("email", user_id)
         new_password = self.__hash_if_new_pass(request.form.get("pwd"))
         new_role = request.form.get("usr_role")
-        print(new_role)
         if self.active_usr.get_logged_user().role == "regular":
             self.active_usr.edit_logged(new_name, new_password)
         self.users.update(user_id, User(new_name, new_mail, role=new_role), new_password)

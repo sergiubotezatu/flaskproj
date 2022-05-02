@@ -65,7 +65,7 @@ class Posts(IPostRepo):
         result = []
         count = 0
         filter_match = lambda x : True if len(filters) == 0 else lambda x : x in filters
-        for post in self.__posts:
+        for post in self:
             count += 1
             if filter_match(post.id):
                 result.append((post.id, Preview(post), count))
@@ -75,5 +75,5 @@ class Posts(IPostRepo):
 
     def reflect_user_changes(self, id, new_name):
         for posts in self:
-            if posts.owner_id == id:
+            if posts.owner_id == str(id):
                 posts.auth = new_name
