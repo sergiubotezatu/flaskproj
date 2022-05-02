@@ -84,7 +84,7 @@ class UserProfile:
             identity_checker = request.form.get("oldpass")
             if identity_checker == "" or self.hasher.check_pass(editable.hashed_pass, identity_checker) :
                 self.__update_info(user_id)
-                return redirect(url_for(".user_profile", user_id = user_id))
+                return redirect(url_for(".user_profile", user_id = user_id, pg = ["1"]))
             else:
                 flash(f"Old password does not match current one. Please try again", "error")
         
@@ -133,7 +133,7 @@ class UserProfile:
                 signed_id = new_user.id
                 if (name != ""):
                     return redirect(url_for("posts.unarchive", id = signed_id, name = username, email = email))
-                return redirect(url_for(".user_profile", user_id = signed_id))
+                return redirect(url_for(".user_profile", user_id = signed_id, pg = ["1"]))
         return render_template("create_users.html", name = name, email = email)
 
     @authorizator.admin_required
