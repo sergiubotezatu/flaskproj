@@ -61,22 +61,22 @@ class Posts(IPostRepo):
         self.__posts[post_id].content = editted.content
         self.__posts[post_id].modified = editted.created            
 
-    def get_all(self, page = 0, filters : list = [], pagination : bool = True, max = 5):
+    def get_all(self, page = 0, filters : list = [], max = 5):
         result = []
         filter_match = lambda x : x in filters if len(filters) > 0 else True
-        iter_count = 0
+        matches_found = 0
         posts_count = 0
         offset = page * max - max
         for post in self:
-            iter_count += 1
-            if iter_count < offset:
-                continue
             if filter_match(post.owner_id):
-                result.append((post.id, Preview(post), posts_count))
-                posts_count += 1
-            if pagination == True and posts_count == max + 1:
+                matches_found += 1
+                if matches_found >= offset + 1:
+                    posts_count += 1
+                    result.append((post.id, Preview(post), posts_count))
+            if page != 0 and posts_count == max + 1:
                 break
         return result
+
 
     def reflect_user_changes(self, id, new_name):
         for posts in self:

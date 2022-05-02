@@ -42,6 +42,6 @@ class Filters(IFilters):
 
     def reset_available(self):
         result = set()
-        for post in self.repo.get_all(pagination = False):
+        for post in self.repo.get_all():
                 result.add((str(post[1].owner_id), post[1].auth))
         self.available = result

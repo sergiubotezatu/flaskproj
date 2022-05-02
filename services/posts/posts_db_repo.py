@@ -68,7 +68,7 @@ class PostsDb(IPostRepo):
         post.modified = displayed[5]
         return post
 
-    def get_all(self, page = 0, filters : list = [], pagination : bool = True, max = 5):
+    def get_all(self, page = 0, filters : list = [], max = 5):
         applied = ""
         offset = f"OFFSET {page * max - max}" if page != 0 else ""
         if len(filters) > 0:
@@ -76,7 +76,7 @@ class PostsDb(IPostRepo):
             for filter in filters:
                 applied += filter if applied.endswith("(") else f",{filter}"
             applied = applied + ")"
-        limit = f"LIMIT {max + 1}" if pagination else ""
+        limit = f"LIMIT {max + 1}" if page == 0 else ""
         return self.__get_fetched(self.db.perform(f"""
             SELECT p.PostID,
             u.Name,
