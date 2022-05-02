@@ -2,27 +2,7 @@ import unittest
 from urllib.parse import urlparse
 from flask import current_app, url_for
 from __initblog__ import create_blog
-from services.database.database import DataBase
-
-def log_user(id, name, email, role):
-    def decorator(test_func):
-        def wrapper(self):
-            with self.test_app.session_transaction() as session:
-                session["id"] = str(id)
-                session["username"] = name
-                session["email"] = email
-                session["role"] = role
-            return test_func(self)
-        return wrapper
-    return decorator
-
-def configure(is_config : bool):
-    def decorator(test_func):
-        def wrapper(self):
-            DataBase.config.is_configured = is_config
-            return test_func(self)
-        return wrapper
-    return decorator
+from tests.test_tools import configure, log_user, create_user, create_posts, logout_login
 
 class UsersTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)
@@ -91,7 +71,7 @@ class UsersTests(unittest.TestCase):
 
     @configure(True)
     @log_user(1, "Mark Doe", "JDoe@John", "admin")
-    def test_users_show_in_community(self):
+    def test_users_show_in_user_listing(self):
         read_users = self.test_app.get("/view/community")
         self.assertIn("James Doe", read_users.data.decode("UTF-8"))
 

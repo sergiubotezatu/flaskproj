@@ -1,28 +1,9 @@
 import unittest
 from urllib.parse import urlparse
-from flask import request, session, url_for, current_app
+from flask import  current_app
 from __initblog__ import create_blog
 from services.database.database import DataBase
-
-def log_user(id, name, email, role):
-    def decorator(test_func):
-        def wrapper(self):
-            with self.test_app.session_transaction() as session:
-                session["id"] = id
-                session["username"] = name
-                session["email"] = email
-                session["role"] = role
-            return test_func(self)
-        return wrapper
-    return decorator
-
-def configure(is_config : bool):
-    def decorator(test_func):
-        def wrapper(self):
-            DataBase.config.is_configured = is_config
-            return test_func(self)
-        return wrapper
-    return decorator
+from tests.test_tools import log_user, configure
 
 class PostsTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)
