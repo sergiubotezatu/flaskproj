@@ -1,6 +1,5 @@
 import unittest
-from urllib.parse import urlparse
-from flask import current_app, url_for
+from flask import current_app
 from __initblog__ import create_blog
 from services.database.database import DataBase
 

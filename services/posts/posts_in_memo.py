@@ -63,13 +63,18 @@ class Posts(IPostRepo):
 
     def get_all(self, page = 0, filters : list = [], pagination : bool = True, max = 5):
         result = []
-        count = 0
-        filter_match = lambda x : True if len(filters) == 0 else lambda x : x in filters
+        filter_match = lambda x : x in filters if len(filters) > 0 else True
+        iter_count = 0
+        posts_count = 0
+        offset = page * max - max
         for post in self:
-            count += 1
-            if filter_match(post.id):
-                result.append((post.id, Preview(post), count))
-            if pagination == True and count == max + 1:
+            iter_count += 1
+            if iter_count < offset:
+                continue
+            if filter_match(post.owner_id):
+                result.append((post.id, Preview(post), posts_count))
+                posts_count += 1
+            if pagination == True and posts_count == max + 1:
                 break
         return result
 
