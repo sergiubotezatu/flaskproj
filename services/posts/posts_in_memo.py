@@ -4,8 +4,8 @@ from models.post import Post
 from services.dependency_inject.injector import Services
 
 class PostsEnumerator():
-    def __init__(self, posts):
-        self.posts = list(posts.items())
+    def __init__(self, posts : list):
+        self.posts = posts
         self.counter = -1
         self.limit = -len(self.posts)
 
@@ -29,15 +29,19 @@ class Posts(IPostRepo):
     @Services.get
     def __init__(self):
         self.page_count = 0
-        self.__posts = {}
+        self.__posts = []
+        self.count = 0
         
     def add(self, post):
-        post_id = post.auth[:2] + str(len(self.__posts) + 1)
-        self.__posts.update({post_id : post})
+        post_id = self.count + 1
+        post.id = post_id
+        self.__posts.append(post)
+        self.count += 1
         return post_id
 
     def get(self, post_id) -> Post:
-        return self.__posts[post_id]
+        post_id = int(post_id)
+        return self.__posts[post_id - 1]
 
     def __len__(self):
         return len(self.__posts)
@@ -46,9 +50,12 @@ class Posts(IPostRepo):
         return PostsEnumerator(self.__posts)
 
     def remove(self, post_id):
-        self.__posts.pop(post_id)
+        post_id = int(post_id) - 1
+        self.count -= 1
+        self.__posts.remove(self.__posts[post_id])
 
     def replace(self, post_id, editted : Post):
+        post_id = int(post_id) - 1
         self.__posts[post_id].auth = editted.auth
         self.__posts[post_id].title = editted.title
         self.__posts[post_id].content = editted.content
@@ -58,18 +65,15 @@ class Posts(IPostRepo):
         result = []
         count = 0
         filter_match = lambda x : True if len(filters) == 0 else lambda x : x in filters
-        for posts in self:
+        for post in self.__posts:
             count += 1
-            if filter_match(posts[0]):
-                result.append((posts[0], Preview(posts[1]), count))
+            if filter_match(post.id):
+                result.append((post.id, Preview(post), count))
             if pagination == True and count == max + 1:
                 break
         return result
-    
-    def delete_all(self):
-        self.__posts = {}
-    
+
     def reflect_user_changes(self, id, new_name):
         for posts in self:
-            if posts[1].owner_id == id:
-                posts[1].auth = new_name
+            if posts.owner_id == id:
+                posts.auth = new_name

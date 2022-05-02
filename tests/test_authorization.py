@@ -81,7 +81,7 @@ class AuthorizationTests(unittest.TestCase):
                 session["username"] = "admin"
                 session["email"] = "admin@admin"
                 session["role"] = "admin"
-        result = self.test_app.get("/post/edit/Jo2")
+        result = self.test_app.get("/post/edit/2")
         self.assertIn("Edit Post", result.data.decode("UTF-8"))
         self.assertIn("Current Title", result.data.decode("UTF-8"))
 
@@ -144,7 +144,7 @@ class AuthorizationTests(unittest.TestCase):
     @configure(True)
     def test_members_can_edit_owned_post(self):
         self.create_post("John Doe")
-        result = self.test_app.get("/post/edit/Jo3")
+        result = self.test_app.get("/post/edit/3")
         self.assertIn("Edit Post", result.data.decode("UTF-8"))
         self.assertIn("Current Title", result.data.decode("UTF-8"))
     

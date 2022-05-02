@@ -8,6 +8,7 @@ class Post:
         self.owner_id = owner_id
         self.created = self.date_created(date)
         self.modified = ""
+        self.id = 0
         
     def date_created(self, date):
         if date == None:

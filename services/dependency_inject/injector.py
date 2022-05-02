@@ -15,7 +15,7 @@ class Services:
                 else:
                     next_inject = Services.pack_if_needed(cls.dependencies[service])
                     injected += (cls.container[service](*next_inject),)
-            constructor(instance, *injected)
+            return constructor(instance, *injected)
                 
         return wrapper
   

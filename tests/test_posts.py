@@ -67,7 +67,7 @@ class PostsTests(unittest.TestCase):
 
         result = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=False)
         self.assertEqual(result.status_code, 302)
-        self.assertEqual(urlparse(result.location).path, "/post/read/Ma3")
+        self.assertEqual(urlparse(result.location).path, "/post/read/3")
     
     @log_user(2, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
@@ -103,8 +103,8 @@ class PostsTests(unittest.TestCase):
         "post" : "This is an edit"
         }
 
-        self.test_app.post(self.BASE_POST + "edit/Ma2", data = edit, follow_redirects=True)
-        result = self.test_app.get(self.BASE_POST + "read/Ma2")
+        self.test_app.post(self.BASE_POST + "edit/2", data = edit, follow_redirects=True)
+        result = self.test_app.get(self.BASE_POST + "read/2")
         self.assertIn(edit["post"], result.data.decode("UTF-8"))
 
     @log_user(1, "Greg Doe", "Greg@email.com", "regular")
@@ -120,7 +120,7 @@ class PostsTests(unittest.TestCase):
         self.assertIn(post["author"], creation.data.decode("UTF-8"))
         self.assertIn(post["title"], creation.data.decode("UTF-8"))
         self.assertIn(post["post"], creation.data.decode("UTF-8"))
-        result = self.test_app.post(self.BASE_POST + "read/Gr4", data = {"postID" : "Gr4"})
+        result = self.test_app.post(self.BASE_POST + "read/4", data = {"postID" : "4"})
         self.assertNotIn(post["author"], result.data.decode("UTF-8"))
 
     @log_user(1, "Greg Doe", "Greg@email.com", "regular")
@@ -134,8 +134,8 @@ class PostsTests(unittest.TestCase):
 
         self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=True)
         result = self.test_app.post(
-            self.BASE_POST + "read/Gr4",
-            data = {"postID" : "Gr4"},
+            self.BASE_POST + "read/4",
+            data = {"postID" : "4"},
             follow_redirects=False)
         self.assertEqual(result.status_code, 302)
         self.assertEqual(urlparse(result.location).path, "/")
