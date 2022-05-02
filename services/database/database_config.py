@@ -10,11 +10,12 @@ class DataBaseConfig(Config, IDataBaseConfig):
     def __init__(self):
         super().__init__()
         self.setting_options = ["dbname", "user", "password", "host"]
-        self.SECTIONS = ("postgresql", "version")
+        self.DB_SETTINGS = "postgresql"
+        self.VERSION = "version"
                         
     def load(self) -> DBSettings:
         self.current_config = {}
-        section = self.SECTIONS[0]
+        section = self.DB_SETTINGS
         params = super().load(section).items(section)
         settings = [section]
         for param in params:
@@ -34,13 +35,13 @@ class DataBaseConfig(Config, IDataBaseConfig):
 
     def set_db_version(self, version):
         parser = ConfigParser()
-        parser.add_section(self.SECTIONS[1])
-        parser.set(self.SECTIONS[1], "vers.", version)
+        parser.add_section(self.VERSION)
+        parser.set(self.VERSION, "vers.", version)
         super().save(parser)
 
     def get_db_version(self):
         parser = ConfigParser()
-        if self.section_exists(self.SECTIONS[1]):
+        if self.section_exists(self.VERSION):
             parser.read(self.CONFIGFILE)
-            return parser.get(self.SECTIONS[1], "vers.")
+            return parser.get(self.VERSION, "vers.")
         return "1.0"
