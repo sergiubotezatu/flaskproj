@@ -10,11 +10,10 @@ a
 
 body 
 {
-background-image: linear-gradient(to bottom right, rgb(0, 0, 0), 80%, rgb(71, 71, 71));
+background-image: linear-gradient(to bottom right, rgb(0, 0, 0), 80%, rgb(131, 131, 125));
 background-size:cover;
 background-repeat: no-repeat;
 background-attachment: fixed;
-opacity: 0.6;
 font-family: Arial, Helvetica, sans-serif;
 }
 
