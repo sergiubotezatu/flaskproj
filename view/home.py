@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, Flask
 from services.database.database import DataBase
 from services.interfaces.ifilters import IFilters
-from services.interfaces.ipost_repo import IPostRepo
 from services.posts.seed import placeholder
 from services.dependency_inject.injector import Services
 
@@ -17,8 +16,7 @@ class Home:
     def setup_first(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
-        self.filters.reset_available()
-    
+        
     def front_page(self):
         page = self.__get_current_page()
         posts = self.filters.apply(request.args.to_dict(flat = False), page)
@@ -28,8 +26,8 @@ class Home:
 
         return render_template("home.html",
                                 allposts = posts[0:self.PG_LIMIT],
-                                filters = self.filters.applied,
-                                users = self.filters.available,
+                                filters = self.filters.filtered_users,
+                                users = self.filters.unfiltered_users,
                                 next = next_page,
                                 pg = int(page),
                                 url = request.full_path.replace(f"pg={page}&", ""))
