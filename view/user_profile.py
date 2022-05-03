@@ -151,9 +151,15 @@ class UserProfile:
         self.users.update(user_id, User(new_name, new_mail, role=new_role), new_password)
 
     def delete_user(self):
+        logged = self.active_usr.get_logged_user()
+        message = " membership has been canceled."
         to_delete = self.users.get_by(id = request.form.get("userID"))
-        self.active_usr.log_out()
-        flash(f"Your membership has been canceled.")
+        if logged.role not in ("admin, default"):
+            self.active_usr.log_out()
+            message = "Your" + message
+        else:
+            message = f"{logged.name}'s" + message
+        flash(message)
         self.users.remove(to_delete)
 
     def __hash_if_new_pass(self, input):
