@@ -24,7 +24,7 @@
       {%set name = filters["name"][i]%}
       {%set userid = filters["user_id"][i] %}
       {%if i == 0%}
-        <span>Clear all<a href = "/" id = "x">x</a></span>
+        <a href = "/">Clear all<span id = "x">x</span></a>
         {%endif%}
         <span>{{name}}
           <form style = "display:inline"method = "Post">
