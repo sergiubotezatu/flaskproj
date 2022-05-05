@@ -96,7 +96,21 @@ class UserProfile:
 
     @authorizator.admin_required
     def get_all_users(self):
-        return render_template("members.html", allmembers = self.users.get_all())
+        where_clause = ""
+        inactive_needed = False
+        params = request.args.getlist("usr_role")
+        if params == []:
+            return render_template("members.html", allmembers = self.users.get_all(not_filtered = True), checked = params)
+        param_count = len(params)
+        if "deleted" in params:
+            inactive_needed = True
+            params.pop(param_count - 1)
+            param_count -= 1
+        if param_count > 1:
+            where_clause += f"Where u.role IN ({params[0]}, {params[1]})"
+        elif param_count ==  1:
+            where_clause += f"Where u.role IN ({params[0]})"
+        return render_template("members.html", allmembers = self.users.get_all(where_clause, inactive_needed), checked = params)
 
     @authorizator.admin_required
     def chose_users_list(self):
@@ -114,7 +128,8 @@ class UserProfile:
         email = email,
         date = "N/A",
         modified = None,
-        posts = removed_posts)  
+        posts = removed_posts,
+        pg = 1)  
 
     @authorizator.admin_required
     def create(self, name = "", email = ""):

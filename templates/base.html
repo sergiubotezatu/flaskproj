@@ -10,7 +10,7 @@
     </head>
 
     <body onresize="hideOptions()" onclick="hideDrop(event)">
-        <h1 id = "b" style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
+        <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
         <ul class = "largerScreen" id ="opaque" >
             <li><a class = "option" href="/" >
                 <img src = "\static\icons\home.png" class = "icon"></img>
@@ -35,13 +35,13 @@
             {%if "id" in session %}
             {%set user = session["username"]%}
             {%set id = session["id"]%}
-            <li style = "float:right" onclick = "showOptions()">
-                <a class = "option drop-user"  href="javascript:void(0)" id = "show" >            
-                <img src = "\static\icons\profile.png" class = "icon" id = "show"></img>
-                {{user}}
-                <img src = "\static\icons\downward-arrow.png"
-                id = "arr" class="down"></img></a>
-            </li>
+        <li style = "float:right" onclick = "showOptions()">
+            <a class = "option drop-user"  href="javascript:void(0)" id = "show">            
+            <img src = "\static\icons\profile.png" class = "icon" id = "prfl" ></img>
+            {{user}}
+            <img src = "\static\icons\downward-arrow.png"
+            id = "arr" class="down"></img></a>
+        </li>
         </ul>
         <ul id = "drop-log-sign"style = "float:right;width:150px;">
             <div><li style = "width:100%;margin-bottom:-5px;"><a class = "option" href="{{ '/view/%s/?pg=1'%id|urlencode }}">View Profile</a></li></div>
@@ -50,8 +50,8 @@
         </ul>
         {%else%}
         <li style = "float:right">
-            <a class = "option drop-user" id = "show" href="javascript:void(0)" onclick = "showOptions()">            
-            <img src = "\static\icons\profile.png" id = "show" class = "icon"/>
+            <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
+            <img src = "\static\icons\profile.png" class = "icon" id = "prfl"/>
             Profile
             <img src = "\static\icons\downward-arrow.png"
                 id = "arr" class="down"></img></a>
@@ -110,6 +110,7 @@
                 {
                     current = document.getElementById("show");
                     document.getElementById("arr").style.filter = "invert(100%)";
+                    document.getElementById("prfl").style.filter = "invert(100%)";
                     notClickable = false;
                 }
             if (current != null)
@@ -117,7 +118,9 @@
                 current.classList.add("current");
                 if (notClickable)
                 {
+                    current.id = "ico";
                     current.style.pointerEvents = "none";
+                    document.getElementById("ico").children[0].style.filter = "invert(100%)";
                 }
             }
             

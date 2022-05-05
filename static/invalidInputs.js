@@ -114,13 +114,14 @@ function hideDrop(event)
 {
     var target = event.target.id
     var arrow = document.getElementById("arr");
-    if(target != "arr" && target != "show" && target != "drop-log-sign")
+    if(target != "drop-log-sign" && target != "show" && target != "prfl" && target != "arr")
     {
       document.getElementById("drop-log-sign").style.display = "none";
       arrow.classList.remove("up");
       arrow.classList.add("down");
     }
 }
+
 
 function filterFunction()
 {
@@ -161,7 +162,6 @@ function restrictUnchecked()
       if (selection.checked)
       {
           document.getElementById("Filter").disabled = false;
-          document.getElementById("Filter").checked = true;
           selected = selection;
           break;
       }
@@ -170,5 +170,20 @@ function restrictUnchecked()
     {
       var filtButton = document.getElementById("Filter");
       filtButton.disabled = true;
+      filtButton.title = "Select at least one option.";
     }
+}
+
+function saveChecked()
+{
+    saved = "values="
+    var form = document.querySelectorAll("[name ='usr_role']");
+    for (i = 0; i< form.length; i++)
+    {
+        if (form[i].checked == true)
+        {
+            saved += String(i);
+        }
+    }
+    document.cookie = saved;
 }

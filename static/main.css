@@ -16,7 +16,6 @@ background-repeat: no-repeat;
 background-attachment: fixed;
 font-family: Arial, Helvetica, sans-serif;
 margin:0;
-
 }
 
 ul 
@@ -662,7 +661,7 @@ form{
     }
 
     .community {
-        background-image: linear-gradient(to top, steelblue 80%,rgba(11, 34, 85));
+        background-image: linear-gradient(to top, steelblue 70%,rgba(11, 34, 85));
         border: 6px solid rgb(42, 42, 42);
         border-radius:5px;
         margin-right:100px;
@@ -693,6 +692,8 @@ form{
         padding: 50px;
         margin-bottom: 10px;
         font-size: 30px;
+        border-bottom: 2px solid rgb(42, 42, 42);
+        border-right: 2px solid rgb(42, 42, 42);
     }
 
     .member > h5{

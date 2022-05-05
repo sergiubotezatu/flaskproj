@@ -64,12 +64,17 @@ class UsersDb(IUsersRepo):
         WHERE OwnerID = {usr_id};
         """)
 
-    def get_all(self):
-        result = self.db.perform("""
-        SELECT u.OwnerID, u.Name, u.Role
-        FROM blog_users u
-        ORDER BY u.OwnerID DESC;
-        """, fetch = "fetchall") + self.get_all_inactive()
+    def get_all(self, clause = "" , inactive_needed  = True, not_filtered = False):
+        result = []
+        if clause != "" or not_filtered:
+            result = self.db.perform(f"""
+            SELECT u.OwnerID, u.Name, u.Role
+            FROM blog_users u
+            {clause}
+            ORDER BY u.OwnerID DESC;
+            """, fetch = "fetchall")
+        if inactive_needed:
+            result += self.get_all_inactive()
         return result
 
     def get_all_inactive(self):
