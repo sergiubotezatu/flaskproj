@@ -1,6 +1,7 @@
 {%extends "base.html"%}
 {%block title%}{{title}}{%endblock%}
 {%block smallerEdit%}
+{%if session["id"] == owner or session["role"] in ("admin", "default")%}
 <li class="dropMenu">
   <a href="javascript:void(0)" class="dropbtn"> 
       <div class ="line"></div>
@@ -10,25 +11,26 @@
   </a>              
   <div class="dropdown-content">
   <a class = "option" href= "/post/create" >Edit content </a>
-  <div class = "option" id ="smallDel" onclick="MessOn('overlay')">Delete post</a>
+  <a class = "option" hrelf = "javascript:void(0)" onclick="MessOn('overlay')">Delete post</a>
   </div> 
 </li>
+{%endif%}
 {%endblock%}
 {%block create1%}{%endblock%}
 {%block create2%}{%endblock%}
 {%block content%}
-{%if session["id"] == owner or session["role"] == "admin" or session["role"] == "default"%}
-<div class ="editDel">
-  <a href= "{{ '/post/edit/%s'%editable|urlencode }}"><button class="edit">EDIT CONTENT</a>
-  <button type ="button" class ="edit" id = "del" onclick="MessOn('overlay')">DELETE POST</button>
+{%if session["id"] == owner or session["role"] in ("admin", "default")%}
+<div class = "editDel">
+<a href= "{{ '/post/edit/%s'%editable|urlencode }}" class="editbutton" id = "edit">EDIT CONTENT</a>
+<a href = "javascript:void(0)" class ="editbutton" id = "edit" onclick="MessOn('overlay')">DELETE POST</a>
 </div>
 <div id="overlay" onclick="MessOff(this.id)">
   <div id="box">
   <p id ="mess">Are you sure you want to delete this post?</p>
-  <form id = "requestDel" method = "Post">  
+  <form id = "request" method = "Post">  
     <input type="hidden" id="actId" name="postID" value={{editable}}>
-    <input type="submit" id ="yes" value="Yes">
-    <input type="button" id = "no" value ="No" onclick="MessOff('overlay')">
+    <input type="submit" class ="button" value="Yes">
+    <input type="button" class = "button" value ="No" onclick="MessOff('overlay')">
   </form>  
   </div>
 </div>

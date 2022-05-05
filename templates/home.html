@@ -1,6 +1,11 @@
 {%extends "base.html"%}
 {%block title%}Home{%endblock%}
 {%block content%}
+{%if '?' in url%}
+    {%set ns = namespace(path = url)%}
+    {%else%}
+    {%set ns = namespace(path = '?')%}
+{%endif%}
 {%with messages = get_flashed_messages()%}
   {%if messages%}
     {%for note in messages%}
@@ -11,23 +16,23 @@
     {%endfor%}
     {%endif%}
 {%endwith%}
+<div class = "home-content">
 <div class="filters">
-  <p style = "color:white;margin-top:24px;">Filter posts</p>
-    <input type="text" placeholder="Search.." id="search" onkeyup="filterFunction()">
+  <input type="text" placeholder="Filter by users..." id="search" name = "lookup" onkeyup="filterFunction()"
+  onblur="changeFilterMessage();" onfocus = "changeFilterMessage()">
     <div id="found" class="users">
-    {%if '?' in url%}
-    {%set ns = namespace(path = url)%}
-    {%else%}
-    {%set ns = namespace(path = '?')%}
-    {%endif%}
-      {%for i in range(filters["user_id"]|length)%}
+    {%for i in range(filters["user_id"]|length)%}
       {%set name = filters["name"][i]%}
       {%set userid = filters["user_id"][i] %}
       {%if i == 0%}
-        <a href = "/">Clear all<span id = "x">x</span></a>
+      <script>
+        document.getElementById("found").style.transitionDuration = "0s";
+        document.getElementById("search").focus();
+      </script>
+        <a href = "/" >Clear all<span style = "margin-left:-50px;" id = "x">x</span></a>
         {%endif%}
         <span>{{name}}
-          <form style = "display:inline"method = "Post">
+          <form style = "display:inline;margin-left:-50px;"method = "Post">
         <input type = "hidden" name = "name" value = {{name}}>
         <input type = "hidden" id = "id" name = "user_id" value = {{userid}}>
         <input style = "font-size: medium;" type = "submit" id = "x" name = "rmv_id" value = "x">
@@ -44,33 +49,38 @@
   {%if allposts|length == 0%}
   <div class = "post">
     <h3 class = "item" style ="margin-left:auto;margin-right:auto;">Filtered users have no more posts</h3>
-  </div>
-  {%endif%}
-{% for item in allposts%}
-      <div class="column">
-      {%if item[0] == "Ch1"%}
+    </div>
+    {%endif%}
+  {% for item in allposts%}
+    <div class="column">
+  {%if item[0] == "Ch1"%}
       <a href= "/post/create" style ="color:black; text-decoration:none; ">
-      {%else%}
+  {%else%}
       <a href="{{ '/post/read/%s'%item[0]|urlencode }}" style ="color:black; text-decoration:none; ">
-      {%endif%}
+  {%endif%}
         <div class="post" title ="Click to Read More">
          <h3 class = "item" style ="margin-left:auto;margin-right:auto;">{{item[1].title}}</h3>
          <h4 class = "item" class ="higlight">by {{item[1].auth}}</h4>
-         <div class = "item" style ="text-align:justify;">{{item[1].content}}</div>
-        <span class = "item" style = "float: right">{{item[1].created}}</span>
-        </div>
+        <div class = "item" style ="text-align:justify;">{{item[1].content}}</div>
+      <span class = "item" style = "float: right">{{item[1].created}}</span>
+  </div>
       </a>
-    </div>
-    {%endfor%}
   </div>
-  <div class = "pages">
-  {%if pg != 1%}
-  {%set prev = (pg - 1)|string%}
-  <a href="{{ '%spg=%s&'|format(ns.path, prev) }}" class="pg-arr">&laquo; Previous</a>
-  {%endif%}
-  {%if next%}
-  {%set next = (pg + 1)|string%}
-  <a href="{{ '%spg=%s&'|format(ns.path, next) }}" class="pg-arr">Next &raquo;</a>
-  {%endif%}
-  </div>
+  {%endfor%}
+</div>
+  <br>
+      <div class = "pages">
+        {%if pg != 1%}
+        {%set prev = (pg - 1)|string%}
+          <a href="{{ '%spg=%s&'|format(ns.path, prev) }}" class="pg-arr">&laquo; Previous</a>
+        {%endif%}
+        {%if next%}
+        {%set next = (pg + 1)|string%}
+        <a href="{{ '%spg=%s&'|format(ns.path, next) }}" class="pg-arr"style = "padding-left:15px;">Next <span style = "margin-left:10px;">&raquo;</span></a>
+        {%endif%}
+      </div>
+</div>
+<script>
+  document.getElementById("found").style.transitionDuration = "0.8s";
+</script>
 {%endblock%}

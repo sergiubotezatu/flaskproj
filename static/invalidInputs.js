@@ -112,8 +112,8 @@ function hideOptions()
 
 function hideDrop(event)
 {
-   var target = event.target.id
-   var arrow = document.getElementById("arr");
+    var target = event.target.id
+    var arrow = document.getElementById("arr");
     if(target != "arr" && target != "show" && target != "drop-log-sign")
     {
       document.getElementById("drop-log-sign").style.display = "none";
@@ -139,4 +139,15 @@ function filterFunction()
       a[i].style.display = "none";
     }
   }
+}
+
+function changeFilterMessage()
+{
+  let newPlaceholder = "Search";
+  var toChange = document.getElementsByName('lookup')[0];
+  if (toChange.placeholder == newPlaceholder)
+  {
+    newPlaceholder = "Filter by users...";
+}
+  toChange.placeholder = newPlaceholder;
 }

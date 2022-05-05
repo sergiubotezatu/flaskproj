@@ -12,22 +12,22 @@
     <body onresize="hideOptions()" onclick="hideDrop(event)">
         <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
         <ul class = "largerScreen" id ="opaque" >
-            <li><a class = "option" href="/">
+            <li><a class = "option" href="/" >
                 <img src = "\static\icons\home.png" class = "icon"></img>
                 Home
             </a></li>
-            <li><a class = "option" href="/post/create">
+            <li><a class = "option" href="/post/create" >
                 <img src = "\static\icons\fountain-pen-close-up.png" class = "icon"></img>
                 Create new Post
             </a></li>
             {%if "role" in session and session["role"] in ("admin", "default")%}
             <li>
-                <a class = "option" href = "/create">
+                <a class = "option" href = "/create" >
                     <img src = "\static\icons\create.png" class = "icon"></img>
                     Create new user</a>
             </li>
             <li>
-                <a class = "option" href = "/view/community">
+                <a class = "option" href = "/view/community" >
                     <img src = "\static\icons\team.png" class = "icon"></img>
                     Users</a>
             </li>
@@ -75,7 +75,7 @@
                 <a class = "option" href="/">Home</a>
                 <a class = "option" href="{{'/%s'%path|urlencode }}">Create new Post</a>
                 {%if "role" in session and session["role"] in ("admin", "default")%}
-                <a class = "option" href="/view/community">Users</a>
+                <a class = "option" href="/view/community" >Users</a>
                 <a class = "option" href="/">Create new user</a>
                 </div>
                 {%endif%}
@@ -96,12 +96,32 @@
         <div id="logoverlay" onclick="MessOff(this.id)">
             <div id="box">
             <p id ="mess">Are you sure you want to logout?</p>
-            <div id = "requestDel" method = "Post">  
-                <a href = "/logout"><input type = "button" id = "yes" value ="Yes"></a>
-                <input type="button" id = "no" value ="No" onclick="MessOff('overlay')">
+            <div id = "request" method = "Post">  
+                <a href = "/logout"><input type = "button" class = "button" value ="Yes"></a>
+                <input type="button" class = "button" value ="No" onclick="MessOff('overlay')">
             </div>
             </div>
         </div>
+        <script>
+            var path = window.location.pathname;
+            var current = document.querySelector("a[href='" + path + "']");
+            var notClickable = true;
+            if (current == null &&  /\bview/.test(path))
+                {
+                    current = document.getElementById("show");
+                    document.getElementById("arr").style.filter = "invert(100%)";
+                    notClickable = false;
+                }
+            if (current != null)
+            {
+                current.classList.add("current");
+                if (notClickable)
+                {
+                    current.style.pointerEvents = "none";
+                }
+            }
+            
+        </script>
         {%block content%}
         {%endblock%}                    
     </body>

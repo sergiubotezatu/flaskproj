@@ -31,9 +31,6 @@
         </div>
     </div>
 
-    <h3 id = "userposts"style="text-align:right; margin-right: 450px;color:white; text-shadow: 2px 4px 5px black">
-        {{name}}'s posts
-    </h3>
     <div class="profile">
         <div class="profileinfo">
             <p>{{name}}</p>
@@ -43,19 +40,22 @@
             {%if edit_allowed%}
             {%if user_id != email%}
             <a href = "{{ '/edit/%s'%user_id|urlencode }}">
-                <p class = "edituser" style = "margin-bottom:0;">Edit info</p>
+                <p class = "editbutton" style = "margin-bottom:0;">Edit info</p>
             </a>
             {%else%}
             <a href = "{{ '/activate/%s'%user_id|urlencode }}">
-                <p class = "edituser" style = "margin-bottom:0;">Activate account</p>
+                <p class = "editbutton" style = "margin-bottom:0;">Activate account</p>
             </a>
             {%endif%}
-            <a href = "javascript:void(0)" onclick = "MessOn('signoverlay')" style = "margin-top:0;">
+            <a href = "javascript:void(0)" onclick = "MessOn('signoverlay')" id = "rmv_account">
                 <img src = "\static\icons\unfollow.png" style = "width:25px;height:30px;"></img>
                 Delete account</a>
             {%endif%}
         </div>
-        <div class = "postcontainer">
+        <div class = "postcontainer" >
+            <h3 id = "userposts"style="text-align:center;color:white; text-shadow: 2px 4px 5px black">
+                {{name}}'s posts
+            </h3>
         {%if posts|length > 0%}
         {%for articles in posts%}
         {%set id = articles[0]%}

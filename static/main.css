@@ -10,32 +10,30 @@ a
 
 body 
 {
-background-image: linear-gradient(to bottom right, rgb(0, 0, 0), 80%, rgb(131, 131, 125));
+background-image: linear-gradient(to bottom right, rgb(62, 62, 60), 80%, rgb(131, 131, 125));
 background-size:cover;
 background-repeat: no-repeat;
 background-attachment: fixed;
 font-family: Arial, Helvetica, sans-serif;
+margin:0;
+
 }
 
 ul 
 {
 list-style-type: none;
-margin: 0;
-margin-right: 80px;
 padding: 0;
 overflow: hidden;
-border-bottom: 6px solid white;
-border-radius: 10px;
-background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85, 0.932));            
+border-bottom: 6px solid rgb(42, 42, 42);
+border-bottom-left-radius: 10px;
+background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85));            
 position: -webkit-sticky;
 position: sticky;
 transition-duration: all 0.5s ease-in-out;
 top: 0;
-}
-
-ul:hover{
-    background-color:steelblue;
-    z-index:5;
+z-index:5;
+width:100%;
+margin-bottom:0px;
 }
 
 li 
@@ -55,12 +53,15 @@ li a
 }
 
 li .option:hover, .dropbtn:hover
-{
-    border: 2px solid white;
-    border-radius:6px;
-    background-color:yellowgreen;
+{   background-color:yellowgreen;
     text-shadow: 4px 6px 8px black;
     overflow:visible;
+}
+
+.current
+{
+   background-color:rgb(42, 42, 42);
+   border-bottom-left-radius: 0px;
 }
 
 nav{
@@ -76,8 +77,8 @@ nav{
 
   #arr{
     position: relative;
-    right: -20px;
-    top: 15px;
+    right: 1px;
+    top: 5px;
     width:20px;
     height:20px;
   }
@@ -92,14 +93,21 @@ nav{
   }
 
   #drop-log-sign{
+      float:right;
+      margin-right:0;
+      width:150px;
       display:none;
       position:sticky;
-      top:4.7rem;
-      height:95px;
+      top:4.6rem;
+      border-bottom: none;
+      border-top: 2px solid rgb(42, 42, 42);
+      margin-top:0px;
+      margin-bottom:0px;
+      z-index:5;
     }
 
   #drop-log-sign > div{
-    padding-top:2px;
+    width:100%;
   }
 
   .dropdown-content
@@ -116,21 +124,8 @@ nav{
 .smallerScreen
 {
     display:none;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 1) ,rgba(80, 59, 218, 1));
+    background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85, 0.932)); 
     margin-right: 0px;
-    
-}
-
-#smallDel
-{
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 40px 40px 40px 30px;
-    text-decoration: none;
-    transition: 0.5s all;
-    width:180px;
-    cursor: pointer;
 }
 
 .line
@@ -154,7 +149,7 @@ nav{
     {
         display:none;
     }
-    
+
     .largerScreen
     {
         display: none;
@@ -162,29 +157,12 @@ nav{
 }
 
 form{
-    margin-top:0px;
     text-align:center;
     color:rgb(253, 253, 252);
     font-weight:200px;
-    margin-top:50px;
+    margin-top:20px;
+    margin-bottom:20px;
   }
-
-.submitBtn
-{
-    width:80px;
-    height:30px;
-    background-color:greenyellow;
-    transition: 0.3s all;
-    font-size: large;
-}
-.submitBtn:hover
-{
-    color:rgba(11, 34, 85, 0.932);
-    width:90px;
-    height:40px;
-    box-shadow: 4px 6px 8px white;
-    cursor: pointer;
-}
 
 .formtitle{
     margin-left:auto;
@@ -233,6 +211,18 @@ form{
    height: 40px;
 }
 
+.home-content
+{
+  padding-top:1px;
+  background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85, 0.932));
+  margin-left:5%;
+  padding-bottom:10px;
+  padding-left:10px;
+  width:85%;
+  text-align: center;
+  margin-top:-40px;
+}
+
 .column 
 {
     padding: 10px;
@@ -241,30 +231,28 @@ form{
 
 .row { 
     display:grid;
-    grid-template-columns: 47% 47% ;
-    grid-column-gap: 10px;
-    padding: 10px;
+    grid-template-columns: 48% 48% ;
+    grid-column-gap: 25px;
     pointer-events: none;
-  }
+    padding-right:0px;
+    z-index:0;
+}
 
 .row > *{
     pointer-events: auto;
-    transition-duration: 1s;    
-    background-color: rgb(255, 255, 255);
-    margin-bottom: 10px;       
+    transition-duration: 0.5s;    
+    background-color: rgb(255, 244, 179);
+    margin-bottom: 10px;
 }
 
 .row:hover > *{
-    opacity: 0.5;
-    z-index:-1;
-}
+    opacity: 0.65;
+  }
 
 .row:hover > *:hover {
-    transform: scale(1.05);
     opacity: 1;
-    box-shadow: 10px 10px 10px 0px rgb(255, 255, 255);
+    box-shadow: 4px 4px 5px 3px rgb(42, 42, 42);
     background-color: rgb(255, 244, 179);
-    z-index: 1;
     cursor: pointer;
   }
 
@@ -334,6 +322,13 @@ form{
     transition: all 0.3s ease-out;
  }
 
+  textarea
+  {
+      font-size:large;
+      font-family:'Times New Roman', Times, serif;
+      resize:none;
+  }
+
  @media screen and (max-width: 900px)
 {
    .write{
@@ -365,8 +360,8 @@ form{
 
  .readPost
  {
-    background-color: #c5c3c0;   
- }
+    background-color: rgb(255, 244, 179);
+  }
 
  .readPost > p
  {
@@ -375,46 +370,22 @@ form{
  }
 
     .editDel {
-        display: block;
-        color: #f2f2f2;
-        text-align: left;  
-        text-decoration: none;    
-        width:100%;
-        background-color: rgba(255, 255, 255, 0);
-        position: sticky;
-        position: -webkit-sticky;
-        top:7rem;
-    }   
-    
+      width:fit-content;
+      margin-left:10px;
+      margin-top:-40px;
+      position: -webkit-sticky;
+      position:sticky;
+      top:4.5rem;
+      z-index:5;
+    }
+
+    #edit
+    {
+       margin-left:0;
+       padding:4px 20px;
+       
+    }
   
-    .edit {
-        display: inline-block;
-        font-weight: bold;
-        font-family: cursive;
-        background-color: rgba(255, 255, 255, 0.74);
-        border: 1px solid rgba(68, 26, 165, 0.76);
-        border-bottom: rgb(167, 118, 29);
-        border-radius: 5px;
-        align-self: start;
-        padding: 30px 30px;
-        margin-top:0px;
-        text-align: center;
-   }
-    #del{
-        float:right; 
-        margin-right: 120px;             
-        }
-
-        .edit:hover 
-        {
-         transform: scale(1.2);
-         background-color: orangered;
-         box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.705);
-         color:blue;
-         transition: all 0.3s ease-in-out;
-         cursor: pointer;     
-       }    
-
    @media screen and (max-width: 900px)
    {
        .readPost {
@@ -436,29 +407,28 @@ form{
            left:-50px;
        }
 
-       .editDel{display:none}      
+       .editDel{display:none} 
        
-   }
-   
-   
-    #overlay, #logoverlay, #signoverlay{
-        position: fixed;
-        display: none;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        font-size:30px;
-        text-align: center;
-        bottom: 0;
-        background-color: rgba(46, 53, 110, 0.062);
-        z-index: 10;
-        cursor: pointer;
       }
-  
+   
+   
+    #overlay, #logoverlay, #signoverlay, #erroroverlay{
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      font-size:30px;
+      text-align: center;
+      bottom: 0;
+      background-color: rgba(46, 53, 110, 0.062);
+      z-index: 10;
+      cursor: pointer;
+      }
 
-    #requestDel
+    #request
     {  
     display:inline;
     width:50px;
@@ -466,41 +436,36 @@ form{
     left:300px;
     }
 
-    #yes, #no
-    {
+    .button
+    {   
+        color:white;
         display:inline-block;
-        font-weight: bold;
-        font-family: cursive;
+        font-size:large;
         height:50px;
-        background-color: white;
-        border: 3px solid rgba(68, 26, 165, 0.76);
+        background-color: rgb(42, 42, 42);
+        border: 4px solid steelblue;
         border-radius: 5px;
     }
 
-    #yes:hover{
-        transform: scale(1.2);
-        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
+    .button:hover{
+        transform: scale(1.1);
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.467);
         transition: all 0.3s ease-in-out;
-        background-color: orangered;
-        color:blue;
+        background-color: yellowgreen;
         cursor: pointer; 
     }
 
-    #no:hover{
-        transform: scale(1.2);
-        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
-        background-color: orangered;
-        color:blue;
-        transition: all 0.3s ease-in-out;   
-        cursor: pointer;     
+    #submit{
+      padding-right:50px;
+      padding-left:50px;
     }
 
     #box
     {
     padding: 70px 0;
-    border: 8px solid rgb(2, 7, 34);
-    background-color:rgb(151, 149, 138);
-    border-radius:20px;
+    border: 6px solid rgb(42, 42, 42);
+    background-color:rgb(165, 165, 165);
+    border-radius:10px;
     width: 70%;
     margin-right:auto;
     margin-left:auto;
@@ -508,12 +473,12 @@ form{
     margin-bottom:10px;
     padding-bottom:5px;
     height:50%;
-    overflow:visible
+    overflow:visible;
     }
 
     #mess
     {   
-    width: 70%;
+      width: fit-content;
     margin-right:auto;
     margin-left:auto;
     margin-bottom:30px;
@@ -568,43 +533,37 @@ form{
             z-index:-1;}
     }
 
-    @keyframes makeOpaque{
-        0%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.979) ,rgba(80, 59, 218, 0.836));
-        z-index:5}
-        25%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.952) ,rgba(80, 59, 218, 0.658))}
-        50%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.932) ,rgba(80, 59, 218, 0.466))}
-        75%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.911) ,rgba(80, 59, 218, 0.26))}
-        100%{background-image: linear-gradient(to right, rgba(0, 0, 0, 0.904) ,rgba(80, 59, 218, 0))}
-    }
-
     .profile {
         display: grid;
         grid-template-columns: 20% 70%;
         padding: 10px;
+        margin-right:10%;
       }
 
       .postcontainer{
         display: grid;
-        grid-template-columns: auto ;
+        grid-template-columns: 100% ;
         gap:10px;
-        margin-left:100px;
+        margin-left:20%;
       }
       
       .ownposts,
       .profileinfo {
-        padding: 15px;
-        background-image: radial-gradient(#fff4e3,rgba(245, 188, 97, 0.514));
+        padding: 5px;
+        background-color: rgb(255, 244, 179);
         margin-bottom: 5px;
         color:black;
+        overflow:visible;
+        height: auto;
       }      
 
       .ownposts:hover{
-        transition-duration: 1s; 
-        transform: scale(1.15);
+        transition-duration: 0.5s; 
+        box-shadow: 4px 4px 5px 3px rgb(42, 42, 42);
+        cursor: pointer;
       }
       
       .ownposts {
-        height: auto;
         padding: 0px 8px 10px 40px;
         font-family:cursive;
         padding-top: 0;
@@ -614,7 +573,7 @@ form{
       
       .profileinfo {
         width: 30%;
-        height:300px;
+        height:fit-content;
         min-width: 300px;
         margin-top:80px;
         padding-top:100px;
@@ -628,6 +587,19 @@ form{
         display: block;
         text-align: center;
         }
+
+      #rmv_account{
+        color: black;
+        padding-right:5px;
+        border-bottom: 2px solid rgb(42, 42, 42);
+        border-right:2px solid rgb(42, 42, 42);
+      }
+
+      #rmv_account:hover
+      {
+        border-color: orangered;
+        color:orangered;
+      }
 
       @media screen and (max-width: 800px)
     {        
@@ -665,6 +637,11 @@ form{
         .profileinfo{
             position: relative;
             z-index:0;            
+        }
+
+        #box{
+          height:fit-content;
+          width:98%;
         }
     }
     
@@ -718,23 +695,25 @@ form{
         text-overflow: ellipsis;
     }
      
-    .edituser{
+    .editbutton{
         display: block;
         padding-top: 2px;
         margin-right:20px;
         margin-left:20px;
         font-weight: bold;
         text-align:center;
-        background-color: white;
-        border: 3px solid rgba(68, 26, 165, 0.76);
+        color:white;
+        background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85));
+        border: 3px solid rgb(42, 42, 42);
     }
 
-    .edituser:hover{
-        transform: scale(1.1);
-        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.795);
+    .editbutton:hover{
+        transform: scale(1.05);
+        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.795);
         transition: all 0.3s ease-in-out;
-        background-color: orangered;
-        color:blue;
+        background-image: none;
+        background-color: yellowgreen;
+        color:rgba(11, 34, 85);
         cursor: pointer; 
     }
     
@@ -812,75 +791,73 @@ form{
         padding:3px;
         text-decoration: none;
         color:white;
+        background-color: rgb(42, 42, 42);
     }
-    .pages{
+
+    .pages
+    {
         text-align:center;
+        margin-right:3%;
     }
 
   #x{
-      text-decoration: none;
-      padding:0px 3px;;
-      border:2px solid steelblue;
-      border-radius: 5px;
-      color:white;
-      background-color: black;
-      float:right;
-  }
+    text-decoration: none;
+    padding:0px 3px;;
+    border:2px solid steelblue;
+    border-radius: 5px;
+    width:50px;
+    text-align:center;
+    color:white;
+    background-color: rgb(42, 42, 42);
+    float:right;
+  } 
 
   #x:hover{
-      font-size: 110%;
       cursor: pointer;
-  }
-
+      background-color: rgba(42, 42, 42, 0.834);
+    }
 
    #search {
-        box-sizing: border-box;
-        background-image: url("\\static\\icons\\filters.png");
-        background-position: 10px 1px;
         background-repeat: no-repeat;
         background-size:contain;
+        background-position: 1px 1px;
         font-size: 14px;
         padding: 14px 20px 12px 45px;
         border: none;
         border-bottom: 2px solid steelblue;
         border-bottom-right-radius: 10px;
-        position:absolute;
-        margin-bottom:10px;
-        top:0;
-        width:65px;
-        transition:ease-out;
-        transition-property:width;
+        border-bottom-left-radius: 10px;
+        background-image: url("\\static\\icons\\search.png");
+        margin-left:auto;
+        margin-right:auto;
       }
       
-      #search:focus {
-        background-image: url("\\static\\icons\\search.png");
-        background-position: 1px 1px;
-        outline: 3px solid steelblue;
-        width : 230px;}
-      #search:focus + .users
+      #search:focus ~ #found.users, #found:hover
       {
         opacity: 1;
         height:250px;
+        z-index:5;
+        visibility: visible;
       }
 
-      .filters {
-        position: relative;
-        display: inline-block;
-        margin-left:0px;
-      }
-
-      .users {
+      #found {
         opacity:0;
-        position: absolute;
-        top:3rem;
-        background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85));   
-        min-width: 230px;
+        background-color: rgba(11, 34, 85, 0);
+        min-width: 250px;
         height:0px;
+        visibility: hidden;
         overflow-y: auto;
-        border: 1px solid rgba(11, 34, 85);
-        z-index: 1;
+        border-left: 3px solid rgba(62, 62, 60, 0.451);
+        border-bottom: 4px solid rgb(62, 62, 60);
+        border-bottom-left-radius: 10px;
+        border-top-right-radius: 20px;
         transition-duration: 0.8s;
-        transition-property:height;
+        transition-property:height;        
+      }
+
+      #found > span:last-of-type
+      {
+        border-bottom: 3px solid rgb(62, 62, 60);
       }
       
       .users a , .users span{
@@ -891,7 +868,7 @@ form{
       }
 
       .users::-webkit-scrollbar {
-        width: 10px;
+        width: 13px;
       }
 
       .users::-webkit-scrollbar-track {
@@ -900,16 +877,19 @@ form{
       }
        
       .users::-webkit-scrollbar-thumb {
-        background: white; 
+        background: rgb(190, 190, 190); 
         border-radius: 10px;
+        
       }
 
       .users::-webkit-scrollbar-thumb:hover {
-        background: rgba(153, 205, 50, 0.622); 
+        background: rgb(157, 157, 157); 
       }
       
       .filters a:hover, .filters span:hover      
-      { background-color: rgba(153, 205, 50, 0.789);
-        border: 2px solid white;}
+      { background-color: yellowgreen;
+        background-size: 50%;
+        border-bottom: 0.2px solid white;
+      }
 
       
