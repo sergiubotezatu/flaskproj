@@ -96,21 +96,11 @@ class UserProfile:
 
     @authorizator.admin_required
     def get_all_users(self):
-        where_clause = ""
-        inactive_needed = False
         params = request.args.getlist("usr_role")
         if params == []:
-            return render_template("members.html", allmembers = self.users.get_all(not_filtered = True), checked = params)
-        param_count = len(params)
-        if "deleted" in params:
-            inactive_needed = True
-            params.pop(param_count - 1)
-            param_count -= 1
-        if param_count > 1:
-            where_clause += f"Where u.role IN ({params[0]}, {params[1]})"
-        elif param_count ==  1:
-            where_clause += f"Where u.role IN ({params[0]})"
-        return render_template("members.html", allmembers = self.users.get_all(where_clause, inactive_needed), checked = params)
+            return render_template("members.html", allmembers = self.users.get_all(not_filtered = True))
+        return self.__render_filtered_users(params)
+        
 
     @authorizator.admin_required
     def chose_users_list(self):
@@ -197,3 +187,18 @@ class UserProfile:
         if usr_id == None:
             return is_admin
         return is_admin or usr_id == logged.id
+
+    def __render_filtered_users(self, query_params):
+        where_clause = ""
+        inactive_needed = False
+        param_count = len(query_params)
+        if "deleted" in query_params:
+            inactive_needed = True
+            query_params.pop(param_count - 1)
+            param_count -= 1
+        if param_count > 1:
+            where_clause += f"Where u.role IN ({query_params[0]}, {query_params[1]})"
+        elif param_count ==  1:
+            where_clause += f"Where u.role IN ({query_params[0]})"
+        return render_template("members.html", allmembers = self.users.get_all(where_clause, inactive_needed))
+        
