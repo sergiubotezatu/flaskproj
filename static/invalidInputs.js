@@ -151,3 +151,24 @@ function changeFilterMessage()
 }
   toChange.placeholder = newPlaceholder;
 }
+
+function restrictUnchecked()
+{
+    var form = document.querySelectorAll("[name ='usr_role']");
+    var selected = null;
+    for (selection of form)
+    {
+      if (selection.checked)
+      {
+          document.getElementById("Filter").disabled = false;
+          document.getElementById("Filter").checked = true;
+          selected = selection;
+          break;
+      }
+    }
+    if (selected == null)
+    {
+      var filtButton = document.getElementById("Filter");
+      filtButton.disabled = true;
+    }
+}
