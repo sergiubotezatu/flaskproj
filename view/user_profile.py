@@ -62,7 +62,7 @@ class UserProfile:
             return redirect(url_for("home.front_page"))
         displayed = self.users.get_by(id = user_id)
         filter_params = {"user_id" : [user_id], "name" : [displayed.name]}
-        page = int(request.args["pg"])
+        page = int(request.args.get("pg"))
         owned_posts = self.filter.apply(filter_params, page)
         is_editter = self.__is_editter(self.active_usr.get_logged_user(), user_id)
         return render_template("user.html",
@@ -100,11 +100,6 @@ class UserProfile:
         if params == []:
             return render_template("members.html", allmembers = self.users.get_all(not_filtered = True))
         return self.__render_filtered_users(params)
-        
-
-    @authorizator.admin_required
-    def chose_users_list(self):
-        return render_template("admin_choice.html")
 
     @authorizator.admin_required
     def inactive_user(self, email):
@@ -119,7 +114,8 @@ class UserProfile:
         date = "N/A",
         modified = None,
         posts = removed_posts,
-        pg = 1)  
+        pg = 1,
+        edit_allowed = True)  
 
     @authorizator.admin_required
     def create(self, name = "", email = ""):
@@ -128,7 +124,6 @@ class UserProfile:
             pwd = request.form.get("pwd")
             username = request.form.get("username")
             first_role = request.form.get("usr_role")
-            print(first_role)
             if not self.__sign_up_validated(username, mail):
                 return redirect(url_for(".create"))
             else:
@@ -179,7 +174,7 @@ class UserProfile:
             return False
         flash(f"Welcome, {name}!")
         flash("This is your profile page. Here you can see all of your posts.")
-        flash("Select Create new post to add a new post", "info")
+        flash("Select Create new post to add yout first post", "info")
         return True
 
     def __is_editter(self, logged : Logged_user, usr_id = None) -> bool:

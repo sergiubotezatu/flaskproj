@@ -2,11 +2,12 @@
 {%block title%}LogIn{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
-  {%if messages%}
+{%if messages%}
+<div class = "flash-error">
     {%for note in messages%}
-    <strong><p style = "text-align: center;color:maroon;">{{note}}</p></strong>
-    </div>
-    {%endfor%}
+    <h2>{{note}}</h2>
+   {%endfor%}
+  </div>
     {%endif%}
 {%endwith%}
 <form style="text-align:center" method = "Post">
@@ -31,7 +32,7 @@
    required><br><br>
   <input class ="button" type="submit" value="Log In">
 </form>
-<h3 style ="text-align:center; color:white; text-shadow: 4px 6px 10px black">
+<h2 style ="text-align:center; color:white; text-shadow: 4px 6px 10px black">
   Not a member? Press  <a id = "ToRegister" href="/signup">Here</a>  to sign up.
-</h3>
+</h2>
 {%endblock%}

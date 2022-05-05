@@ -2,10 +2,12 @@
 {%block title%}Sing_Up{%endblock%}
 {%block content%}
 {%with messages = get_flashed_messages()%}
-  {%if messages%}
+{%if messages%}
+<div class = "flash-error">
     {%for note in messages%}
-    <strong><p style = "text-align: center;color:maroon;">{{note}}</p></strong>
-    {%endfor%}
+    <h2 >{{note}}</h2>
+  {%endfor%}
+</div>
     {%endif%}
 {%endwith%}
 <form method = "Post">
@@ -18,15 +20,12 @@
    class="field"
    type="text"
    name="username"
-   placeholder="letters and numbers only"
-   pattern="[a-zA-Z0-9]+" 
+  placeholder="letters and numbers only"
    title="Name should be at least 4 characters long."
    minlength="4"
    autofocus
-   required
-   oninput="InvalidUserName()">
+   required>
    <br>
-   <span id="invalid" style="color:red;"></span>
    <br>
 
   <label for="email">Email address</label><br>
@@ -38,9 +37,8 @@
     placeholder="John.Doe@domain.com"
     minlength="4"
     required
-    oninput="InvalidMail()">
+    >
     <br>
-    <span id="invalid" style="color:red;"></span>
     <br>
     
   <label for="pwd">Create a password</label><br>

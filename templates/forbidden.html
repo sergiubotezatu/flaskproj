@@ -1,6 +1,6 @@
 {%extends "base.html"%}
 {%block content%}
-<div id="#erroroverlay" style = "display:block;height:fit-content;" onclick = "MessOff('overlay')">
+<div id="erroroverlay" style = "display:block;height:fit-content;" onclick = "MessOff('erroroverlay')">
     <div id="box">
     {%if error == '405'%}
     <h3 id ="mess">405 - Method Not Allowed</h3>
@@ -14,6 +14,7 @@
     {%endif%}
     <h3>Please Log in</h3>
     {%endif%}
+    </div>
 </div>
 <script>
     setTimeout(function(){

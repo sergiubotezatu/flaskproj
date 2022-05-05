@@ -9,7 +9,7 @@
         <title>{%block title%}{%endblock%}</title>
     </head>
 
-    <body onresize="hideOptions()" onclick="hideDrop(event)">
+    <body onresize="hideOptions()" onclick="hideDrop(event)" onscroll="hideGreeting()">
         <h1 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h1>
         <ul class = "largerScreen" id ="opaque" >
             <li><a class = "option" href="/" >
@@ -32,7 +32,7 @@
                     Users</a>
             </li>
             {%endif%}
-            {%if "id" in session %}
+        {%if "id" in session %}
             {%set user = session["username"]%}
             {%set id = session["id"]%}
         <li style = "float:right" onclick = "showOptions()">
@@ -50,7 +50,7 @@
         </ul>
         {%else%}
         <li style = "float:right">
-            <a class = "option drop-user" href="javascript:void(0)" onclick = "showOptions()">            
+            <a class = "option drop-user" href="javascript:void(0)" id = "show" onclick = "showOptions()">            
             <img src = "\static\icons\profile.png" class = "icon" id = "prfl"/>
             Profile
             <img src = "\static\icons\downward-arrow.png"

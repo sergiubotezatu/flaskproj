@@ -161,7 +161,7 @@ function restrictUnchecked()
     {
       if (selection.checked)
       {
-          document.getElementById("Filter").disabled = false;
+          document.getElementById("Filter").style.pointerEvents = "auto";
           selected = selection;
           break;
       }
@@ -170,6 +170,7 @@ function restrictUnchecked()
     {
       var filtButton = document.getElementById("Filter");
       filtButton.disabled = true;
+      filtButton.style.pointerEvents = "none";
       filtButton.title = "Select at least one option.";
     }
 }
@@ -186,4 +187,10 @@ function saveChecked()
         }
     }
     document.cookie = saved;
+}
+
+function hideGreeting()
+{
+  greet = document.getElementById("greeting").style.transitionDuration = "1s";
+  document.getElementById("greeting").style.display = "none";
 }

@@ -60,7 +60,7 @@ li .option:hover, .dropbtn:hover
 .current
 {
    background-color:rgb(42, 42, 42);
-   border-bottom-left-radius: 0px;
+   margin-left:0px;
 }
 
 nav{
@@ -97,12 +97,11 @@ nav{
       width:150px;
       display:none;
       position:sticky;
-      top:4.6rem;
+      top:4.7rem;
       border-bottom: none;
-      border-top: 2px solid rgb(42, 42, 42);
       margin-top:0px;
       margin-bottom:0px;
-      z-index:5;
+      z-index:4;
     }
 
   #drop-log-sign > div{
@@ -184,23 +183,14 @@ form{
 
 #ToRegister
 {
-    color: black;
+    color: #07aaaf;
     font-weight: bold;
+    size:large;
 }
-
-#ToRegister:link
-{
-    color: #490e0e;
-}       
 
 #ToRegister:hover
 {
-    color: #07aaaf;
-}
-
-#ToRegister:active
-{
-    color: yellow;
+    color: yellowgreen;
 }
 
 #space
@@ -479,9 +469,9 @@ form{
     #mess
     {   
       width: fit-content;
-    margin-right:auto;
-    margin-left:auto;
-    margin-bottom:30px;
+      margin-right:auto;
+      margin-left:auto;
+      margin-bottom:30px;
     }
 
     .item
@@ -701,6 +691,8 @@ form{
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-align:center;color:white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     }
      
     .editbutton{
@@ -916,6 +908,25 @@ form{
       { background-color: yellowgreen;
         background-size: 50%;
         border-bottom: 0.2px solid white;
+      }
+
+      .flash-error
+      {
+        text-align:center;
+        color:white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        margin-right:15%;
+        margin-left:15%;    
+      }
+
+      .flash-note
+      {
+        position:relative;
+        left:5rem;
+        text-align:center;
+        color:white;
+        margin-left:15%;
+        margin-right:15%;
       }
 
       

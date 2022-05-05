@@ -16,8 +16,8 @@ class Authentication(SessionMngr, IAuthentication):
     def log_in(self, email, password) -> bool:
         found : User = self.users.get_by(mail = email)
         if found == None or not self.hasher.check_pass(found.hashed_pass, password):
-            flash("Incorrect Password or Email. Please try again", "error")
-            flash(f"Please check for spelling errors or "
+            flash("Incorrect Password or Email. Please try again.", "error")
+            flash(f"Check for spelling errors or "
             "Click on \"HERE\" below the form if you don't have an account", "error")
             return redirect(url_for(".log_in"))
         

@@ -101,7 +101,7 @@ class PostsDb(IPostRepo):
         """, email, fetch = "fetchall")
         i = 1
         for record in result:
-            self.add_post(Post(name, f"post no {i}", record[0], owner_id = id))
+            self.add(Post(name, f"post no {i}", record[0], owner_id = id))
             i += 1
         self.db.perform("""
         DELETE FROM deleted_users
