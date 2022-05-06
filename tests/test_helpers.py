@@ -1,18 +1,46 @@
+from typing import Union
 from unittest import TestCase
 from flask import url_for
 from models.post import Post
+from models.user import User
 from services.database.database import DataBase
 from services.dependency_inject.injector import Services
 from services.interfaces.ipost_repo import IPostRepo
+from services.interfaces.iusers_repo import IUsersRepo
+from services.posts.posts_in_memo import Posts
 
-def delete_post(posts : IPostRepo, id : int):
-    posts.remove(id)
+class RepoMngr:
+    first_instance = True
+    @Services.get
+    def __init__(self, repo : Union[IPostRepo, IUsersRepo]):
+        self.repo = repo
+        self.__del_placeholder()
+        
+    def delete(self, id : int):
+        self.repo.remove(id)
+
+    def add(self, entity : Union[Post, User]):
+        self.repo.add(entity)
+
+    def add_rmv(self, entity : Union[Post, User]):
+        def decorator(test_func):
+            def wrapper(instance):
+                self.add(entity)
+                test_func(instance)
+                self.delete(entity.id)
+            return wrapper
+        return decorator
+
+    def __del_placeholder(self):
+        if RepoMngr.first_instance and "Posts" in str(type(self.repo)):
+            RepoMngr.first_instance = False
+            self.delete(1)
 
 def log_user(id, name, email, role):
     def decorator(test_func):
         def wrapper(instance : TestCase):
             with instance.test_app.session_transaction() as session:
-                session["id"] = str(id)
+                session["id"] = id
                 session["username"] = name
                 session["email"] = email
                 session["role"] = role
