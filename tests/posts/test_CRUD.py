@@ -3,7 +3,9 @@ from urllib.parse import urlparse
 from flask import  current_app
 from __initblog__ import create_blog
 from services.database.database import DataBase
-from tests.test_tools import log_user, configure
+from services.dependency_inject.injector import Services
+from services.interfaces.ipost_repo import IPostRepo
+from tests.test_helpers import create_posts, delete_post, log_user, configure
 
 class PostsTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)
@@ -15,7 +17,11 @@ class PostsTests(unittest.TestCase):
         
     BASE =  "/"
     BASE_POST = "/post/"
-    CONFIG_PAGE = "/config"    
+    CONFIG_PAGE = "/config"
+
+    @Services.get
+    def get_posts(self, posts : IPostRepo):
+        return posts  
 
     @configure(True)
     def test_setuppage_redirects_if_configured(self):
@@ -47,8 +53,9 @@ class PostsTests(unittest.TestCase):
         }
 
         result = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=False)
+        delete_post(self.get_posts(IPostRepo), 2)
         self.assertEqual(result.status_code, 302)
-        self.assertEqual(urlparse(result.location).path, "/post/read/3")
+        self.assertEqual(urlparse(result.location).path, "/post/read/2")
     
     @log_user(2, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
@@ -62,7 +69,9 @@ class PostsTests(unittest.TestCase):
         creation = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=True)
         self.assertIn(post["title"], creation.data.decode("UTF-8"))
         self.assertIn(post["post"], creation.data.decode("UTF-8"))
-        
+        delete_post(self.get_posts(IPostRepo), 2)
+
+    @log_user(2, "Mark Doe", "Mark@email.com", "regular")   
     @configure(True)
     def test_creation_home_print(self):
         post = {
@@ -73,6 +82,7 @@ class PostsTests(unittest.TestCase):
 
         self.test_app.post(self.BASE_POST + "create", data = post)
         result = self.test_app.get(self.BASE)
+        delete_post(self.get_posts(IPostRepo), 2)
         self.assertIn(post["post"], result.data.decode("UTF-8"))
 
     @log_user(2, "Mark Doe", "Mark@email.com", "regular")
@@ -83,9 +93,10 @@ class PostsTests(unittest.TestCase):
         "title" : "Generic",
         "post" : "This is an edit"
         }
-
+        create_posts(self, "Mark Doe", 1)
         self.test_app.post(self.BASE_POST + "edit/2", data = edit, follow_redirects=True)
         result = self.test_app.get(self.BASE_POST + "read/2")
+        delete_post(self.get_posts(IPostRepo), 2)
         self.assertIn(edit["post"], result.data.decode("UTF-8"))
 
     @log_user(1, "Greg Doe", "Greg@email.com", "regular")
@@ -101,7 +112,7 @@ class PostsTests(unittest.TestCase):
         self.assertIn(post["author"], creation.data.decode("UTF-8"))
         self.assertIn(post["title"], creation.data.decode("UTF-8"))
         self.assertIn(post["post"], creation.data.decode("UTF-8"))
-        result = self.test_app.post(self.BASE_POST + "read/4", data = {"postID" : "4"})
+        result = self.test_app.post(self.BASE_POST + "read/2", data = {"postID" : "2"})
         self.assertNotIn(post["author"], result.data.decode("UTF-8"))
 
     @log_user(1, "Greg Doe", "Greg@email.com", "regular")
@@ -115,8 +126,8 @@ class PostsTests(unittest.TestCase):
 
         self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=True)
         result = self.test_app.post(
-            self.BASE_POST + "read/4",
-            data = {"postID" : "4"},
+            self.BASE_POST + "read/2",
+            data = {"postID" : "2"},
             follow_redirects=False)
         self.assertEqual(result.status_code, 302)
         self.assertEqual(urlparse(result.location).path, "/")
