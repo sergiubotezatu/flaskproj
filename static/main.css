@@ -25,7 +25,7 @@ padding: 0;
 overflow: hidden;
 border-bottom: 6px solid rgb(42, 42, 42);
 border-bottom-left-radius: 10px;
-background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85));            
+background-image: linear-gradient(to right, steelblue ,rgb(19, 57, 139));            
 position: -webkit-sticky;
 position: sticky;
 transition-duration: all 0.5s ease-in-out;
@@ -651,7 +651,7 @@ form{
     }
 
     .community {
-        background-image: linear-gradient(to top, steelblue 70%,rgba(11, 34, 85));
+        background-image: linear-gradient(to top, steelblue 70%,rgb(19, 57, 139));
         border: 6px solid rgb(42, 42, 42);
         border-radius:5px;
         margin-right:100px;
@@ -703,7 +703,7 @@ form{
         font-weight: bold;
         text-align:center;
         color:white;
-        background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85));
+        background-image: linear-gradient(to right, steelblue ,rgb(19, 57, 139));
         border: 3px solid rgb(42, 42, 42);
     }
 
@@ -713,7 +713,7 @@ form{
         transition: all 0.3s ease-in-out;
         background-image: none;
         background-color: yellowgreen;
-        color:rgba(11, 34, 85);
+        color:rgb(19, 57, 139);
         cursor: pointer; 
     }
     
@@ -725,7 +725,7 @@ form{
       text-align:center;
       margin-left:auto;
       margin-right:auto;
-      background-image: linear-gradient(to bottom, steelblue ,rgba(11, 34, 85));
+      background-image: linear-gradient(to bottom, steelblue ,rgb(19, 57, 139));
     }
 
     .role-option {
@@ -768,7 +768,7 @@ form{
     {
       border-bottom:0px;
       background-image: none;
-      background-color: rgba(11, 34, 85);
+      background-color: rgb(19, 57, 139);
     }
     
     .role-option:hover input ~ .select {

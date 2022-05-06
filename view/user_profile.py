@@ -46,7 +46,7 @@ class UserProfile:
             pwd = request.form.get("pwd")
             username = request.form.get("username")
             if not self.__sign_up_validated(username, email):
-                return redirect(url_for(".sign_up"))
+                return render_template("signup.html", usrname = username)
             else:
                 new_user = User(username, email)
                 new_user.password = self.hasher.generate_pass(pwd)

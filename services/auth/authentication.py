@@ -1,5 +1,5 @@
 from services.interfaces.iauthentication import IAuthentication
-from flask import redirect, session, flash, url_for
+from flask import redirect, render_template, session, flash, url_for
 from models.user import User
 from services.interfaces.iusers_repo import IUsersRepo
 from services.interfaces.Ipassword_hash import IPassHash
@@ -19,7 +19,7 @@ class Authentication(SessionMngr, IAuthentication):
             flash("Incorrect Password or Email. Please try again.", "error")
             flash(f"Check for spelling errors or "
             "Click on \"HERE\" below the form if you don't have an account", "error")
-            return redirect(url_for(".log_in"))
+            return render_template("login.html", mail = email)
         
         self.log_session(found.id, found.name, found.email, found.role)
         flash(f"Welcome back, {found.name}!")
