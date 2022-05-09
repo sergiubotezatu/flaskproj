@@ -64,3 +64,15 @@ class PaginationTests(unittest.TestCase):
         create_posts(self, "John", 2)
         home_pg = self.test_app.get("/")
         self.assertNotIn("&laquo; Previous", home_pg.data.decode("UTF-8"))
+        for i in range (0, 2):
+            self.posts.delete(i + 1)
+
+    @log_user(2, "John", "John@mail", "regular")
+    @configure(True)
+    def test_previous_and_next_available_middle_pg(self):
+        create_posts(self, "John", 11)
+        home_pg = self.test_app.get("/?pg=2")
+        self.assertIn("&laquo; Previous", home_pg.data.decode("UTF-8"))
+        self.assertIn("Next", home_pg.data.decode("UTF-8"))
+        for i in range (0, 11):
+            self.posts.delete(i + 1)
