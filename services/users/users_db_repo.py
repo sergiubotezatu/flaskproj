@@ -40,20 +40,20 @@ class UsersDb(IUsersRepo):
         user.id = displayed[0]
         return user
 
-    def remove(self, user : User):
+    def remove(self, id):
         self.db.perform("""
         INSERT INTO deleted_users
         SELECT u.Email, p.Content 
         FROM blog_posts p
         RIGHT JOIN blog_users u ON p.OwnerId = u.OwnerID
         WHERE u.OwnerID = %s;
-        """, user.id)
+        """, id)
         self.db.perform("""
         DELETE FROM 
         blog_users
         WHERE OwnerID = %s
         ;
-        """, user.id)
+        """, id)
 
     def update(self, usr_id, user : User, pwd = ""):
         change_pass = f", Password = '{pwd}'"if pwd != "" else ""
@@ -120,12 +120,4 @@ class UsersDb(IUsersRepo):
         email : str = result[0]
         name = email[0:email.index("@")]
         return User(name, email)
-
-    def __cut_poem_newlines(self, content):
-        if content == None:
-            return ''
-        lines_count = content.count("\n")
-        if lines_count > 0:
-            chunk = lines_count * 3
-            return content[:-chunk] + "[...]"
-        return content + "[...]"
+ 

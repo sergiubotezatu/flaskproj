@@ -78,7 +78,7 @@ class UserProfile:
  
     @authorizator.owner_or_admin
     def edit_user(self, user_id):
-        user_id = int(user_id)
+        user_id = user_id
         editable : User = self.users.get_by(id = user_id)
         if request.method == "POST":
             identity_checker = request.form.get("oldpass")
@@ -153,7 +153,7 @@ class UserProfile:
     def delete_user(self):
         logged = self.active_usr.get_logged_user()
         message = " membership has been canceled."
-        to_delete = self.users.get_by(id = request.form.get("userID"))
+        to_delete = request.form.get("userID")
         if logged.role not in ("admin, default"):
             self.active_usr.log_out()
             message = "Your" + message
@@ -181,7 +181,7 @@ class UserProfile:
         is_admin : bool = logged.role in ("default", "admin")
         if usr_id == None:
             return is_admin
-        return is_admin or usr_id == logged.id
+        return is_admin or int(usr_id) == logged.id
 
     def __render_filtered_users(self, query_params):
         where_clause = ""

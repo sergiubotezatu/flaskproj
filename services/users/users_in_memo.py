@@ -34,7 +34,7 @@ class Users(IUsersRepo):
     def same_mail(self, user : User, mail):
         return user.email == mail
 
-    def get_all(self):
+    def get_all(self, not_filtered = False):
         id_names = []
         for users in self.__users:
             id_names.append((users.id, users.name))
@@ -49,6 +49,7 @@ class Users(IUsersRepo):
         return user.id
         
     def update(self, usr_id, editted, pwd = None):
+        usr_id = int(usr_id)
         for users in self.__users:
             if users.id == usr_id:
                 if users.name != editted.name:
@@ -65,12 +66,14 @@ class Users(IUsersRepo):
         if new_user.role != None:
             user.role = new_user.role
     
-    def remove(self, user: User):
+    def remove(self, id):
+        user = self.get_by(id = id)
         self.deleted[user.email] = []
         for post in self.all_posts:
             if user.id == post.owner_id:
                 self.deleted[user.email].append(post)
                 self.all_posts.remove(post.id)
+        self.count -= 1
         self.__users.remove(user)
 
     def has_account(self, user_id) -> bool:

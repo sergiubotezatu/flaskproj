@@ -16,7 +16,7 @@ class RepoMngr:
         self.repo = repo
         self.__del_placeholder()
         
-    def delete(self, id : int):
+    def delete(self, id = 0):
         self.repo.remove(id)
 
     def add(self, entity : Union[Post, User]):
@@ -27,7 +27,7 @@ class RepoMngr:
             def wrapper(instance):
                 self.add(entity)
                 test_func(instance)
-                self.delete(entity.id)
+                self.delete(id = entity.id)
             return wrapper
         return decorator
 

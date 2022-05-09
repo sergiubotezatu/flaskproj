@@ -17,11 +17,11 @@ class Authorization:
             logged_id = logged.id
         
         if "post_id" in kwargs:
-            post_id = kwargs["post_id"]
+            post_id = int(kwargs["post_id"])
             owner_id = posts_instance.blogPosts.get(post_id).owner_id
             return logged_id == owner_id
         if "user_id" in kwargs:
-            return logged_id == kwargs["user_id"]
+            return logged_id == int(kwargs["user_id"])
 
     def is_admin(self):
         logged = self.authenticator.get_logged_user()

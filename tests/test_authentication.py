@@ -5,7 +5,7 @@ from __initblog__ import create_blog
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
-from tests.test_tools import log_user, configure, create_user
+from tests.test_helpers import log_user, configure, create_user
 
 class AuthenticationTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)

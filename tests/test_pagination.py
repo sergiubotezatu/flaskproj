@@ -2,7 +2,7 @@ import unittest
 from flask import current_app
 from __initblog__ import create_blog
 from services.database.database import DataBase
-from tests.test_tools import configure, log_user, create_posts
+from tests.test_helpers import configure, log_user, create_posts
 
 class PaginationTests(unittest.TestCase):
     blog = create_blog(is_test_app = True)

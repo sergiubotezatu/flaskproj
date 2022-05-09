@@ -1,7 +1,7 @@
 from models.post import Preview
 from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
-from services.dependency_inject.injector import Services
+
 
 class PostsEnumerator():
     def __init__(self, posts : list):
@@ -26,7 +26,6 @@ def singleton(cls):
 
 @singleton
 class Posts(IPostRepo):
-    @Services.get
     def __init__(self):
         self.page_count = 0
         self.__posts = []
@@ -50,16 +49,16 @@ class Posts(IPostRepo):
         return PostsEnumerator(self.__posts)
 
     def remove(self, post_id):
-        post_id = int(post_id) - 1
+        index = int(post_id) - 1
         self.count -= 1
-        self.__posts.remove(self.__posts[post_id])
+        self.__posts.remove(self.__posts[index])
 
     def replace(self, post_id, editted : Post):
-        post_id = int(post_id) - 1
-        self.__posts[post_id].auth = editted.auth
-        self.__posts[post_id].title = editted.title
-        self.__posts[post_id].content = editted.content
-        self.__posts[post_id].modified = editted.created            
+        index = int(post_id) - 1
+        self.__posts[index].auth = editted.auth
+        self.__posts[index].title = editted.title
+        self.__posts[index].content = editted.content
+        self.__posts[index].modified = editted.created            
 
     def get_all(self, page = 0, filters : list = [], max = 5):
         result = []
@@ -80,5 +79,5 @@ class Posts(IPostRepo):
 
     def reflect_user_changes(self, id, new_name):
         for posts in self:
-            if posts.owner_id == str(id):
+            if posts.owner_id == id:
                 posts.auth = new_name

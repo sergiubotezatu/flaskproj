@@ -10,7 +10,7 @@ class SessionMngr(ISessionMNGR):
         session["email"] = email
         
     def log_session(self, id, username, email, role):
-        session["id"] = str(id)
+        session["id"] = id
         session["username"] = username
         session["email"] = email
         session["role"] = role

@@ -1,7 +1,7 @@
 import unittest
 from flask import current_app, url_for
 from __initblog__ import create_blog
-from tests.test_tools import configure, create_user
+from tests.test_helpers import configure, create_user
 
 def log_user(id, name, email, role):
     def decorator(test_func):
