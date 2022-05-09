@@ -67,7 +67,7 @@ class Posts(IPostRepo):
         posts_count = 0
         offset = page * max - max
         for post in self:
-            if filter_match(post.owner_id):
+            if filter_match(str(post.owner_id)):
                 matches_found += 1
                 if matches_found >= offset + 1:
                     posts_count += 1
@@ -76,8 +76,17 @@ class Posts(IPostRepo):
                 break
         return result
 
-
     def reflect_user_changes(self, id, new_name):
         for posts in self:
             if posts.owner_id == id:
                 posts.auth = new_name
+
+    def remove_upon_user_delete(self, id : int):
+        result = []
+        post : Post
+        for post in self.__posts:
+            if post.owner_id != id:
+                result.append(post)
+            else:
+                yield post
+        self.__posts = result

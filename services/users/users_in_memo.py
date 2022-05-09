@@ -1,3 +1,4 @@
+from models.post import Post
 from services.interfaces.iusers_repo import IUsersRepo
 from services.dependency_inject.injector import Services
 from services.interfaces.ipost_repo import IPostRepo
@@ -20,7 +21,7 @@ class Users(IUsersRepo):
         self.deleted = {}
         self.count = 0
 
-    def get_by(self, **kwargs):
+    def get_by(self, **kwargs) -> User:
         match = self.same_id if "id" in kwargs else self.same_mail
         identifier = kwargs["id"] if "id" in kwargs else kwargs["mail"]
         for user in self.__users:
@@ -69,10 +70,9 @@ class Users(IUsersRepo):
     def remove(self, id):
         user = self.get_by(id = id)
         self.deleted[user.email] = []
-        for post in self.all_posts:
-            if user.id == post.owner_id:
-                self.deleted[user.email].append(post)
-                self.all_posts.remove(post.id)
+        post : Post
+        for post in self.all_posts.remove_upon_user_delete(id):
+            self.deleted[user.email].append(post)
         self.count -= 1
         self.__users.remove(user)
 
