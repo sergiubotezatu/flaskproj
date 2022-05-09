@@ -44,7 +44,7 @@ class AccessDecorators:
                     logged = self.session_mngr.get_logged_user()
                     flash(f"You are already logged in with name {logged.name}")
                     flash(f"If you want to log in with a different account, log out first.")
-                    return redirect(url_for("profile.user_profile", user_id = logged.id, pg = ["1"]))
+                    return redirect(url_for("profile.user_profile", user_id = logged.id, pg = "1"))
                 else:
                     return routing(*args, **Kwargs)
         return wrapper
