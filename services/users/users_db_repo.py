@@ -4,6 +4,7 @@ from services.interfaces.iusers_repo import IUsersRepo
 from models.post import Post
 from services.interfaces.idata_base import IDataBase
 
+
 class UsersDb(IUsersRepo):
     @Services.get
     def __init__(self, db : IDataBase):
@@ -11,10 +12,10 @@ class UsersDb(IUsersRepo):
         
     def add(self, user : User):
         return self.db.perform("""
-    INSERT INTO blog_users(ownerID, Name, Email, Password, Date, Role)      
-    VALUES (DEFAULT, %s, %s, %s, %s, %s)
-    RETURNING OwnerID;
-    """, user.name, user.email, user.hashed_pass, user.created, user.role, fetch="fetchone")[0]        
+        INSERT INTO blog_users(ownerID, Name, Email, Password, Date, Role)      
+        VALUES (DEFAULT, %s, %s, %s, %s, %s)
+        RETURNING OwnerID;
+        """, user.name, user.email, user.hashed_pass, user.created, user.role, fetch="fetchone")[0]   
 
     def get_by(self, **kwargs):
         identifier = ""

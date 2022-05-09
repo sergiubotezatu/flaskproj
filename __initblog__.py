@@ -10,7 +10,7 @@ from services.interfaces.isession_mngr import ISessionMNGR
 from services.interfaces.iusers_repo import IUsersRepo
 from datetime import timedelta
 
-def create_blog(is_test_app = False):
+def create_blog(is_test_app = False, with_orm = True):
     blog = Flask(__name__)
     blog.config["TESTING"] = is_test_app
     blog.permanent_session_lifetime = timedelta(days = 1)
@@ -18,7 +18,8 @@ def create_blog(is_test_app = False):
     Services.container = Container(is_test_app).items
     Services.dependencies = Container.dependencies
     from view.db_setup import DbSetUp
-    blog.register_blueprint(DbSetUp(IDataBase).bp)
+    with blog.app_context():
+        blog.register_blueprint(DbSetUp(IDataBase, with_orm).bp)
     from view.home import Home
     blog.register_blueprint(Home(IFilters).bp, url_prefix="/")
     from view.post_view import PostPage
