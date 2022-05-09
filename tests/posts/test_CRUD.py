@@ -50,7 +50,6 @@ class PostsTests(unittest.TestCase):
     
     @log_user(2, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
-    @posts.add_rmv(test_post)
     def test_create_post(self):
         post = {
         "author" : "Mark Doe",

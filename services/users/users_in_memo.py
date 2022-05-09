@@ -71,7 +71,7 @@ class Users(IUsersRepo):
         user = self.get_by(id = id)
         self.deleted[user.email] = []
         post : Post
-        for post in self.all_posts.remove_upon_user_delete(id):
+        for post in self.all_posts.remove_upon_user_delete(int(id)):
             self.deleted[user.email].append(post)
         self.count -= 1
         self.__users.remove(user)

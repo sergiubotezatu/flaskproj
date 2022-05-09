@@ -56,7 +56,6 @@ class FiltersTests(unittest.TestCase):
     @configure(True)
     @create_users_with_posts
     def test_front_pg_displays_all_filterable_users(self):
-        self.create_users_with_posts()
         result = self.test_app.get("/")
         self.assertIn('<a href="/?user_id=1&amp;name=John&amp;">John</a>', result.data.decode("UTF-8"))
         self.assertIn('<a href="/?user_id=2&amp;name=Markus&amp;">Markus</a>', result.data.decode("UTF-8"))

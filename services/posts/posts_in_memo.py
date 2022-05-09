@@ -32,15 +32,15 @@ class Posts(IPostRepo):
         self.count = 0
         
     def add(self, post):
-        post_id = self.count + 1
-        post.id = post_id
-        self.__posts.append(post)
         self.count += 1
-        return post_id
+        post.id = self.count
+        self.__posts.append(post)
+        return self.count
 
     def get(self, post_id) -> Post:
-        post_id = int(post_id)
-        return self.__posts[post_id - 1]
+        for post in self.__posts:
+            if int(post_id) == post.id:
+                return post
 
     def __len__(self):
         return len(self.__posts)
@@ -49,9 +49,8 @@ class Posts(IPostRepo):
         return PostsEnumerator(self.__posts)
 
     def remove(self, post_id):
-        index = int(post_id) - 1
         self.count -= 1
-        self.__posts.remove(self.__posts[index])
+        self.__posts.remove(self.get(post_id))
 
     def replace(self, post_id, editted : Post):
         index = int(post_id) - 1
@@ -62,12 +61,12 @@ class Posts(IPostRepo):
 
     def get_all(self, page = 0, filters : list = [], max = 5):
         result = []
-        filter_match = lambda x : x in filters if len(filters) > 0 else True
+        filter_match = lambda x : str(x) in filters if len(filters) > 0 else True
         matches_found = 0
         posts_count = 0
         offset = page * max - max
         for post in self:
-            if filter_match(str(post.owner_id)):
+            if filter_match(post.owner_id):
                 matches_found += 1
                 if matches_found >= offset + 1:
                     posts_count += 1
@@ -84,9 +83,12 @@ class Posts(IPostRepo):
     def remove_upon_user_delete(self, id : int):
         result = []
         post : Post
+        new_length = 0
         for post in self.__posts:
             if post.owner_id != id:
                 result.append(post)
             else:
+                new_length += 1
                 yield post
+        self.count -= new_length
         self.__posts = result

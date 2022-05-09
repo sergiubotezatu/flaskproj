@@ -21,7 +21,7 @@ class PostsUsersLinkTests(unittest.TestCase):
     @log_user(2, "John Doe", "John@mail", "regular")
     @configure(True)
     def test_posts_get_ownerId_from_logged_user(self):
-        create_posts(self, "John", 3)
+        create_posts(self, "John", 1)
         posts = self.posts.repo.get_all()
         self.assertEqual(posts[0][1].owner_id, 2)
         self.posts.delete(1)
@@ -44,7 +44,6 @@ class PostsUsersLinkTests(unittest.TestCase):
         }
         self.test_app.post("/edit/1", data = edit, follow_redirects=True)
         posts = self.posts.repo.get_all()
-        self.posts.delete(1)
         self.users.delete(id = 1)
         self.assertEqual("James Doe", posts[0][1].auth)
     
