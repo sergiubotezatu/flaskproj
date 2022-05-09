@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, url_for, redirect, request, sessio
 from models.logged_user import Logged_user
 from services.database.database import DataBase
 from services.interfaces.iauthorization import IAuthorization
-from services.auth.authentication import Authentication
 from services.interfaces.ifilters import IFilters
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.interfaces.iusers_repo import IUsersRepo

@@ -12,3 +12,6 @@ class DBSettings:
                 "user": self.user,
                 "password": self.password,
                 "host" : self.host}
+
+    def to_DB_URI(self) -> str:
+        return f"postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}"

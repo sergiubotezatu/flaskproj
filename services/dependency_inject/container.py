@@ -24,16 +24,16 @@ from services.database.mock_db_config import MockDbConfig, MockUpgrade
 
 class Container:
     dependencies = {
-        IPostRepo : IDataBase,
+        IPostRepo : (IDataBase,),
         IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
-        IDataBaseUpgrade : IDataBaseConfig,
-        IUsersRepo : IDataBase,
+        IDataBaseUpgrade : (IDataBaseConfig,),
+        IUsersRepo : (IDataBase,),
         IAuthentication : (IUsersRepo, IPassHash),
-        IAuthorization : IAuthentication,
+        IAuthorization : (IAuthentication,),
         IPassHash : None,
         ISessionMNGR : None,
-        IFilters : IPostRepo
+        IFilters : (IPostRepo,)
         }
 
     prod_services = {

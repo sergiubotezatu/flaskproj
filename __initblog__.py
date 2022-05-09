@@ -18,7 +18,7 @@ def create_blog(is_test_app = False):
     Services.container = Container(is_test_app).items
     Services.dependencies = Container.dependencies
     from view.db_setup import DbSetUp
-    blog.register_blueprint(DbSetUp(IDataBase, IPassHash).bp)
+    blog.register_blueprint(DbSetUp(IDataBase).bp)
     from view.home import Home
     blog.register_blueprint(Home(IFilters).bp, url_prefix="/")
     from view.post_view import PostPage

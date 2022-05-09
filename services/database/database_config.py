@@ -1,12 +1,11 @@
 from configparser import ConfigParser
 from models.db_settings import DBSettings
 from services.interfaces.idatabase_config import IDataBaseConfig
-from services.dependency_inject.injector import Services
 from services.database.config import Config
 
 class DataBaseConfig(Config, IDataBaseConfig):
     is_configured = False
-
+    
     def __init__(self):
         super().__init__()
         self.setting_options = ["dbname", "user", "password", "host"]

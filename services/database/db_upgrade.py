@@ -1,8 +1,9 @@
 from services.interfaces.idatabase_config import IDataBaseConfig
 from services.dependency_inject.injector import Services
 from services.database.upgrade_queries import get_queries
+from services.interfaces.idb_upgrade import IDataBaseUpgrade
 
-class DataBaseUpgrade:
+class DataBaseUpgrade(IDataBaseUpgrade):
     @Services.get
     def __init__(self, config : IDataBaseConfig):
         self.config = config

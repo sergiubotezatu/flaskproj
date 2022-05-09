@@ -1,19 +1,15 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from models.db_settings import DBSettings
 from services.database.config import Config
-from services.database.database import DataBase
-from services.interfaces.Ipassword_hash import IPassHash
 from services.interfaces.idata_base import IDataBase
 from services.dependency_inject.injector import Services
-
 from services.interfaces.idb_upgrade import IDataBaseUpgrade
 
 class DbSetUp:
     @Services.get
-    def __init__(self, db : IDataBase, hasher : IPassHash):
+    def __init__(self, db : IDataBase):
         self.database = db
         self.config = Config()
-        self.hasher = hasher
         self.upgrader : IDataBaseUpgrade = self.database.upgrader
         self.bp = Blueprint("db_setup", __name__)
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
