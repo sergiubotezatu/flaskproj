@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from models.db_settings import DBSettings
 
 class IDataBaseConfig(metaclass = ABCMeta):
     

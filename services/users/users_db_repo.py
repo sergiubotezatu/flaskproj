@@ -121,4 +121,3 @@ class UsersDb(IUsersRepo):
         email : str = result[0]
         name = email[0:email.index("@")]
         return User(name, email)
- 

@@ -18,7 +18,7 @@ from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idatabase_config import IDataBaseConfig
 from services.database.database_config import DataBaseConfig
 from services.interfaces.iusers_repo import IUsersRepo
-from services.users.users_db_repo import UsersDb
+from services.users.sqlalchemy_users import SqlAlchemyUsers
 from services.users.users_in_memo import Users
 from services.database.mock_db_config import MockDbConfig, MockUpgrade
 
@@ -28,7 +28,7 @@ class Container:
         IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
         IDataBaseUpgrade : (IDataBaseConfig,),
-        IUsersRepo : (IDataBase,),
+        IUsersRepo : None,
         IAuthentication : (IUsersRepo, IPassHash),
         IAuthorization : (IAuthentication,),
         IPassHash : None,
@@ -41,7 +41,7 @@ class Container:
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
         IDataBaseUpgrade : DataBaseUpgrade,
-        IUsersRepo : UsersDb,
+        IUsersRepo : SqlAlchemyUsers,
         IAuthentication : Authentication,
         IPassHash : PassHash,
         IAuthorization : Authorization,
