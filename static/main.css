@@ -37,7 +37,7 @@ margin-bottom:0px;
 
 li 
 {
-    float: left;    
+    float: left;
 } 
 
 li a 
@@ -48,11 +48,12 @@ li a
     padding: 15px 30px;
     text-decoration: none;
     transition: 0.5s all;
+    font-size: 17px;
     z-index:5;
-}
+  }
 
 li .option:hover, .dropbtn:hover
-{   background-color:yellowgreen;
+{   background-color:rgba(255, 255, 255, 0.288);
     text-shadow: 4px 6px 8px black;
     overflow:visible;
 }
@@ -93,8 +94,7 @@ nav{
 
   #drop-log-sign{
       float:right;
-      margin-right:0;
-      width:150px;
+      margin-right:0px;
       display:none;
       position:sticky;
       top:4.7rem;
@@ -163,7 +163,7 @@ form{
   }
 
 .formtitle{
-    margin-left:auto;
+    margin-left:43%;
     margin-right:auto;
     width: 200px;
     color:white;
@@ -171,10 +171,18 @@ form{
 }
 
 .field{
-    width:250px;
+    width:300px;
     margin-top:15px;
-    margin-bottom:10px;
-}
+    margin-bottom:15px;
+    height:40px;
+    font-size: medium;
+    margin-top:4px;
+  }
+
+  form label
+  {
+    font-size:large;
+  }
 
 .field:hover
 {
@@ -215,16 +223,17 @@ form{
 .column 
 {
     padding: 10px;
-    margin-left: 10px;    
+    margin-right:0px;
+    margin-left:10px;  
 }
 
 .row { 
     display:grid;
     grid-template-columns: 48% 48% ;
-    grid-column-gap: 25px;
+    grid-column-gap: 10px;
     pointer-events: none;
-    padding-right:0px;
     z-index:0;
+    margin-right:-20px;
 }
 
 .row > *{
@@ -232,26 +241,24 @@ form{
     transition-duration: 0.5s;    
     background-color: rgb(255, 244, 179);
     margin-bottom: 10px;
-}
+  }
 
 .row:hover > *{
-    opacity: 0.65;
+    opacity: 0.85;
   }
 
 .row:hover > *:hover {
     opacity: 1;
-    box-shadow: 4px 4px 5px 3px rgb(42, 42, 42);
+    box-shadow: 4px 4px 5px 5px rgb(42, 42, 42);
     background-color: rgb(255, 244, 179);
     cursor: pointer;
   }
-
 
 .post {
     height: 400px;
     padding: 0px 8px 10px 40px;
     font-family:cursive;
-    padding-top: 0;
-    margin-top:0;
+    margin-top:0px;
     white-space: pre-wrap;
     word-break: break-all;
 }
@@ -837,8 +844,8 @@ form{
 
    #search {
         background-repeat: no-repeat;
-        background-size:contain;
-        background-position: 1px 1px;
+        background-size:35px;
+        background-position: 2px 4px;
         font-size: 14px;
         padding: 14px 20px 12px 45px;
         border: none;
@@ -905,9 +912,8 @@ form{
       }
       
       .filters a:hover, .filters span:hover      
-      { background-color: yellowgreen;
+      { background-color: rgba(255, 255, 255, 0.266);
         background-size: 50%;
-        border-bottom: 0.2px solid white;
       }
 
       .flash-error

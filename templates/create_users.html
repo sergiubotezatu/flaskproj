@@ -27,7 +27,7 @@
     {%if email == ''%}
     <label for="username">Create an username:</label><br>
   <input id ="toCheck"
-   class="field"
+  class= "field"
    type="text"
    name="username"
    placeholder="letters and numbers only"
@@ -38,12 +38,10 @@
    required
    oninput="InvalidUserName()">
    <br>
-   <h4 id="invalid" style="color:red;"></h4>
    <br>
-
   <label for="email">Email address</label><br>
   <input id ="mail"
-    class="field"
+  class= "field"
     type="email"
     name="email"
     placeholder="John.Doe@domain.com"
@@ -55,7 +53,7 @@
     {%else%}
     <label for="username">Create an username:</label><br>
   <input id ="toCheck"
-   class="field"
+  class= "field"
    type="text"
    name="username"
    value = {{name}}
@@ -69,8 +67,9 @@
    <h4 id="invalid" style="color:red;"></h4>
    <br>
     <label for="email">Email address</label><br>
-  <input id ="mail"
-    class="field"
+  <input 
+  class= "field"
+  id ="mail"
     type="email"
     name="email"
     value = {{email}}
@@ -83,7 +82,6 @@
     
   <label for="pwd">Create a password</label><br>
   <input class="field"
-   style ="width:250px;"
    type="password"
    id="pwd" 
    name="pwd"
@@ -95,9 +93,9 @@
    onfocus="RestoreAlerted()"
    onblur="InvalidPass()">   
    <br>
-   <span id="wrongFormat" style="color:red;"></span>
    <br>
-
+   <span id="wrongFormat" style="color:red;"></span>
+   
    <label for="pwd2">Confirm password</label><br>
   <input class="field"
    type="password"
