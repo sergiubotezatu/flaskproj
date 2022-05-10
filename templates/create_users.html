@@ -1,16 +1,15 @@
 {%extends "base.html"%}
 {%block title%}Create new users{%endblock%}
 {%block content%}
-<br>
-<h4>
 {%with messages = get_flashed_messages()%}
-  {%if messages%}
+{%if messages%}
+<div class = "flash-error">
     {%for note in messages%}
-    <strong><p style = "text-align: center;color:maroon;">{{note}}</p></strong>
-    {%endfor%}
+    <h2>{{note}}</h2>
+   {%endfor%}
+  </div>
     {%endif%}
 {%endwith%}
-</h4>
 <form style = "text-align:center;"method = "post">
   <div class = "role-box">
   <h3>What type of user are you creating?</h3>

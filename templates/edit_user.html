@@ -5,12 +5,13 @@
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black; margin-right:10%;margin-left:10%">
 Change profile information
 </h3>
-<h4>
 {%with messages = get_flashed_messages()%}
-  {%if messages%}
+{%if messages%}
+<div class = "flash-error">
     {%for note in messages%}
-    <strong><p style = "text-align: center;color:maroon;">{{note}}</p></strong>
-    {%endfor%}
+    <h2>{{note}}</h2>
+   {%endfor%}
+  </div>
     {%endif%}
 {%endwith%}
 <form style="text-align:center" method = "Post">
