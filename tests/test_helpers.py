@@ -7,7 +7,6 @@ from services.database.database import DataBase
 from services.dependency_inject.injector import Services
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.iusers_repo import IUsersRepo
-from services.posts.posts_in_memo import Posts
 
 class RepoMngr:
     first_instance = True

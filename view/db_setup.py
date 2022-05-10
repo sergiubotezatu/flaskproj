@@ -39,6 +39,6 @@ class DbSetUp:
 
     def config_sqlalchemy(self, with_alchemy):
         if with_alchemy:
-            settings = self.database.config.load()
-            SqlAlchemy.configure(settings)
+                settings = self.database.config.load()
+                SqlAlchemy.configure(settings)
 

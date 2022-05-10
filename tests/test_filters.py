@@ -19,7 +19,7 @@ def log_user(id, name, email, role):
     return decorator
 
 class FiltersTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True)
+    blog = create_blog(is_test_app = True, with_orm = False)
     
     def setUp(self):
         with self.blog.test_request_context() as self.ctx:

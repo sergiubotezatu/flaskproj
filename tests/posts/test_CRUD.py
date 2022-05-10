@@ -7,7 +7,7 @@ from services.interfaces.ipost_repo import IPostRepo
 from tests.test_helpers import RepoMngr, log_user, configure
 
 class PostsTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True)
+    blog = create_blog(is_test_app = True, with_orm = False)
     
     def setUp(self):
         with self.blog.test_request_context() as self.ctx:

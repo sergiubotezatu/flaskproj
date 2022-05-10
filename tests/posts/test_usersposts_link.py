@@ -8,7 +8,7 @@ from services.interfaces.iusers_repo import IUsersRepo
 from tests.test_helpers import RepoMngr, configure, log_user, create_posts, create_user
 
 class PostsUsersLinkTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True)
+    blog = create_blog(is_test_app = True, with_orm = False)
     
     def setUp(self):
         with self.blog.test_request_context() as self.ctx:

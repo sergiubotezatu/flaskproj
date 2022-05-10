@@ -9,7 +9,7 @@ from services.interfaces.iusers_repo import IUsersRepo
 from tests.test_helpers import RepoMngr, log_user, configure, create_user
 
 class AuthenticationTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True)
+    blog = create_blog(is_test_app = True, with_orm=False)
     
     def setUp(self):
         with self.blog.test_request_context() as self.ctx:

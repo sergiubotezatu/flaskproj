@@ -67,7 +67,7 @@ class Container:
     def get(self, is_test : bool) -> dict:
         if is_test:
             self.dependencies[IPostRepo] = None
-            self.dependencies[IUsersRepo] = IPostRepo
+            self.dependencies[IUsersRepo] = (IPostRepo,)
             return self.test_services
         return self.prod_services
    

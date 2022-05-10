@@ -3,11 +3,10 @@ from flask import current_app
 from __initblog__ import create_blog
 from models.post import Post
 from services.interfaces.ipost_repo import IPostRepo
-from services.posts.posts_in_memo import Posts, singleton
 from tests.test_helpers import configure, log_user, RepoMngr
 
 class AuthorizationTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True)
+    blog = create_blog(is_test_app = True, with_orm = False)
     
     def setUp(self):
         with self.blog.test_request_context() as self.ctx:
