@@ -107,14 +107,15 @@ class UserProfile:
             return redirect(url_for("home.front_page"))
         removed_posts = self.users.get_inactive_posts(email)
         return render_template("user.html", 
-        user_id = email,
-        user= "Deleted User",
-        email = email,
-        date = "N/A",
-        modified = None,
-        posts = removed_posts,
-        pg = 1,
-        edit_allowed = True)  
+                                user_id = email,
+                                user= "Deleted User",
+                                name = email,
+                                email = email,
+                                date = "N/A",
+                                modified = None,
+                                posts = removed_posts,
+                                pg = 1,
+                                edit_allowed = True)  
 
     @authorizator.admin_required
     def create(self, name = "", email = ""):
@@ -145,8 +146,8 @@ class UserProfile:
         new_mail = request.form.get("email", user_id)
         new_password = self.__hash_if_new_pass(request.form.get("pwd"))
         new_role = request.form.get("usr_role")
-        if self.active_usr.get_logged_user().role == "regular":
-            self.active_usr.edit_logged(new_name, new_password)
+        if self.active_usr.get_logged_user().id == int(user_id):
+            self.active_usr.edit_logged(new_name, new_mail, new_role)
         self.users.update(user_id, User(new_name, new_mail, role=new_role), new_password)
 
     def delete_user(self):

@@ -159,4 +159,11 @@ def get_queries():
         ELSE 'regular'
         END;
         """,
+        ),
+        (
+        """
+        ALTER TABLE deleted_users
+        ADD COLUMN deletedId
+        SERIAL PRIMARY KEY;
+        """,
         )]

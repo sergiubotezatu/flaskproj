@@ -16,7 +16,7 @@ class PostPage:
         self.bp = Blueprint("posts", __name__)
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.creation = self.register("/create",self.create)
-        self.reading = self.register("/read/<post_id>", self.read)
+        self.reading = self.register("/read/<post_id>/", self.read)
         self.update = self.register("/edit/<post_id>", self.edit)
         self.activate_deleted = self.register("/unarchive/<id>/<name>/<email>", self.unarchive)
 
@@ -41,7 +41,8 @@ class PostPage:
             flash("Your post has been successfully removed.", "info")
             return redirect(url_for("home.front_page"))
         
-        selected_post = self.blogPosts.get(post_id)
+        email = request.args.get("email")
+        selected_post = self.blogPosts.get(post_id, email)
         return render_template(
             "read.html",
             editable = post_id,

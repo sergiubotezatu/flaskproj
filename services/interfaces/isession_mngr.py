@@ -3,7 +3,7 @@ from models.logged_user import Logged_user
 
 class ISessionMNGR(metaclass = ABCMeta):
     @abstractmethod
-    def edit_logged(username, email):
+    def edit_logged(self, username, email, role):
         pass
 
     @abstractmethod

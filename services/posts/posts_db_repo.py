@@ -49,23 +49,35 @@ class PostsDb(IPostRepo):
             WHERE PostID = %s;
             """, id)   
     
-    def get(self, id) -> Post:
-        displayed = self.db.perform("""
-           SELECT
-                u.Name,
-                p.title,
-                p.content,
-                u.OwnerID,
-                p.date,
-                p.Date_modified
+    def get(self, id, email = None) -> Post:
+        displayed = None
+        post = None
+        if email != None:
+            displayed = self.db.perform("""
+            SELECT Content
             FROM
-                blog_users u
-            INNER JOIN blog_posts p
-                ON u.OwnerID = p.OwnerID
-                where p.PostID = %s;
-            """, id, fetch = "fetchone")
-        post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4])
-        post.modified = displayed[5]
+            deleted_users
+            where Email = %s
+            And deletedid = %s;
+            """, email, id, fetch = "fetchone")
+            post = Post(email, "No title", displayed[0])
+        else:
+            displayed = self.db.perform("""
+            SELECT
+                    u.Name,
+                    p.title,
+                    p.content,
+                    u.OwnerID,
+                    p.date,
+                    p.Date_modified
+                FROM
+                    blog_users u
+                INNER JOIN blog_posts p
+                    ON u.OwnerID = p.OwnerID
+                    where p.PostID = %s;
+                """, id, fetch = "fetchone")
+            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4])
+            post.modified = displayed[5]
         return post
 
     def get_all(self, page = 0, filters : list = [], max = 5):

@@ -42,19 +42,22 @@ class UsersDb(IUsersRepo):
         return user
 
     def remove(self, id):
-        self.db.perform("""
-        INSERT INTO deleted_users
-        SELECT u.Email, p.Content 
-        FROM blog_posts p
-        RIGHT JOIN blog_users u ON p.OwnerId = u.OwnerID
-        WHERE u.OwnerID = %s;
-        """, id)
-        self.db.perform("""
-        DELETE FROM 
-        blog_users
-        WHERE OwnerID = %s
-        ;
-        """, id)
+        if "@" not in id:
+            self.db.perform("""
+            INSERT INTO deleted_users
+            SELECT u.Email, p.Content 
+            FROM blog_posts p
+            RIGHT JOIN blog_users u ON p.OwnerId = u.OwnerID
+            WHERE u.OwnerID = %s;
+            """, id)
+            self.db.perform("""
+            DELETE FROM 
+            blog_users
+            WHERE OwnerID = %s
+            ;
+            """, id)
+        else:
+            self.__permanent_delete(id)            
 
     def update(self, usr_id, user : User, pwd = ""):
         change_pass = f", Password = '{pwd}'"if pwd != "" else ""
@@ -91,7 +94,7 @@ class UsersDb(IUsersRepo):
 
     def get_inactive_posts(self, email):
         displayed = self.db.perform("""
-        SELECT d.Content,
+        SELECT d.Content, d.deletedid
         CASE
         WHEN CHAR_LENGTH(d.Content) > 150 THEN SUBSTRING(d.Content, 1, 150)
         ELSE d.Content
@@ -101,7 +104,7 @@ class UsersDb(IUsersRepo):
         """, email, fetch = "fetchall")
         posts = []
         for record in displayed:
-            posts.append((email, Post(email, "No title", record[0], owner_id = email)))
+            posts.append((record[1], Post(email, "No title", record[0], owner_id = email)))
         return posts       
 
     def has_account(self, user_id) -> bool:
@@ -121,3 +124,9 @@ class UsersDb(IUsersRepo):
         email : str = result[0]
         name = email[0:email.index("@")]
         return User(name, email)
+    
+    def __permanent_delete(self, email):
+        self.db.perform("""
+        DELETE
+        FROM deleted_users
+        Where Email = %s;""", email)

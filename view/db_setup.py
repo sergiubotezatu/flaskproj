@@ -33,9 +33,9 @@ class DbSetUp:
     def upgrade_if_older(self, with_alchemy = False):
         if self.database.config.section_exists("postgresql"):
             self.database.set_db()
-            self.config_sqlalchemy(with_alchemy)
             if not self.upgrader.is_latest_version():
                 self.database.upgrade_db()
+            self.config_sqlalchemy(with_alchemy)
 
     def config_sqlalchemy(self, with_alchemy):
         if with_alchemy:

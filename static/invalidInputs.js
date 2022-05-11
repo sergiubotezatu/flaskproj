@@ -157,20 +157,21 @@ function restrictUnchecked()
 {
     var form = document.querySelectorAll("[name ='usr_role']");
     var selected = null;
+    var filtButton = document.getElementById("Filter");
     for (selection of form)
     {
       if (selection.checked)
       {
-          document.getElementById("Filter").style.pointerEvents = "auto";
+          filtButton.style.pointerEvents = "auto";
+          filtButton.style.opacity = "1";
           selected = selection;
           break;
       }
     }
     if (selected == null)
     {
-      var filtButton = document.getElementById("Filter");
-      filtButton.disabled = true;
       filtButton.style.pointerEvents = "none";
+      filtButton.style.opacity = "0.5";
       filtButton.title = "Select at least one option.";
     }
 }

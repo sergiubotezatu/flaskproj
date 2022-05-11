@@ -5,9 +5,10 @@ from services.interfaces.isession_mngr import ISessionMNGR
 
 class SessionMngr(ISessionMNGR):
 
-    def edit_logged(self, username, email):
+    def edit_logged(self, username, email, role):
         session["username"] = username
         session["email"] = email
+        session["role"] = role
         
     def log_session(self, id, username, email, role):
         session["id"] = id
@@ -24,6 +25,7 @@ class SessionMngr(ISessionMNGR):
 
     def get_logged_user(self) -> Logged_user:
         if "id" in session:
+            print("11", session["id"])
             return Logged_user(session["id"], session["username"], session["email"], session["role"])
         return None
 

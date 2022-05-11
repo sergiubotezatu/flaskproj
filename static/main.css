@@ -94,15 +94,14 @@ nav{
 
   #drop-log-sign{
       float:right;
-      margin-right:0px;
       display:none;
       position:sticky;
       top:4.7rem;
       border-bottom: none;
+      margin-left: -16px;
       margin-top:0px;
-      margin-bottom:0px;
       z-index:4;
-    }
+}
 
   #drop-log-sign > div{
     width:100%;
