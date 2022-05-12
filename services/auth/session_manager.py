@@ -25,7 +25,6 @@ class SessionMngr(ISessionMNGR):
 
     def get_logged_user(self) -> Logged_user:
         if "id" in session:
-            print("11", session["id"])
             return Logged_user(session["id"], session["username"], session["email"], session["role"])
         return None
 

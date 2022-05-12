@@ -9,6 +9,7 @@ from services.auth.authorization import Authorization
 from services.interfaces.ifilters import IFilters
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.posts.filters import Filters
+from services.posts.sqlalchemy_posts import SqlAlchemyPosts
 from services.users.passhash import PassHash
 from services.posts.posts_db_repo import PostsDb
 from services.posts.posts_in_memo import Posts
@@ -24,7 +25,7 @@ from services.database.mock_db_config import MockDbConfig, MockUpgrade
 
 class Container:
     dependencies = {
-        IPostRepo : (IDataBase,),
+        IPostRepo : None,
         IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
         IDataBaseUpgrade : (IDataBaseConfig,),
@@ -37,7 +38,7 @@ class Container:
         }
 
     prod_services = {
-        IPostRepo : PostsDb,
+        IPostRepo : SqlAlchemyPosts,
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
         IDataBaseUpgrade : DataBaseUpgrade,
