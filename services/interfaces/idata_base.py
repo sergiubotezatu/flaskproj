@@ -1,9 +1,10 @@
 from abc import ABCMeta, abstractmethod
+from flask_sqlalchemy import SQLAlchemy
 from services.database.database_config import DataBaseConfig
 
 class IDataBase(metaclass = ABCMeta):
     config : DataBaseConfig
-
+    
     @abstractmethod
     def upgrade_db(self):
         pass

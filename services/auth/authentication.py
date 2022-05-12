@@ -27,15 +27,3 @@ class Authentication(SessionMngr, IAuthentication):
 
     def is_logged_in(self, id) -> bool:
         return "id" in session and session["id"] == int(id)
-
-    def get_logged_user(self) -> Logged_user:
-        return super().get_logged_user()
-
-    def edit_logged(self, username, email):
-        super().edit_logged(username, email)
-
-    def log_session(self, id, username, email, role):
-        super().log_session(id, username, email, role)
-
-    def log_out(self):
-        super().log_out()

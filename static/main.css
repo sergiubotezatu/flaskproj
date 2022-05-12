@@ -826,7 +826,7 @@ form{
 
   #x{
     text-decoration: none;
-    padding:0px 3px;;
+    padding:0px 3px;
     border:2px solid steelblue;
     border-radius: 5px;
     width:50px;
@@ -933,5 +933,3 @@ form{
         margin-left:15%;
         margin-right:15%;
       }
-
-      
