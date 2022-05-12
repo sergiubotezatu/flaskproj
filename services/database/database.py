@@ -46,7 +46,8 @@ class DataBase(IDataBase):
             print(error)
         return retrieved
 
-    @classmethod
-    def set_db(cls):
-        cls.db_settings = cls.config.load()
+    def set_db(self):
+        DataBase.db_settings = DataBase.config.load()
+        if not self.upgrader.is_latest_version():
+                self.upgrade_db()
    

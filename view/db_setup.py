@@ -8,13 +8,13 @@ from services.interfaces.idb_upgrade import IDataBaseUpgrade
 
 class DbSetUp:
     @Services.get
-    def __init__(self, db : IDataBase, with_alchemy : bool):
+    def __init__(self, db : IDataBase):
         self.database = db
         self.config = Config()
         self.upgrader : IDataBaseUpgrade = self.database.upgrader
         self.bp = Blueprint("db_setup", __name__)
         self.db_settings = self.bp.route("/config", methods = ["Get", "Post"])(self.set_database)
-        self.upgrade_if_older(with_alchemy)
+        self.update_setup()
         
     def set_database(self):
         if self.database.config.is_configured:
@@ -26,19 +26,10 @@ class DbSetUp:
                         request.form.get("password"),
                         request.form.get("host"))
             self.database.config.save(settings)
-            self.upgrade_if_older()
+            self.update_setup()
             return redirect(url_for("home.front_page"))
         return render_template("db_setup.html")
 
-    def upgrade_if_older(self, with_alchemy = False):
+    def update_setup(self):
         if self.database.config.section_exists("postgresql"):
             self.database.set_db()
-            if not self.upgrader.is_latest_version():
-                self.database.upgrade_db()
-            self.config_sqlalchemy(with_alchemy)
-
-    def config_sqlalchemy(self, with_alchemy):
-        if with_alchemy:
-                settings = self.database.config.load()
-                SqlAlchemy.configure(settings)
-
