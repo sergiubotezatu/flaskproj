@@ -163,7 +163,6 @@ def get_queries():
         (
         """
         ALTER TABLE deleted_users
-        ADD COLUMN deletedId
+        ADD COLUMN  IF NOT EXISTS deletedId
         SERIAL PRIMARY KEY;
-        """,
-        )]
+        """,)]

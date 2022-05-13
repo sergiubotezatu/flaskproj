@@ -49,5 +49,5 @@ class DataBase(IDataBase):
     def set_db(self):
         DataBase.db_settings = DataBase.config.load()
         if not self.upgrader.is_latest_version():
-                self.upgrade_db()
+            self.upgrade_db()
    
