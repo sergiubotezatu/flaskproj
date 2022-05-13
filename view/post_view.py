@@ -85,4 +85,4 @@ class PostPage:
         name = kwargs["name"]
         email = kwargs["email"]
         self.blogPosts.unarchive_content(id, name, email)
-        return redirect(url_for("profile.user_profile", user_id = id))
+        return redirect(url_for("profile.user_profile", user_id = id, pg = 1, restored = email))

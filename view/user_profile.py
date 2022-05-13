@@ -28,7 +28,7 @@ class UserProfile:
         self.edit = self.register("/edit/<user_id>", self.edit_user)
         self.create_new = self.register("/create", self.create)
         self.activate_old = self.register("/create/<name>/<email>", self.create)
-        self.activate_old = self.register("/activate/<user_id>", self.activate)
+        self.activate_old = self.register("/activate/<mail>", self.activate)
         self.DISPLAYED_LIMIT = 5
        
     def register(self, link, func):
@@ -56,6 +56,7 @@ class UserProfile:
 
     @authorizator.member_required
     def user_profile(self, user_id):
+        self.__remove_restored()
         if request.method == "POST":
             self.delete_user()
             return redirect(url_for("home.front_page"))
@@ -132,14 +133,15 @@ class UserProfile:
                 new_user.id = self.users.add(new_user)
                 signed_id = new_user.id
                 if (name != ""):
+                    session.pop("__flashes")
                     return redirect(url_for("posts.unarchive", id = signed_id, name = username, email = email))
                 return redirect(url_for(".user_profile", user_id = signed_id, pg = ["1"]))
         return render_template("create_users.html", name = name, email = email)
 
     @authorizator.admin_required
-    def activate(self, user_id):
-        inactive = self.users.get_inactive(user_id)
-        return redirect(url_for(".create", name = inactive.name, email = inactive.email))
+    def activate(self, mail):
+        inactive_name = mail[0:mail.index("@")]
+        return redirect(url_for(".create", name = inactive_name, email = mail))
 
     def __update_info(self, user_id):
         new_name = request.form.get("username")
@@ -152,13 +154,11 @@ class UserProfile:
 
     def delete_user(self):
         logged = self.active_usr.get_logged_user()
-        message = " membership has been canceled."
+        message = "membership has been canceled."
         to_delete = request.form.get("userID")
         if logged.role not in ("admin, default"):
             self.active_usr.log_out()
-            message = "Your" + message
-        else:
-            message = f"{logged.name}'s" + message
+            message = "Your " + message
         flash(message)
         self.users.remove(to_delete)
 
@@ -168,7 +168,7 @@ class UserProfile:
         return input
 
     def __sign_up_validated(self, name, email):
-        if self.users.get_by(mail = email) != None:
+        if self.users.has_account(email):
             flash(f"Email {email} is already assigned to another user.")
             flash(f"Please use an unregistered email or if you have an account go to login.", "error")
             return False
@@ -196,4 +196,9 @@ class UserProfile:
         elif param_count ==  1:
             where_clause += f"Where u.role IN ({query_params[0]})"
         return render_template("members.html", allmembers = self.users.get_all(where_clause, inactive_needed))
+
+    def __remove_restored(self):
+        email = request.args.get("restored")
+        if email != None:
+            self.users.remove(email)
         

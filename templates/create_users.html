@@ -23,13 +23,13 @@
   </label>
   </div>
       <br>
-    {%if email == ''%}
     <label for="username">Create an username:</label><br>
   <input id ="toCheck"
   class= "field"
    type="text"
    name="username"
    placeholder="letters and numbers only"
+   value = "{{name if name}}"
    pattern="[a-zA-Z0-9]+" 
    title="Name should be at least 4 characters long."
    minlength="4"
@@ -38,6 +38,7 @@
    oninput="InvalidUserName()">
    <br>
    <br>
+   {%if email == ''%}
   <label for="email">Email address</label><br>
   <input id ="mail"
   class= "field"
@@ -48,37 +49,10 @@
     required
     >
     <br>
-    <br>
-    {%else%}
-    <label for="username">Create an username:</label><br>
-  <input id ="toCheck"
-  class= "field"
-   type="text"
-   name="username"
-   value = {{name}}
-   pattern="[a-zA-Z0-9]+" 
-   title="Name should be at least 4 characters long."
-   minlength="4"
-   autofocus
-   required
-   oninput="InvalidUserName()">
-   <br>
-   <h4 id="invalid" style="color:red;"></h4>
-   <br>
-    <label for="email">Email address</label><br>
-  <input 
-  class= "field"
-  id ="mail"
-    type="email"
-    name="email"
-    value = {{email}}
-    minlength="4"
-    required
-    >
-    <br>
-    <br>
-    {%endif%}
-    
+  <br>
+  {%else%}
+  <input  type = "hidden" name = "email" value = "{{email}}">
+  {%endif%}    
   <label for="pwd">Create a password</label><br>
   <input class="field"
    type="password"
