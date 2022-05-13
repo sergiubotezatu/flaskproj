@@ -1,4 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from services.database.sqlalchemy import SqlAlchemy
 from services.interfaces.idata_base import IDataBase
@@ -48,7 +47,7 @@ class SqlAlchemyPosts(IPostRepo):
         displayed = None
         post = None
         if email != None:
-            displayed = self.db.query(SqlAlchemy.Deleted.content).filter_by(email = email, deletedid = id).first()
+            displayed = self.session.query(SqlAlchemy.Deleted.content).filter_by(email = email, deletedid = id).first()
             post = Post(email, "No title", displayed[0])
         else:
             displayed = self.session.query\
@@ -80,7 +79,16 @@ class SqlAlchemyPosts(IPostRepo):
             offset = page * max - max
             posts = posts.offset(offset).limit(max + 1)
         return self.__get_fetched(posts.all())
-        
+
+    def unarchive_content(self, id, name, email):
+        result = self.session.query(SqlAlchemy.Deleted.content).filter_by(email = email).all()
+        i = 1
+        for post in result:
+            if post[0] != None:
+                unarchived = Post(name, f"{name}'s post {i}", post[0], owner_id= id)
+                self.add(unarchived)
+                i += 1
+
     def __get_fetched(self, fetched):
         result = []
         count = 0

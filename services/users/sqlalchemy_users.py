@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from models.post import Post
 from models.user import User
 from services.database.sqlalchemy import SqlAlchemy
@@ -74,16 +75,16 @@ class SqlAlchemyUsers(IUsersRepo):
         return actives + inactives
 
     def get_inactive_posts(self, email):
-        result = self.session.query(self.deleted.deletedid, self.deleted.content).filter_by(email = email).all()
+        result = self.session.query(self.deleted.deletedid, func.substr(self.deleted.content, 0, 150)).filter_by(email = email).all()
         posts = []
         for record in result:
-            posts.append((str(record.deletedid), Post(email, "No title", record.content)))
+            posts.append((str(record.deletedid), Post(email, "No title", record[1])))
         return posts
 
-    def has_account(self, user_id) -> bool:
-        q = self.session.query(self.users).filter_by(ownerid = user_id)
+    def has_account(self, mail) -> bool:
+        q = self.session.query(self.users).filter_by(email = mail)
         return self.session.query(q.exists()).scalar()
 
     def __permanent_delete(self, mail):
-        self.session.query(self.deleted).delete().filter_by(email = mail)
+        self.session.query(self.deleted).filter_by(email = mail).delete()
         self.session.commit()
