@@ -1,20 +1,22 @@
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from services.database.sqlalchemy import SqlAlchemy
-from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idata_base import IDataBase
+from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
 from services.dependency_inject.injector import Services
 
 class SqlAlchemyPosts(IPostRepo):
-    def __init__(self):
-        self.db = SqlAlchemy.db
-        self.posts = SqlAlchemy.Posts
+    @Services.get
+    def __init__(self, orm : IDataBase):
+        self.session = orm.session
+        self.posts = orm.Posts
         self.__count = -1
         
     @property
     def count(self):
         if self.__count == -1:
-            return self.db.session.query(self.posts.postid).count()
+            return self.session.query(self.posts.postid).count()
         return self.__count
 
     @count.setter
@@ -27,20 +29,20 @@ class SqlAlchemyPosts(IPostRepo):
     def add(self, post : Post):
         self.count += 1
         new_post = self.posts(title = post.title, content = post.content, date = post.created, ownerid = post.owner_id)
-        self.db.session.add(new_post)
-        self.db.session.commit()
+        self.session.add(new_post)
+        self.session.commit()
         return new_post.postid
         
     def replace(self, id, post : Post):
         dict_new = {"title" : post.title,
                     "content" : post.content,
                     "date_modified" : post.created}
-        self.db.session.query(self.posts).filter_by(postid = id).update(dict_new)
-        self.db.session.commit()
+        self.session.query(self.posts).filter_by(postid = id).update(dict_new)
+        self.session.commit()
 
     def remove(self, id):
-        self.db.session.query(self.posts).filter_by(postid = id).delete()
-        self.db.session.commit()
+        self.session.query(self.posts).filter_by(postid = id).delete()
+        self.session.commit()
     
     def get(self, id, email = None) -> Post:
         displayed = None
@@ -49,7 +51,7 @@ class SqlAlchemyPosts(IPostRepo):
             displayed = self.db.query(SqlAlchemy.Deleted.content).filter_by(email = email, deletedid = id).first()
             post = Post(email, "No title", displayed[0])
         else:
-            displayed = self.db.session.query\
+            displayed = self.session.query\
                         (SqlAlchemy.Users.name,
                         self.posts.title,
                         self.posts.content,
@@ -63,7 +65,7 @@ class SqlAlchemyPosts(IPostRepo):
         return post
 
     def get_all(self, page = 0, filters : list = [], max = 5):
-        posts = self.db.session.query\
+        posts = self.session.query\
             (self.posts.postid,
             SqlAlchemy.Users.name,
             self.posts.title,
@@ -72,7 +74,6 @@ class SqlAlchemyPosts(IPostRepo):
             self.posts.date).\
             join(SqlAlchemy.Users, SqlAlchemy.Users.ownerid == self.posts.ownerid).\
             order_by(self.posts.postid.desc())
-        print("aaa", posts)
         if len(filters) > 0:
             posts = posts.filter(self.posts.ownerid.in_(filters))
         if page > 0:
