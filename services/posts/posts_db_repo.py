@@ -112,12 +112,9 @@ class PostsDb(IPostRepo):
         """, email, fetch = "fetchall")
         i = 1
         for record in result:
-            self.add(Post(name, f"post no {i}", record[0], owner_id = id))
-            i += 1
-        self.db.perform("""
-        DELETE FROM deleted_users
-        WHERE Email = %s;
-        """, email)
+            if record[0] != None:
+                self.add(Post(name, f"{name}'s post {i}", record[0], owner_id = id))
+                i += 1
 
     def __get_fetched(self, fetched):
         result = []
