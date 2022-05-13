@@ -9,7 +9,6 @@ from services.auth.authorization import Authorization
 from services.interfaces.ifilters import IFilters
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.posts.filters import Filters
-from services.posts.sqlalchemy_posts import SqlAlchemyPosts
 from services.users.passhash import PassHash
 from services.posts.posts_db_repo import PostsDb
 from services.posts.posts_in_memo import Posts
@@ -19,17 +18,17 @@ from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idatabase_config import IDataBaseConfig
 from services.database.database_config import DataBaseConfig
 from services.interfaces.iusers_repo import IUsersRepo
-from services.users.sqlalchemy_users import SqlAlchemyUsers
 from services.users.users_in_memo import Users
+from services.users.users_db_repo import UsersDb
 from services.database.mock_db_config import MockDbConfig, MockUpgrade
 
 class Container:
     dependencies = {
-        IPostRepo : None,
+        IPostRepo : (IDataBase,),
         IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
         IDataBaseUpgrade : (IDataBaseConfig,),
-        IUsersRepo : None,
+        IUsersRepo : (IDataBase,),
         IAuthentication : (IUsersRepo, IPassHash),
         IAuthorization : (IAuthentication,),
         IPassHash : None,
@@ -38,11 +37,11 @@ class Container:
         }
 
     prod_services = {
-        IPostRepo : SqlAlchemyPosts,
+        IPostRepo : PostsDb,
         IDataBase : DataBase,
         IDataBaseConfig : DataBaseConfig,
         IDataBaseUpgrade : DataBaseUpgrade,
-        IUsersRepo : SqlAlchemyUsers,
+        IUsersRepo : UsersDb,
         IAuthentication : Authentication,
         IPassHash : PassHash,
         IAuthorization : Authorization,
@@ -68,7 +67,6 @@ class Container:
     def get(self, is_test : bool) -> dict:
         if is_test:
             self.dependencies[IPostRepo] = None
-            self.dependencies[IUsersRepo] = (IPostRepo,)
+            self.dependencies[IUsersRepo] = IPostRepo
             return self.test_services
         return self.prod_services
-   
