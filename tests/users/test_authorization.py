@@ -3,7 +3,7 @@ from flask import current_app, url_for
 from __initblog__ import create_blog
 from models.user import User
 from services.interfaces.iusers_repo import IUsersRepo
-from tests.test_helpers import RepoMngr, configure, log_user, create_user, create_posts, logout_login
+from tests.test_helpers import RepoMngr, configure, log_user
 
 class AuthorizationTests(unittest.TestCase):
     blog = create_blog(is_test_app = True, with_orm = False)

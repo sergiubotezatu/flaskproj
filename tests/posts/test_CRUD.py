@@ -2,7 +2,6 @@ import unittest
 from urllib.parse import urlparse
 from flask import  current_app
 from __initblog__ import create_blog
-from models.post import Post
 from services.interfaces.ipost_repo import IPostRepo
 from tests.test_helpers import RepoMngr, log_user, configure
 

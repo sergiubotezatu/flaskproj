@@ -1,10 +1,6 @@
 import unittest
-from urllib.parse import urlparse
 from flask import current_app, url_for
 from __initblog__ import create_blog
-from models.post import Post
-from models.user import User
-from services.database.database import DataBase
 from services.interfaces.iusers_repo import IUsersRepo
 from tests.test_helpers import RepoMngr, log_user, configure, create_user
 

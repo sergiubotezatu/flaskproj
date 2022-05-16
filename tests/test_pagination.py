@@ -1,9 +1,7 @@
 import unittest
 from flask import current_app
 from __initblog__ import create_blog
-from services.database.database import DataBase
 from services.interfaces.ipost_repo import IPostRepo
-from services.interfaces.iusers_repo import IUsersRepo
 from tests.test_helpers import RepoMngr, configure, log_user, create_posts
 
 class PaginationTests(unittest.TestCase):

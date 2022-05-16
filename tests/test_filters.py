@@ -1,10 +1,10 @@
 import unittest
-from flask import current_app, url_for
+from flask import current_app
 from __initblog__ import create_blog
 from models.user import User
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.iusers_repo import IUsersRepo
-from tests.test_helpers import RepoMngr, configure, create_user, create_posts
+from tests.test_helpers import RepoMngr, configure
 
 def log_user(id, name, email, role):
     def decorator(test_func):

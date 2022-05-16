@@ -26,15 +26,6 @@ class RepoMngr:
     def add(self, entity : Union[Post, User]):
         self.repo.add(entity)
 
-    def add_rmv(self, entity : Union[Post, User]):
-        def decorator(test_func):
-            def wrapper(instance):
-                self.add(entity)
-                test_func(instance)
-                self.delete(id = entity.id)
-            return wrapper
-        return decorator
-
     def __del_placeholder(self):
         if RepoMngr.first_instance and "Posts" in str(type(self.repo)):
             RepoMngr.first_instance = False

@@ -5,7 +5,7 @@ from models.post import Post
 from models.user import User
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.iusers_repo import IUsersRepo
-from tests.test_helpers import RepoMngr, configure, log_user, create_posts, create_user
+from tests.test_helpers import RepoMngr, configure, log_user, create_posts
 
 class PostsUsersLinkTests(unittest.TestCase):
     blog = create_blog(is_test_app = True, with_orm = False)
