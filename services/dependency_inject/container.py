@@ -70,17 +70,14 @@ class Container:
         IDataBase : SqlAlchemy
     }
 
-    def __init__(self, is_test : bool):
-        self.items = self.get(is_test)
+    def __init__(self, is_test : bool, with_orm : bool):
+        self.items = self.get(is_test, with_orm)
     
-    def get(self, is_test : bool) -> dict:
+    def get(self, is_test : bool, with_orm : bool) -> dict:
+        if with_orm:
+            self.prod_services.update(self.sql_alchemy_services)
         if is_test:
             self.dependencies[IPostRepo] = None
             self.dependencies[IUsersRepo] = (IPostRepo,)
             return self.test_services
         return self.prod_services
-
-    @classmethod
-    def instantiate_with_orm(cls):
-        cls.prod_services.update(cls.sql_alchemy_services)
-        return cls(False)

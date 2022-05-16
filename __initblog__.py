@@ -16,10 +16,7 @@ def create_blog(is_test_app = False, with_orm = True):
     blog.config["TESTING"] = is_test_app
     blog.permanent_session_lifetime = timedelta(days = 1)
     blog.secret_key = "FlaskTest" if is_test_app else "FlaskBlog"
-    if (with_orm):
-        Services.container = Container.instantiate_with_orm().items
-    else:
-        Services.container = Container(is_test_app).items
+    Services.container = Container(is_test_app, with_orm).items
     Services.dependencies = Container.dependencies
     from view.db_setup import DbSetUp
     blog.register_blueprint(DbSetUp(IDataBase).bp)
