@@ -14,6 +14,11 @@ class RepoMngr:
     def __init__(self, repo : Union[IPostRepo, IUsersRepo]):
         self.repo = repo
         self.__del_placeholder()
+
+    def create_posts_db(self, count : int, name = "John Doe", owner_id = 2):
+        for i in range(count):
+            post = Post(name, "Generic", f"Test post {str(i + 1)}", owner_id)
+            self.repo.add(post)
         
     def delete(self, id = 0):
         self.repo.remove(id)

@@ -14,10 +14,10 @@ class AuthorizationTests(unittest.TestCase):
             self.ctx.push()
 
     users = RepoMngr(IUsersRepo)
+    users.add(User("Mark", "Mark@mail"))
     
     @log_user(3, "Admin", "admin@admin", "admin")
     @configure(True)
-    @users.add_rmv(User("Mark", "Mark@mail"))
     def test_admins_can_edit_others(self):
         result = self.test_app.get("/edit/1")
         self.assertIn("Change profile information", result.data.decode("UTF-8"))
@@ -39,7 +39,6 @@ class AuthorizationTests(unittest.TestCase):
 
     @log_user(3, "John Doe", "JDoe@mail", "admin")
     @configure(True)
-    @users.add_rmv(User("Mark", "Mark@mail"))
     def test_edit_delete_button_allowed_for_admins(self):
         result = self.test_app.get("/view/1/?pg=1")
         self.assertIn("Edit info", result.data.decode("UTF-8"))
@@ -47,21 +46,18 @@ class AuthorizationTests(unittest.TestCase):
 
     @log_user(1, "Mark", "Mark@mail", "regular")
     @configure(True)
-    @users.add_rmv(User("Mark", "Mark@mail"))
     def test_edit_delete_button_allowed_for_owners(self):
         result = self.test_app.get("/view/1/?pg=1")
         self.assertIn("Edit info", result.data.decode("UTF-8"))
         self.assertIn("Delete account", result.data.decode("UTF-8"))
 
     @log_user(2, "John Doe", "JDoe@mail", "regular")
-    @users.add_rmv(User("Mark", "Mark@mail"))
     def test_edit_delete_button_notallowed_for_others(self):
         result = self.test_app.get("/view/1/?pg=1")
         self.assertNotIn("Edit info", result.data.decode("UTF-8"))
         self.assertNotIn("Delete account", result.data.decode("UTF-8"))
 
     @log_user(2, "John Doe", "JDoe@mail", "regular")
-    @users.add_rmv(User("Mark", "Mark@mail"))
     @configure(True)
     def test_members_cannot_edit_others(self):
         result = self.test_app.get("/edit/1")
@@ -69,7 +65,6 @@ class AuthorizationTests(unittest.TestCase):
         self.assertIn("You do not have necessary authorization for editting", result.data.decode("UTF-8"))
 
     @log_user(1, "Mark", "Mark@mail", "regular")
-    @users.add_rmv(User("Mark", "Mark@mail"))
     @configure(True)
     def test_members_can_edit_themselves(self):
         result = self.test_app.get("/edit/1")
@@ -82,7 +77,6 @@ class AuthorizationTests(unittest.TestCase):
         self.assertIn("You do not have necessary authorization for editting", result.data.decode("UTF-8"))
 
     @log_user(1, "John Doe", "JDoe@mail", "regular")
-    @users.add_rmv(User("Mark", "Mark@mail"))
     @configure(True)
     def test_profile_allowed_for_members(self):
         result = self.test_app.get("/view/1/?pg=1")

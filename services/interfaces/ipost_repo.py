@@ -16,7 +16,7 @@ class IPostRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get(self, post_id) -> Post:
+    def get(self, post_id, email = None) -> Post:
         pass
 
     @abstractmethod

@@ -37,7 +37,7 @@ class Posts(IPostRepo):
         self.__posts.append(post)
         return self.count
 
-    def get(self, post_id) -> Post:
+    def get(self, post_id, email = None) -> Post:
         for post in self.__posts:
             if int(post_id) == post.id:
                 return post

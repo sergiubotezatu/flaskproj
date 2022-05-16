@@ -18,7 +18,7 @@ class PostsTests(unittest.TestCase):
     BASE_POST = "/post/"
     CONFIG_PAGE = "/config"
     posts = RepoMngr(IPostRepo)
-    test_post = Post("Mark Doe", "Generic", "Test post", owner_id = 2)
+    posts.create_posts_db(3)
 
     @configure(True)
     def test_setuppage_redirects_if_configured(self):
@@ -35,7 +35,7 @@ class PostsTests(unittest.TestCase):
         result = self.test_app.get(self.BASE, follow_redirects = True)
         self.assertIn("host", result.data.decode("UTF-8"))
         
-    @log_user(2, "Mark Doe", "Mark@email.com", "regular")
+    @log_user(3, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
     def test_create_redirect(self):
         post = {
@@ -44,11 +44,9 @@ class PostsTests(unittest.TestCase):
         "post" : "This is a test"
         }
         result = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=False)
-        self.posts.delete(1)
         self.assertEqual(result.status_code, 302)
-        self.assertEqual(urlparse(result.location).path, "/post/read/1")
     
-    @log_user(2, "Mark Doe", "Mark@email.com", "regular")
+    @log_user(3, "Mark Doe", "Mark@email.com", "regular")
     @configure(True)
     def test_create_post(self):
         post = {
@@ -57,58 +55,56 @@ class PostsTests(unittest.TestCase):
         "post" : "This is a test"
         }        
         creation = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=True)
-        self.posts.delete(1)
         self.assertIn(post["title"], creation.data.decode("UTF-8"))
         self.assertIn(post["post"], creation.data.decode("UTF-8"))        
 
-    @log_user(2, "Mark Doe", "Mark@email.com", "regular")   
+    @log_user(3, "James Doe", "Mark@email.com", "regular")   
     @configure(True)
     def test_creation_home_print(self):
         post = {
         "author" : "James Doe",
         "title" : "Generic",
-        "post" : "This is a test"
+        "post" : "I am printed on home page."
         }
         self.test_app.post(self.BASE_POST + "create", data = post)
         result = self.test_app.get(self.BASE)
-        self.posts.delete(1)
         self.assertIn(post["post"], result.data.decode("UTF-8"))
 
-    @log_user(2, "Mark Doe", "Mark@email.com", "regular")
+    @log_user(2, "John Doe", "Mark@email.com", "regular")
     @configure(True)
-    @posts.add_rmv(test_post)
     def test_edit_post(self):
         edit = {
-        "author" : "Mark Doe",
+        "author" : "John Doe",
         "title" : "Generic",
         "post" : "This is an edit"
         }
-        self.test_app.post(self.BASE_POST + "edit/1", data = edit, follow_redirects=True)
-        result = self.test_app.get(self.BASE_POST + "read/1")
+        initial = self.test_app.get(self.BASE_POST + "read/3/")
+        self.assertIn("Test post 3", initial.data.decode("UTF-8"))
+        self.test_app.post(self.BASE_POST + "edit/3", data = edit, follow_redirects=True)
+        result = self.test_app.get(self.BASE_POST + "read/3/")
         self.assertIn(edit["post"], result.data.decode("UTF-8"))
 
-    @log_user(1, "Greg Doe", "Greg@email.com", "regular")
+    @log_user(2, "John Doe", "JDoe@email.com", "regular")
     @configure(True)
     def test_delete_post(self):
         post = {
-        "author" : "Greg Doe",
+        "author" : "John Doe",
         "title" : "Generic",
-        "post" : "This is a delete test"
+        "post" : "Test post 1"
         }
-        creation = self.test_app.post(self.BASE_POST + "create", data = post, follow_redirects=True)
-        self.assertIn(post["author"], creation.data.decode("UTF-8"))
-        self.assertIn(post["title"], creation.data.decode("UTF-8"))
-        self.assertIn(post["post"], creation.data.decode("UTF-8"))
+        read = self.test_app.get(self.BASE_POST + "read/1/")
+        self.assertIn(post["author"], read.data.decode("UTF-8"))
+        self.assertIn(post["title"], read.data.decode("UTF-8"))
+        self.assertIn(post["post"], read.data.decode("UTF-8"))
         result = self.test_app.post(self.BASE_POST + "read/1", data = {"postID" : "1"})
         self.assertNotIn(post["author"], result.data.decode("UTF-8"))
 
-    @log_user(2, "Mark Doe", "Generic", "Test post")
+    @log_user(2, "John Doe", "Generic", "regular")
     @configure(True)
     def test_redirect_delete(self):
-        self.posts.add(self.test_post)
         result = self.test_app.post(
-            self.BASE_POST + "read/1",
-            data = {"postID" : "1"},
+            self.BASE_POST + "read/2/",
+            data = {"postID" : "2"},
             follow_redirects=False)
         self.assertEqual(result.status_code, 302)
         self.assertEqual(urlparse(result.location).path, "/")

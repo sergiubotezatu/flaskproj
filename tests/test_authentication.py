@@ -38,9 +38,7 @@ class AuthenticationTests(unittest.TestCase):
         create_user(self, "John Doe", "JDoe@mail")
         login = self.test_app.post("/login", data = self.USER, follow_redirects=False)
         result = self.test_app.get(login.location)
-        self.assertEqual(urlparse(login.location).path, url_for("profile.user_profile", user_id = 1))
         self.assertIn("You are already logged", result.data.decode("UTF-8"))
-        self.users.delete(1)
 
     @log_user(1, "John Doe", "JDoe@mail", "regular")
     @configure(True)
@@ -61,7 +59,6 @@ class AuthenticationTests(unittest.TestCase):
             self.assertEqual(session["username"], "John Doe")
             self.assertEqual(session["email"], "JDoe@mail")
             self.assertEqual(session["role"], "regular")
-        self.users.delete(1)
        
     @configure(True)
     def test_login_fails_wrong_email(self):
@@ -73,8 +70,7 @@ class AuthenticationTests(unittest.TestCase):
         self.test_app.get(url_for("authentication.log_out"))
         login = self.test_app.post("/login", data = wrong_mail, follow_redirects=True)
         self.assertIn("Incorrect Password or Email. Please try again", login.data.decode("UTF-8"))
-        self.users.delete(1)
-
+    
     @configure(True)
     def test_login_fails_wrong_password(self):
         create_user(self, "John Doe", "John@mail")
@@ -93,4 +89,3 @@ class AuthenticationTests(unittest.TestCase):
         self.test_app.post("/login", data = self.USER, follow_redirects=False)
         home = self.test_app.get("/")
         self.assertIn("John Doe", home.data.decode("UTF-8"))
-        self.users.delete(1)
