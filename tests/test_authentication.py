@@ -1,16 +1,12 @@
 import unittest
-from flask import current_app, url_for
+from flask.testing import FlaskClient
+from flask import url_for
 from __initblog__ import create_blog
 from services.interfaces.iusers_repo import IUsersRepo
-from tests.test_helpers import RepoMngr, log_user, configure, create_user
+from tests.test_helpers import RepoMngr, log_user, configure, create_user, getClient
 
 class AuthenticationTests(unittest.TestCase):
     blog = create_blog(is_test_app = True, with_orm=False)
-    
-    def setUp(self):
-        with self.blog.test_request_context() as self.ctx:
-            self.test_app = current_app.test_client()
-            self.ctx.push()
 
     USER = {
         "mail" : "JDoe@mail",
@@ -19,69 +15,77 @@ class AuthenticationTests(unittest.TestCase):
 
     users = RepoMngr(IUsersRepo)
 
+    @getClient
     @configure(False)
-    def test_redirects_tosetup_if_notConfig(self):
-        result = self.test_app.get("/login", follow_redirects = True)
+    def test_redirects_tosetup_if_notConfig(self, client : FlaskClient = None):
+        result = client.get("/login", follow_redirects = True)
         self.assertIn("host", result.data.decode("UTF-8"))
 
+    @getClient
     @configure(True)
-    def test_login_request(self):
-        result = self.test_app.get("/login")
+    def test_login_request(self, client : FlaskClient = None):
+        result = client.get("/login")
         self.assertEqual(result.status_code, 200)
 
+    @getClient
     @configure(True)
-    def test_login_redirect_if_already_logged(self):
-        create_user(self, "John Doe", "JDoe@mail")
-        login = self.test_app.post("/login", data = self.USER, follow_redirects=False)
-        result = self.test_app.get(login.location)
+    def test_login_redirect_if_already_logged(self, client : FlaskClient = None):
+        create_user(client, "John Doe", "JDoe@mail")
+        login = client.post("/login", data = self.USER, follow_redirects=False)
+        result = client.get(login.location)
         self.assertIn("You are already logged", result.data.decode("UTF-8"))
 
+    @getClient
     @log_user(1, "John Doe", "JDoe@mail", "regular")
     @configure(True)
-    def test_logout_pops_user_from_session(self):
-        with self.test_app.session_transaction() as session:
+    def test_logout_pops_user_from_session(self, client : FlaskClient = None):
+        with client.session_transaction() as session:
             self.assertEqual(session["id"], 1)
-        self.test_app.get(url_for("authentication.log_out"))
-        with self.test_app.session_transaction() as session:
+        client.get(url_for("authentication.log_out"))
+        with client.session_transaction() as session:
             self.assertNotIn("id", session)
 
+    @getClient
     @configure(True)
-    def test_login_adds_user_into_session(self):
-        create_user(self, "John Doe", "JDoe@mail")
-        self.test_app.get(url_for("authentication.log_out"))
-        self.test_app.post("/login", data = self.USER, follow_redirects=False)
-        with self.test_app.session_transaction() as session:
+    def test_login_adds_user_into_session(self, client : FlaskClient = None):
+        create_user(client, "John Doe", "JDoe@mail")
+        client.get(url_for("authentication.log_out"))
+        client.post("/login", data = self.USER, follow_redirects=False)
+        with client.session_transaction() as session:
             self.assertEqual(session["id"], 1)
             self.assertEqual(session["username"], "John Doe")
             self.assertEqual(session["email"], "JDoe@mail")
             self.assertEqual(session["role"], "regular")
-       
+
+    @getClient
     @configure(True)
-    def test_login_fails_wrong_email(self):
-        create_user(self, "John Doe", "John@mail")
+    def test_login_fails_wrong_email(self, client : FlaskClient = None):
+        create_user(client, "John Doe", "John@mail")
         wrong_mail = {
         "mail" : "JDoe@gmail",
         "pwd" : "password1@",
         }
-        self.test_app.get(url_for("authentication.log_out"))
-        login = self.test_app.post("/login", data = wrong_mail, follow_redirects=True)
+        client.get(url_for("authentication.log_out"))
+        login = client.post("/login", data = wrong_mail, follow_redirects=True)
         self.assertIn("Incorrect Password or Email. Please try again", login.data.decode("UTF-8"))
     
+    @getClient
     @configure(True)
-    def test_login_fails_wrong_password(self):
-        create_user(self, "John Doe", "John@mail")
+    def test_login_fails_wrong_password(self, client : FlaskClient = None):
+        create_user(client, "John Doe", "John@mail")
         wrong_pass = {
         "mail" : "John@mail",
         "pwd" : "pass1@",
         }
-        self.test_app.get(url_for("authentication.log_out"))
-        login = self.test_app.post("/login", data = wrong_pass, follow_redirects=False)
+        client.get(url_for("authentication.log_out"))
+        login = client.post("/login", data = wrong_pass, follow_redirects=False)
         self.assertIn("Incorrect Password or Email. Please try again", login.data.decode("UTF-8"))
         self.users.delete(1)
-
+    
+    @getClient
     @configure(True)
-    def test_user_displayed_on_navbar(self):
-        create_user(self, "John Doe", "J@mail")
-        self.test_app.post("/login", data = self.USER, follow_redirects=False)
-        home = self.test_app.get("/")
+    def test_user_displayed_on_navbar(self, client : FlaskClient = None):
+        create_user(client, "John Doe", "J@mail")
+        client.post("/login", data = self.USER, follow_redirects=False)
+        home = client.get("/")
         self.assertIn("John Doe", home.data.decode("UTF-8"))
