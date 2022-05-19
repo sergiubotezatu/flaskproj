@@ -1,6 +1,7 @@
 from typing import Union
 from unittest import TestCase
-from flask import url_for
+from flask import url_for, current_app
+from flask.testing import FlaskClient
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
@@ -31,35 +32,43 @@ class RepoMngr:
             RepoMngr.first_instance = False
             self.delete(1)
 
+def getClient(test_func):
+        def decorator(instance, **kwargs):
+            with instance.blog.test_request_context() as instance.ctx:
+                    kwargs["client"] = current_app.test_client()
+                    instance.ctx.push()
+            test_func(instance, **kwargs)
+        return decorator
+
 def log_user(id, name, email, role):
     def decorator(test_func):
-        def wrapper(instance : TestCase):
-            with instance.test_app.session_transaction() as session:
+        def wrapper(instance : TestCase, **kwargs):
+            with kwargs["client"].session_transaction() as session:
                 session["id"] = id
                 session["username"] = name
                 session["email"] = email
                 session["role"] = role
-            return test_func(instance)
+            return test_func(instance, **kwargs)
         return wrapper
     return decorator
 
 def configure(is_config : bool):
     def decorator(test_func):
-        def wrapper(instance):
+        def wrapper(instance, **kwargs):
             DataBase.config.is_configured = is_config
-            return test_func(instance)
+            return test_func(instance, **kwargs)
         return wrapper
     return decorator
 
-def create_user(instance : TestCase, name, email):
+def create_user(client : FlaskClient, name, email):
         user = {
                 "username" : name,
                 "email" : email,
                 "pwd" : "password1@"
                 }
-        instance.test_app.post("/signup", data = user, follow_redirects=False)
+        client.post("/signup", data = user, follow_redirects=False)
 
-def create_posts(instance : TestCase, name, count :int, title = "Generic-1"):
+def create_posts(client : FlaskClient, name, count :int, title = "Generic-1"):
         post = {
         "author" : name,
         "title" : title,
@@ -67,7 +76,7 @@ def create_posts(instance : TestCase, name, count :int, title = "Generic-1"):
         }
         for i in range(0, count):
             post["title"] = post["title"].replace(str(i - 1), str(i))
-            instance.test_app.post("/post/create", data = post, follow_redirects=False)
+            client.post("/post/create", data = post, follow_redirects=False)
 
 def logout_login(instance : TestCase, mail):
         user = {
