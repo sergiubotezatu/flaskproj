@@ -45,7 +45,7 @@ class PostPage:
         selected_post = self.blogPosts.get(post_id, email)
         return render_template(
             "read.html",
-            editable = post_id,
+            editable=post_id,
             owner = selected_post.owner_id,
             auth = selected_post.auth,
             title = selected_post.title,
