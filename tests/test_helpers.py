@@ -34,9 +34,9 @@ class RepoMngr:
 
 def getClient(test_func):
         def decorator(instance, **kwargs):
-            with instance.blog.test_request_context() as instance.ctx:
-                    kwargs["client"] = current_app.test_client()
-                    instance.ctx.push()
+            kwargs["client"] = instance.blog.test_client()
+            with instance.blog.test_request_context() as ctx:
+                    ctx.push()
             test_func(instance, **kwargs)
         return decorator
 
