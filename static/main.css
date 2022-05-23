@@ -255,11 +255,12 @@ form{
 
 .post {
     height: 400px;
-    padding: 0px 8px 10px 40px;
+    padding: 0px 8px;
     font-family:cursive;
     margin-top:0px;
     white-space: pre-wrap;
     word-break: break-all;
+    position:relative;
 }
 
 .post > h4, p
@@ -950,4 +951,36 @@ form{
         transition: all 0.3s ease-in-out;
         background-color: yellowgreen;
         cursor: pointer; 
+      }
+      
+      #title
+      {
+        grid-area:title;
+        margin-left: auto;
+        margin-right:auto;
+        margin-top:70%;
+        white-space: pre-wrap;
+      }
+
+      #auth
+      {
+        grid-area:auth;
+      }
+
+      #postImg
+      {
+        grid-area:img;
+      }
+
+      .description
+      {
+        display:grid;
+        grid-template-columns: 30% 70%;
+        column-gap: 10px;
+        grid-template-areas: 
+        'title img'
+        'title img'
+        'auth auth';
+        column-gap: 0px;
+        margin:0px;
       }
