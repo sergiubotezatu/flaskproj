@@ -1,3 +1,4 @@
+from models.image import Image
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idata_base import IDataBase
 from models.post import Post
@@ -26,13 +27,20 @@ class PostsDb(IPostRepo):
     def __len__(self):
         return self.count
     
-    def add(self, post : Post):
+    def add(self, post : Post, img : Image):
         self.count += 1
-        return self.db.perform("""
+        id = self.db.perform("""
         INSERT INTO blog_posts (PostID, Title, Content, Date, OwnerID)     
         VALUES (DEFAULT, %s, %s, %s, %s)
         RETURNING PostID;
-        """, post.title, post.content, post.created, post.owner_id, fetch = "fetchone")[0]     
+        """, post.title, post.content, post.created, post.owner_id, fetch = "fetchone")[0]
+        self.add_image(img, id)
+        return id
+
+    def add_image(self, img : Image, id):
+        self.db.perform("""
+        INSERT INTO post_images
+        VALUES(%s, %s, %s, %s);""", id, img.mime_type, img.name, img.data)
 
     def replace(self, id, post : Post):
         self.db.perform("""

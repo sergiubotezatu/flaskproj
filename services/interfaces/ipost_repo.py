@@ -1,10 +1,11 @@
 from abc import ABCMeta, abstractmethod
+from models.image import Image
 from models.post import Post
 
 class IPostRepo(metaclass = ABCMeta):
     
     @abstractmethod
-    def add(self, post):
+    def add(self, post : Post, img : Image):
         pass
 
     @abstractmethod
@@ -22,3 +23,4 @@ class IPostRepo(metaclass = ABCMeta):
     @abstractmethod
     def get_all(self):
         pass
+
