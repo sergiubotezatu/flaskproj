@@ -1,7 +1,9 @@
 from datetime import datetime
 
+from models.image import Image
+
 class Post:
-    def __init__(self, auth, title, content, owner_id = 0, date = None):
+    def __init__(self, auth, title, content, owner_id = 0, date = None, img = Image.default()):
         self.auth = auth
         self.title = title
         self.content = content
@@ -9,6 +11,7 @@ class Post:
         self.created = self.date_created(date)
         self.modified = ""
         self.id = 0
+        self.img = img
         
     def date_created(self, date):
         if date == None:

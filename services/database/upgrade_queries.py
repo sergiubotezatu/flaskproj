@@ -10,7 +10,7 @@ admin_pass = PassHash.generate_pass('admin1')
 dummy_pass = PassHash.generate_pass('dummy')
 admin_creation = datetime.now().strftime("%d/%b/%y %H:%M:%S")
 img = open("static\\icons\\noimage.png", "rb").read()
-img_model = Image(psycopg2.Binary(img), "image/png", "noimage.png")
+img_model = Image(psycopg2.Binary(img), "image/png")
 
 def get_queries():
     return [
@@ -179,7 +179,6 @@ def get_queries():
             ImgId Serial Primary Key,
             PostID int,
             mime_type CHARACTER VARYING(255),
-            file_name CHARACTER VARYING(255),
             file_data BYTEA,
             CONSTRAINT fk_postid
             FOREIGN KEY(PostID) 
@@ -196,7 +195,7 @@ def get_queries():
                 FOR id IN SELECT postid FROM blog_posts
                 LOOP
                 INSERT INTO post_images
-                Values(DEFAULT,  id, '{img_model.mime_type}', '{img_model.name}', {img_model.data});
+                Values(DEFAULT,  id, '{img_model.mime_type}', {img_model.data});
                 END LOOP;
             END;
             $$

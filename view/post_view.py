@@ -1,3 +1,4 @@
+import base64
 from models.image import Image
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.post import Post
@@ -46,9 +47,11 @@ class PostPage:
         
         email = request.args.get("email")
         selected_post = self.blogPosts.get(post_id, email)
+        pic = base64.b64encode(self.blogPosts.get_img(post_id)).decode()
         return render_template(
             "read.html",
             editable=post_id,
+            img = pic,
             owner = selected_post.owner_id,
             auth = selected_post.auth,
             title = selected_post.title,
@@ -96,9 +99,8 @@ class PostPage:
         if not picture:
             return Image.default()
         else:
-            filename = secure_filename(picture.filename)
             mimetype = picture.mimetype
-            return Image(picture.read(), mimetype, filename)
+            return Image(picture.read(), mimetype)
 
     
         

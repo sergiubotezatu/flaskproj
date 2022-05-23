@@ -37,8 +37,14 @@
 {%endif%}
 <div class="readPost">  
   <div class="read">
-    <h2 style ="text-align: center">{{title}}</h3>
-    <h4 class ="higlight">Written by:{{auth}}</h4>
+    <h2 style ="text-align: center">{{title}}</h2>
+    <div style = "background-image: url('data:image/jpg;base64, {{img}}')">
+    <form class = "write" style = "background-color: rgba(255, 255, 255, 0.5);"method = "Post" enctype=multipart/form-data>
+    <input type="file" id="img" name="img" accept="image/*">
+    <input class ="button submit" type="submit" value="Post">
+  </div>
+   </form>
+    <h4>Written by:{{auth}}</h4>
     <p>{{content}}</p>
       <p style ="float:right">
         created: {{created}}<br>{%if modified != "" and modified != None%}updated: {{modified}}{%endif%}</p>

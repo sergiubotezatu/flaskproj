@@ -1,3 +1,7 @@
+import base64
+import PIL.Image
+import io
+from itsdangerous import base64_encode
 from sqlalchemy import func
 from models.image import Image
 from services.database.sqlalchemy import SqlAlchemy
@@ -36,7 +40,7 @@ class SqlAlchemyPosts(IPostRepo):
         return new_post.postid
 
     def add_image(self, img : Image, id):
-        new_img = SqlAlchemy.Images(postid = id, mime_type = img.mime_type, file_name = img.name, file_data = img.data)
+        new_img = SqlAlchemy.Images(postid = id, mime_type = img.mime_type, file_data = img.data)
         self.session.add(new_img)
         self.session.commit()
 
@@ -71,6 +75,10 @@ class SqlAlchemyPosts(IPostRepo):
             post.modified = displayed[5]
         return post
 
+    def get_img(self, id):
+        data = self.session.query(SqlAlchemy.Images.file_data).filter_by(postid = id).first()
+        return data[0]  
+
     def get_all(self, page = 0, filters : list = [], max = 5):
         posts = self.session.query\
             (self.posts.postid,
@@ -78,8 +86,11 @@ class SqlAlchemyPosts(IPostRepo):
             self.posts.title,
             func.substr(self.posts.content, 0, 150),
             self.posts.ownerid,
-            self.posts.date).\
+            self.posts.date,
+            SqlAlchemy.Images.file_data,
+            SqlAlchemy.Images.mime_type).\
             join(SqlAlchemy.Users, SqlAlchemy.Users.ownerid == self.posts.ownerid).\
+            join(SqlAlchemy.Images, SqlAlchemy.Images.postid == self.posts.postid).\
             order_by(self.posts.postid.desc())
         if len(filters) > 0:
             posts = posts.filter(self.posts.ownerid.in_(filters))
@@ -103,7 +114,10 @@ class SqlAlchemyPosts(IPostRepo):
         if fetched != None:
             for post in fetched:
                 count += 1
-                result.append((post[0], Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5]), count))
+                img_data = Image(base64.b64encode(post[6]).decode(), post[7])
+                result.append((post[0],
+                Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5], img = img_data),
+                count))
         return result
 
     def __cut_poem_newlines(self, content):
