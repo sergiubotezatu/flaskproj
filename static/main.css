@@ -933,3 +933,21 @@ form{
         margin-left:15%;
         margin-right:15%;
       }
+
+      input[type=file]::file-selector-button {
+        display:inline-block;
+        color:white;
+        font-size:medium;
+        height:40px;
+        background-color: rgb(42, 42, 42);
+        border: 2px solid steelblue;
+        border-radius: 5px;
+        margin-bottom:10px;
+      }
+      
+      input[type=file]::file-selector-button:hover {
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.467);
+        transition: all 0.3s ease-in-out;
+        background-color: yellowgreen;
+        cursor: pointer; 
+      }

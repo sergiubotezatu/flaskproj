@@ -1,7 +1,7 @@
 {%extends "base.html"%}
 {%block title%}Create_Post{%endblock%}
 {%block content%}
-<form class = "write" style="margin-right:20%;margin-left:20%;text-align:center;" method = "Post">
+<form class = "write" style="margin-right:20%;margin-left:20%;text-align:center;" method = "Post" enctype=multipart/form-data>
   <input type="hidden" id="actId" name="author" value={{owner}}>
   <label for="title" style = "z-index:-1;">Add a title</label><br><br>
      <textarea id ="description"
@@ -29,6 +29,8 @@
         required
         ></textarea>
         <br><br>
-        <input class ="button submit" type="submit" value="Post">
+    <label for="img">Select image:</label>
+    <input type="file" id="img" name="img" accept="image/*">
+    <input class ="button submit" type="submit" value="Post">
     </form>
 {%endblock%}
