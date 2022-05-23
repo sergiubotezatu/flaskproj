@@ -1,4 +1,5 @@
 from sqlalchemy import func
+from models.image import Image
 from services.database.sqlalchemy import SqlAlchemy
 from services.interfaces.idata_base import IDataBase
 from services.interfaces.ipost_repo import IPostRepo
@@ -25,13 +26,20 @@ class SqlAlchemyPosts(IPostRepo):
     def __len__(self):
         return self.count
     
-    def add(self, post : Post):
+    def add(self, post : Post, img : Image):
         self.count += 1
         new_post = self.posts(title = post.title, content = post.content, date = post.created, ownerid = post.owner_id)
         self.session.add(new_post)
         self.session.commit()
+        id = new_post.postid
+        self.add_image(img, id)
         return new_post.postid
-        
+
+    def add_image(self, img : Image, id):
+        new_img = SqlAlchemy.Images(postid = id, mime_type = img.mime_type, file_name = img.name, file_data = img.data)
+        self.session.add(new_img)
+        self.session.commit()
+
     def replace(self, id, post : Post):
         dict_new = {"title" : post.title,
                     "content" : post.content,

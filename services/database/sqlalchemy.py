@@ -12,6 +12,7 @@ class SqlAlchemy(DataBase, IDataBase):
     Users = None
     Posts = None
     Deleted = None
+    Images = None
     @Services.get
     def __init__(self, config : IDataBaseConfig, upgrader : IDataBaseUpgrade):
         super(SqlAlchemy, self).__init__(config, upgrader)
@@ -24,7 +25,7 @@ class SqlAlchemy(DataBase, IDataBase):
     def register_sqlalchemy(self):
         SQLALCHEMY_DATABASE_URI = self.db_settings.to_DB_URI()
         SqlAlchemy.engine = create_engine(SQLALCHEMY_DATABASE_URI)
-        Session = sessionmaker(autocommit=False, autoflush=False, bind=SqlAlchemy.engine)
+        Session = sessionmaker(autocommit=False, autoflush=True, bind=SqlAlchemy.engine)
         SqlAlchemy.session = Session()        
 
     @classmethod
@@ -34,3 +35,4 @@ class SqlAlchemy(DataBase, IDataBase):
         cls.Users = Base.classes.blog_users
         cls.Posts = Base.classes.blog_posts
         cls.Deleted = Base.classes.deleted_users
+        cls.Images = Base.classes.post_images
