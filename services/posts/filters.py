@@ -22,8 +22,9 @@ class Filters(IFilters):
             self.__update_unfiltered_users()
             ids += self.filtered_users["user_id"]
             return self.repo.get_all(page, ids)
-        else:
+        elif not query_params:
             return placeholder.get_all()
+        return []
 
     def get_new_querystr(self) -> str:
         query_url = request.full_path
