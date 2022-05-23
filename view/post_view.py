@@ -1,3 +1,4 @@
+from models.image import Image
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.post import Post
 from services.database.database import DataBase
@@ -6,6 +7,7 @@ from services.interfaces.ipost_repo import IPostRepo
 from services.dependency_inject.injector import Services
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.users.access_decorators import AccessDecorators
+from werkzeug.utils import secure_filename
 
 class PostPage:
     authorizator = AccessDecorators(IAuthorization, ISessionMNGR)
@@ -30,7 +32,8 @@ class PostPage:
     @authorizator.member_required
     def create(self):
         if request.method == "POST":
-            return redirect(f"/post/read/{self.create_new_post()}")
+            id = self.create_new_post()
+            return redirect(f"/post/read/{id}")
         
         return render_template("writePost.html", owner = session["username"])
         
@@ -70,7 +73,8 @@ class PostPage:
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
-        return self.blogPosts.add(Post(author, title, content, owner_id = session["id"]))
+        image = self.__get_img()
+        return self.blogPosts.add(Post(author, title, content, owner_id = session["id"]), image)
 
     def edit_post(self, post_id):
         author = request.form.get("author")
@@ -86,3 +90,15 @@ class PostPage:
         email = kwargs["email"]
         self.blogPosts.unarchive_content(id, name, email)
         return redirect(url_for("profile.user_profile", user_id = id, pg = 1, restored = email))
+
+    def __get_img(self) -> Image:
+        picture = request.files["img"]
+        if not picture:
+            return Image.default()
+        else:
+            filename = secure_filename(picture.filename)
+            mimetype = picture.mimetype
+            return Image(picture.read(), mimetype, filename)
+
+    
+        
