@@ -8,7 +8,6 @@ from services.interfaces.ipost_repo import IPostRepo
 from services.dependency_inject.injector import Services
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.users.access_decorators import AccessDecorators
-from werkzeug.utils import secure_filename
 
 class PostPage:
     authorizator = AccessDecorators(IAuthorization, ISessionMNGR)

@@ -49,7 +49,11 @@
 <div class="readPost">  
   <div class="read">
     <h2 style ="text-align: center">{{title}}</h2>
+    {%if session["id"] == owner or session["role"] in ("admin", "default")%}
+    <div class = "read-img" style = "pointer-events: auto;">
+    {%else%}
     <div class = "read-img">
+    {%endif%}
       <button type = "button" class = "button" onclick = "MessOn('pic-overlay')">Change Image</button>
       <img src = "data:image/jpg;base64, {{img}}"><img>
     </div>
