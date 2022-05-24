@@ -9,7 +9,7 @@ class IPostRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def replace(self, post, post_id):
+    def replace(self, post_id, post : Post, img : Image):
         pass
 
     @abstractmethod

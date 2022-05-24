@@ -24,6 +24,17 @@
 <a href= "{{ '/post/edit/%s'%editable|urlencode }}" class="editbutton" id = "edit">EDIT CONTENT</a>
 <a href = "javascript:void(0)" class ="editbutton" id = "edit" onclick="MessOn('overlay')">DELETE POST</a>
 </div>
+<div id="pic-overlay">
+  <div id="box">
+    <p id ="mess">Select a new image or go back</p>
+  <form  method = "Post" enctype="multipart/form-data">  
+    <label for="img" id = "clicked">Select image:</label>
+    <input type="file" id="img" name="img" accept="image/*">
+    <input class ="button submit" type="submit" value="Update">
+    <input type="button" class = "button" value ="Back" onclick="MessOff('pic-overlay')">
+  </form>  
+  </div>
+</div>
 <div id="overlay" onclick="MessOff(this.id)">
   <div id="box">
   <p id ="mess">Are you sure you want to delete this post?</p>
@@ -38,12 +49,10 @@
 <div class="readPost">  
   <div class="read">
     <h2 style ="text-align: center">{{title}}</h2>
-    <div style = "background-image: url('data:image/jpg;base64, {{img}}')">
-    <form class = "write" style = "background-color: rgba(255, 255, 255, 0.5);"method = "Post" enctype=multipart/form-data>
-    <input type="file" id="img" name="img" accept="image/*">
-    <input class ="button submit" type="submit" value="Post">
-  </div>
-   </form>
+    <div class = "read-img">
+      <button type = "button" class = "button" onclick = "MessOn('pic-overlay')">Change Image</button>
+      <img src = "data:image/jpg;base64, {{img}}"><img>
+    </div>
     <h4>Written by:{{auth}}</h4>
     <p>{{content}}</p>
       <p style ="float:right">

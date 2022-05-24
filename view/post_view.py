@@ -40,10 +40,16 @@ class PostPage:
         
     def read(self, post_id):
         if request.method == "POST":
-            to_delete = request.form.get("postID")
-            self.blogPosts.remove(to_delete)
-            flash("Your post has been successfully removed.", "info")
-            return redirect(url_for("home.front_page"))
+            picture = request.files.get("img")
+            if picture:
+                mimetype = picture.mimetype
+                self.blogPosts.replace(post_id, img = Image(picture.read(), mimetype))
+                return redirect(url_for(".read", post_id = post_id))
+            else:
+                to_delete = request.form.get("postID")
+                self.blogPosts.remove(to_delete)
+                flash("Your post has been successfully removed.", "info")
+                return redirect(url_for("home.front_page"))
         
         email = request.args.get("email")
         selected_post = self.blogPosts.get(post_id, email)

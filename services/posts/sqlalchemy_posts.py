@@ -44,11 +44,17 @@ class SqlAlchemyPosts(IPostRepo):
         self.session.add(new_img)
         self.session.commit()
 
-    def replace(self, id, post : Post):
-        dict_new = {"title" : post.title,
-                    "content" : post.content,
-                    "date_modified" : post.created}
-        self.session.query(self.posts).filter_by(postid = id).update(dict_new)
+    def replace(self, id, post : Post = None, img : Image = None):
+        dict_new = {}
+        if img != None:
+            dict_new = {"file_data" : img.data,
+                        "mime_type" : img.mime_type}
+            self.session.query(SqlAlchemy.Images).filter_by(postid = id).update(dict_new)
+        else:
+            dict_new = {"title" : post.title,
+                        "content" : post.content,
+                        "date_modified" : post.created}
+            self.session.query(self.posts).filter_by(postid = id).update(dict_new)
         self.session.commit()
 
     def remove(self, id):
