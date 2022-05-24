@@ -26,6 +26,10 @@ function InvalidUserName()
 
 function MessOn(id)
 {
+  if (id == "pic-overlay")
+  {
+    document.getElementById("clicked").click();
+  }
   document.getElementById(id).style.display = "block";
 }
 

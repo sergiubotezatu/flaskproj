@@ -261,12 +261,13 @@ form{
     white-space: pre-wrap;
     word-break: break-all;
     position:relative;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: top right;
 }
 
 .post > h4, p
 {
-    position: relative;
-    top: -50px;
     text-align: justify;
 }
 
@@ -408,7 +409,7 @@ form{
       }
    
    
-    #overlay, #logoverlay, #signoverlay, #erroroverlay{
+    #overlay, #logoverlay, #signoverlay, #erroroverlay, #pic-overlay{
       position: fixed;
       display: none;
       width: 100%;
@@ -952,35 +953,60 @@ form{
         background-color: yellowgreen;
         cursor: pointer; 
       }
+
+      #title, #auth
+      {
+        width:40%;
+        word-break:keep-all;
+        height:auto;
+      }
+
+      #auth{
+        margin-bottom:20px;
+      }
       
-      #title
+     .read-img
       {
-        grid-area:title;
-        margin-left: auto;
-        margin-right:auto;
-        margin-top:70%;
-        white-space: pre-wrap;
+        float:right;
+        position:relative;
+        width: 100%;
+        max-width: 400px;
+        margin-left:10px;
+        z-index:2;
       }
 
-      #auth
+
+      .read-img img
       {
-        grid-area:auth;
+        width: 100%;
+        height: auto;
+        z-index:2;
       }
 
-      #postImg
+      .read-img .button
       {
-        grid-area:img;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        background-color: black;
+        display:none;
+        z-index:-1;
       }
 
-      .description
+      .read-img img:hover
       {
-        display:grid;
-        grid-template-columns: 30% 70%;
-        column-gap: 10px;
-        grid-template-areas: 
-        'title img'
-        'title img'
-        'auth auth';
-        column-gap: 0px;
-        margin:0px;
+        opacity:0.6;
+      }
+
+      .read-img:hover .button
+      {
+        display:block;
+        z-index:3;
+      }
+
+      .read-img .button:hover ~ img
+      {
+        opacity:0.6;
       }
