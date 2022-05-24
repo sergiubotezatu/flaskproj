@@ -1,3 +1,4 @@
+import base64
 from models.image import Image
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idata_base import IDataBase
@@ -103,20 +104,31 @@ class PostsDb(IPostRepo):
             applied = applied + ")"
         limit = f"LIMIT {max + 1}" if page > 0 else ""
         return self.__get_fetched(self.db.perform(f"""
+            SET CLIENT_ENCODING TO 'utf8';
             SELECT p.PostID,
             u.Name,
             p.Title,
             SUBSTRING(p.Content, 1, 150),
             p.OwnerID,
-            p.Date
+            p.Date,
+            i.file_data,
+            i.mime_type
             FROM blog_posts p
             INNER JOIN blog_users u
             ON p.OwnerID = u.OwnerID
+            INNER JOIN post_images i
+            On p.postid = i.postid
             {applied}
             ORDER BY p.PostID DESC
             {offset}
             {limit};
             """, fetch = "fetchall"))
+
+    def get_img(self, post_id):
+        result = self.db.perform("""
+        SELECT * FROM post_images
+        WHERE postid = %s""", post_id, fetch="fetchone")
+        return Image(base64.b64encode(result[1]).decode(). result[0])
         
     def unarchive_content(self, id, name, email):
         result = self.db.perform("""

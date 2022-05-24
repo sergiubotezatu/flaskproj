@@ -52,7 +52,7 @@ class PostPage:
         
         email = request.args.get("email")
         selected_post = self.blogPosts.get(post_id, email)
-        pic = base64.b64encode(self.blogPosts.get_img(post_id)).decode()
+        pic = self.blogPosts.get_img(post_id)
         return render_template(
             "read.html",
             editable=post_id,

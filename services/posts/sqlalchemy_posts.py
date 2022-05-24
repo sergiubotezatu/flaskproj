@@ -82,8 +82,8 @@ class SqlAlchemyPosts(IPostRepo):
         return post
 
     def get_img(self, id):
-        data = self.session.query(SqlAlchemy.Images.file_data).filter_by(postid = id).first()
-        return data[0]  
+        data = self.session.query(SqlAlchemy.Images).filter_by(postid = id).first()
+        return Image(base64.b64encode(data.file_data).decode(), data.mime_type)
 
     def get_all(self, page = 0, filters : list = [], max = 5):
         posts = self.session.query\
@@ -98,6 +98,7 @@ class SqlAlchemyPosts(IPostRepo):
             join(SqlAlchemy.Users, SqlAlchemy.Users.ownerid == self.posts.ownerid).\
             join(SqlAlchemy.Images, SqlAlchemy.Images.postid == self.posts.postid).\
             order_by(self.posts.postid.desc())
+        print(posts)
         if len(filters) > 0:
             posts = posts.filter(self.posts.ownerid.in_(filters))
         if page > 0:

@@ -55,7 +55,7 @@
     <div class = "read-img">
     {%endif%}
       <button type = "button" class = "button" onclick = "MessOn('pic-overlay')">Change Image</button>
-      <img src = "data:image/jpg;base64, {{img}}"><img>
+      <img src = "data:{{img.mime_type}};base64, {{img.data}}"><img>
     </div>
     <h4>Written by:{{auth}}</h4>
     <p>{{content}}</p>
