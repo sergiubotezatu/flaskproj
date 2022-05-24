@@ -40,14 +40,20 @@ class PostsDb(IPostRepo):
     def add_image(self, img : Image, id):
         self.db.perform("""
         INSERT INTO post_images
-        VALUES(%s, %s, %s, %s);""", id, img.mime_type, img.name, img.data)
+        VALUES(DEFAULT, %s, %s, %s);""", id, img.mime_type, img.data)
 
-    def replace(self, id, post : Post):
-        self.db.perform("""
-            UPDATE blog_posts
-            SET Title= %s, Content = %s, Date_modified = %s
-            WHERE PostID = %s;
-        """, post.title, post.content, post.created, id)
+    def replace(self, id, post : Post = None, img : Image = None):
+        if img != None:
+            self.db.perform("""
+            UPDATE post_images
+            SET file_data= %s, mime_type = %s
+            WHERE PostID = %s;""", img.data, img.mime_type, id)
+        else:
+            self.db.perform("""
+                UPDATE blog_posts
+                SET Title= %s, Content = %s, Date_modified = %s
+                WHERE PostID = %s;
+            """, post.title, post.content, post.created, id)
 
     def remove(self, id):
         self.count -= 1
