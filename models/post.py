@@ -26,6 +26,7 @@ class Preview():
         self.owner_id = post.owner_id
         self.created = post.created
         self.modified = post.modified
+        self.img = post.img
         
     def truncate(self, content):
         lines_count = content[:150].count("\n")

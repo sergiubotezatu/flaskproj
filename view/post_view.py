@@ -101,7 +101,7 @@ class PostPage:
         return redirect(url_for("profile.user_profile", user_id = id, pg = 1, restored = email))
 
     def __get_img(self) -> Image:
-        picture = request.files["img"]
+        picture = request.files.get("img")
         if not picture:
             return Image.default()
         else:

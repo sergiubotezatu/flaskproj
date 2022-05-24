@@ -1,3 +1,4 @@
+from models.image import Image
 from models.post import Preview
 from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
@@ -31,7 +32,7 @@ class Posts(IPostRepo):
         self.__posts = []
         self.count = 0
         
-    def add(self, post):
+    def add(self, post, img : Image = None):
         self.count += 1
         post.id = self.count
         self.__posts.append(post)
@@ -41,6 +42,9 @@ class Posts(IPostRepo):
         for post in self.__posts:
             if int(post_id) == post.id:
                 return post
+
+    def get_img(self, id):
+        return b"s"
 
     def __len__(self):
         return len(self.__posts)
