@@ -41,7 +41,7 @@ class AuthenticationTests(unittest.TestCase):
     def test_logout_pops_user_from_session(self, client : FlaskClient = None):
         with client.session_transaction() as session:
             self.assertEqual(session["id"], 1)
-        client.get(url_for("authentication.log_out"))
+        client.get("/logout")
         with client.session_transaction() as session:
             self.assertNotIn("id", session)
 
@@ -49,7 +49,7 @@ class AuthenticationTests(unittest.TestCase):
     @configure(True)
     def test_login_adds_user_into_session(self, client : FlaskClient = None):
         create_user(client, "John Doe", "JDoe@mail")
-        client.get(url_for("authentication.log_out"))
+        client.get("/logout")
         client.post("/login", data = self.USER, follow_redirects=False)
         with client.session_transaction() as session:
             self.assertEqual(session["id"], 1)
@@ -65,7 +65,7 @@ class AuthenticationTests(unittest.TestCase):
         "mail" : "JDoe@gmail",
         "pwd" : "password1@",
         }
-        client.get(url_for("authentication.log_out"))
+        client.get("/logout")
         login = client.post("/login", data = wrong_mail, follow_redirects=True)
         self.assertIn("Incorrect Password or Email. Please try again", login.data.decode("UTF-8"))
     
@@ -77,7 +77,7 @@ class AuthenticationTests(unittest.TestCase):
         "mail" : "John@mail",
         "pwd" : "pass1@",
         }
-        client.get(url_for("authentication.log_out"))
+        client.get("/logout")
         login = client.post("/login", data = wrong_pass, follow_redirects=False)
         self.assertIn("Incorrect Password or Email. Please try again", login.data.decode("UTF-8"))
         self.users.delete(1)
