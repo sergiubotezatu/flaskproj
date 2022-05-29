@@ -58,7 +58,7 @@
   {%else%}
       <a href="{{ '/post/read/%s'%item[0]|urlencode }}" style ="color:black; text-decoration:none; ">
   {%endif%}
-    <div class="post" title ="Click to Read More" style = "background-image: url('data:{{item[1].img.mime_type}};base64, {{item[1].img.data}}');">
+    <div class="post" title ="Click to Read More" style = "background-image: url('{{item[1].img_path}}');">
         <h3 class = "item"  id = "title">{{item[1].title}}</h3>
         <h4 class = "item" id = "auth">by {{item[1].auth}}</h4>
         <div class = "item" style ="text-align:justify;word-break: keep-all;">{{item[1].content}}</div>

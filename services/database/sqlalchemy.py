@@ -12,7 +12,7 @@ class SqlAlchemy(DataBase, IDataBase):
     Users = None
     Posts = None
     Deleted = None
-    Images = None
+
     @Services.get
     def __init__(self, config : IDataBaseConfig, upgrader : IDataBaseUpgrade):
         super(SqlAlchemy, self).__init__(config, upgrader)
@@ -35,4 +35,3 @@ class SqlAlchemy(DataBase, IDataBase):
         cls.Users = Base.classes.blog_users
         cls.Posts = Base.classes.blog_posts
         cls.Deleted = Base.classes.deleted_users
-        cls.Images = Base.classes.post_images

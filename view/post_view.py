@@ -1,5 +1,3 @@
-import base64
-from models.image import Image
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.post import Post
 from services.database.database import DataBase
@@ -38,11 +36,12 @@ class PostPage:
         return render_template("writePost.html", owner = session["username"])
         
     def read(self, post_id):
+        email = request.args.get("email")
+        selected_post = self.blogPosts.get(post_id, email)
         if request.method == "POST":
             picture = request.files.get("img")
             if picture:
-                mimetype = picture.mimetype
-                self.blogPosts.replace(post_id, img = Image(picture.read(), mimetype))
+                self.blogPosts.replace(post_id, img = picture, img_path = selected_post.img_path)
                 return redirect(url_for(".read", post_id = post_id))
             else:
                 to_delete = request.form.get("postID")
@@ -50,13 +49,10 @@ class PostPage:
                 flash("Your post has been successfully removed.", "info")
                 return redirect(url_for("home.front_page"))
         
-        email = request.args.get("email")
-        selected_post = self.blogPosts.get(post_id, email)
-        pic = self.blogPosts.get_img(post_id)
         return render_template(
             "read.html",
             editable=post_id,
-            img = pic,
+            img = selected_post.img_path,
             owner = selected_post.owner_id,
             auth = selected_post.auth,
             title = selected_post.title,
@@ -81,7 +77,7 @@ class PostPage:
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
-        image = self.__get_img()
+        image = request.files.get("img")
         return self.blogPosts.add(Post(author, title, content, owner_id = session["id"]), image)
 
     def edit_post(self, post_id):
@@ -89,7 +85,7 @@ class PostPage:
         title = request.form.get("title")
         content = request.form.get("post")
         editted = Post(author, title, content)
-        self.blogPosts.replace(post_id, editted)
+        self.blogPosts.replace(post_id, post = editted)
 
     @authorizator.admin_required
     def unarchive(self, **kwargs):
@@ -98,14 +94,4 @@ class PostPage:
         email = kwargs["email"]
         self.blogPosts.unarchive_content(id, name, email)
         return redirect(url_for("profile.user_profile", user_id = id, pg = 1, restored = email))
-
-    def __get_img(self) -> Image:
-        picture = request.files.get("img")
-        if not picture:
-            return Image.default()
-        else:
-            mimetype = picture.mimetype
-            return Image(picture.read(), mimetype)
-
-    
         

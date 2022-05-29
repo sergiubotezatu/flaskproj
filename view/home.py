@@ -23,7 +23,6 @@ class Home:
         if request.method == "POST":
             return redirect(self.filters.get_new_querystr())
         next_page : bool = posts[-1][2] > self.PG_LIMIT
-
         return render_template("home.html",
                                 allposts = posts[0:self.PG_LIMIT],
                                 filters = self.filters.filtered_users,

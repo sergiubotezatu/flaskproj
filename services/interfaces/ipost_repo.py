@@ -1,3 +1,4 @@
+from werkzeug.datastructures import FileStorage
 from abc import ABCMeta, abstractmethod
 from models.image import Image
 from models.post import Post
@@ -9,7 +10,7 @@ class IPostRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def replace(self, post_id, post : Post, img : Image):
+    def replace(self, id, post : Post = None, img : FileStorage = None, img_path : str = ""):
         pass
 
     @abstractmethod

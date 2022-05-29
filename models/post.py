@@ -3,7 +3,7 @@ from datetime import datetime
 from models.image import Image
 
 class Post:
-    def __init__(self, auth, title, content, owner_id = 0, date = None, img = Image.default()):
+    def __init__(self, auth, title, content, owner_id = 0, date = None, img_path : str = ""):
         self.auth = auth
         self.title = title
         self.content = content
@@ -11,7 +11,7 @@ class Post:
         self.created = self.date_created(date)
         self.modified = ""
         self.id = 0
-        self.img = img
+        self.img_path = img_path
         
     def date_created(self, date):
         if date == None:
@@ -26,7 +26,6 @@ class Preview():
         self.owner_id = post.owner_id
         self.created = post.created
         self.modified = post.modified
-        self.img = post.img
         
     def truncate(self, content):
         lines_count = content[:150].count("\n")

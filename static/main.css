@@ -262,7 +262,7 @@ form{
     word-break: break-all;
     position:relative;
     background-repeat: no-repeat;
-    background-size: 50%;
+    background-size: 50% auto;
     background-position: top right;
 }
 
@@ -958,11 +958,11 @@ form{
       {
         width:40%;
         word-break:keep-all;
-        height:auto;
+        margin-top:30px;
       }
 
       #auth{
-        margin-bottom:20px;
+        margin-bottom:25px;
       }
       
      .read-img

@@ -1,3 +1,4 @@
+from werkzeug.datastructures import FileStorage
 from models.image import Image
 from models.post import Preview
 from services.interfaces.ipost_repo import IPostRepo
@@ -31,12 +32,14 @@ class Posts(IPostRepo):
         self.page_count = 0
         self.__posts = []
         self.count = 0
+        self.next_id = 1
         
     def add(self, post, img : Image = None):
         self.count += 1
-        post.id = self.count
+        post.id = self.next_id
+        self.next_id = self.count + 1
         self.__posts.append(post)
-        return self.count
+        return post.id
 
     def get(self, post_id, email = None) -> Post:
         for post in self.__posts:
@@ -54,14 +57,17 @@ class Posts(IPostRepo):
 
     def remove(self, post_id):
         self.count -= 1
+        self.next_id = int(post_id)
         self.__posts.remove(self.get(post_id))
 
-    def replace(self, post_id, editted : Post):
+    def replace(self, post_id, post : Post = None, img : FileStorage = None, img_path : str = ""):
         index = int(post_id) - 1
-        self.__posts[index].auth = editted.auth
-        self.__posts[index].title = editted.title
-        self.__posts[index].content = editted.content
-        self.__posts[index].modified = editted.created            
+        for post in self.__posts:
+            if post.id == int(post_id)
+        self.__posts[index].auth = post.auth
+        self.__posts[index].title = post.title
+        self.__posts[index].content = post.content
+        self.__posts[index].modified = post.created            
 
     def get_all(self, page = 0, filters : list = [], max = 5):
         result = []
