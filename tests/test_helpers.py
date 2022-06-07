@@ -2,6 +2,7 @@ from typing import Union
 from unittest import TestCase
 from flask import url_for, current_app
 from flask.testing import FlaskClient
+from __initblog__ import create_blog
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
@@ -14,6 +15,7 @@ class RepoMngr:
     @Services.get
     def __init__(self, repo : Union[IPostRepo, IUsersRepo]):
         self.repo = repo
+        self.ids = []
         self.__del_placeholder()
 
     def create_posts_db(self, count : int, name = "John Doe", owner_id = 2):
@@ -23,18 +25,26 @@ class RepoMngr:
         
     def delete(self, id = 0):
         self.repo.remove(id)
+        self.ids.remove(id)
 
     def add(self, entity : Union[Post, User]):
         self.repo.add(entity)
+        self.ids.append(entity.id)
+
+    def clear(self):
+        for id in self.ids:
+            self.repo.remove(id)
+        self.ids = []
 
     def __del_placeholder(self):
         if RepoMngr.first_instance and "Posts" in str(type(self.repo)):
             RepoMngr.first_instance = False
-            self.delete(1)
+            self.repo.remove(1)
 
 def getClient(test_func):
+        blog = create_blog(is_test_app = True, with_orm = False)
         def decorator(instance, **kwargs):
-            kwargs["client"] = instance.blog.test_client()
+            kwargs["client"] = blog.test_client()
             test_func(instance, **kwargs)
         return decorator
 
