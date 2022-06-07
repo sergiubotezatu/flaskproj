@@ -153,7 +153,7 @@ class ImageTests(unittest.TestCase):
         file_type = r"\*png"
         files = glob.glob(folder_path + file_type)
         last_added = max(files, key=os.path.getctime)
-        car = client.post(self.BASE_POST + f"read/{id}/", data = {"postID" : id})
+        client.post(self.BASE_POST + f"read/{id}/", data = {"postID" : id})
         self.assertEqual(os.path.exists(last_added), False)
 
 if __name__ == "__main__":
