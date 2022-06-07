@@ -199,3 +199,21 @@ function hideGreeting()
   greet = document.getElementById("greeting").style.transitionDuration = "1s";
   document.getElementById("greeting").style.display = "none";
 }
+
+function displayPreview()
+{
+  var upload = document.getElementById("img");
+  var file = upload.files[0];
+  prev = document.querySelector(".img-prev");
+  if (file)
+  {
+    const reader = new FileReader();
+    prev.style.display = "block";
+    reader.readAsDataURL(file);
+    reader.addEventListener("load", function()
+    {
+        prev.setAttribute("src", this.result);
+    });
+  }
+}
+  

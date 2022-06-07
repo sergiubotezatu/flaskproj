@@ -329,7 +329,7 @@ form{
  @media screen and (max-width: 900px)
 {
    .write{
-       text-align:left
+       justify-content: start;
     }
 }
 
@@ -973,7 +973,6 @@ form{
         max-width: 400px;
         margin-left:10px;
         z-index:2;
-        pointer-events: none;
       }
 
 
@@ -982,32 +981,21 @@ form{
         width: 100%;
         height: auto;
         z-index:2;
+      }    
+
+      .preview
+      {
+        width:400px;
+        min-height:200px;
+        border: 3px dashed steelblue;
+        margin:15px auto;
+        display:flex;
+        align-items: center;
+        justify-content:center;
+        font-weight: bold;
       }
 
-      .read-img .button
+      .img-prev
       {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-        background-color: black;
-        display:none;
-        z-index:-1;
-      }
-
-      .read-img img:hover
-      {
-        opacity:0.6;
-      }
-
-      .read-img:hover .button
-      {
-        display:block;
-        z-index:3;
-      }
-
-      .read-img .button:hover ~ img
-      {
-        opacity:0.6;
+        width:100%;
       }
