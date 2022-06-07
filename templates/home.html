@@ -46,14 +46,9 @@
     </div>
 </div>
 <div class="row">
-  {%if allposts|length == 0%}
-  <div class = "post">
-    <h3 class = "item" style ="margin-left:auto;margin-right:auto;">Filtered users have no more posts</h3>
-    </div>
-    {%endif%}
   {% for item in allposts%}
     <div class="column">
-  {%if item[0] == "Ch1"%}
+  {%if item[1].auth == "Chandler Bing"%}
       <a href= "/post/create" style ="color:black; text-decoration:none;">
   {%else%}
       <a href="{{ '/post/read/%s'%item[0]|urlencode }}" style ="color:black; text-decoration:none; ">
