@@ -3,7 +3,8 @@ from models.image import Image
 from models.post import Preview
 from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
-
+from services.images import Images
+from werkzeug.datastructures import FileStorage
 
 class PostsEnumerator():
     def __init__(self, posts : list):
@@ -32,22 +33,32 @@ class Posts(IPostRepo):
         self.page_count = 0
         self.__posts = []
         self.count = 0
-        self.next_id = 1
+        self.free_ids = [1]
+        self.images = Images()
         
-    def add(self, post, img : Image = None):
+    def add(self, post, img : FileStorage = None):
         self.count += 1
-        post.id = self.next_id
-        self.next_id = self.count + 1
+        post.id = self.free_ids[0]
+        post.img_path = self.get_img(img)
         self.__posts.append(post)
+        self.free_ids.remove(post.id)
+        if not self.free_ids:
+            self.free_ids = [self.__posts[-1].id + 1]
         return post.id
 
     def get(self, post_id, email = None) -> Post:
+        post : Post
         for post in self.__posts:
             if int(post_id) == post.id:
-                return post
+                post_copy = Post(post.auth, post.title, post.content, post.owner_id, post.created)
+                post_copy.modified = post.modified
+                post_copy.img_path = self.images.get(post.img_path)
+                post_copy.id = post.id
+                return post_copy
 
-    def get_img(self, id):
-        return b"s"
+    def get_img(self, img : FileStorage):
+        if img:
+            return self.images.add(img)
 
     def __len__(self):
         return len(self.__posts)
@@ -56,18 +67,25 @@ class Posts(IPostRepo):
         return PostsEnumerator(self.__posts)
 
     def remove(self, post_id):
+        self.free_ids.insert(0, int(post_id))
+        for i in range (0, self.count):
+            if self.__posts[i].id == int(post_id):
+                self.images.remove(self.__posts[i].img_path)
+                self.__posts.remove(self.__posts[i])
+                break
         self.count -= 1
-        self.next_id = int(post_id)
-        self.__posts.remove(self.get(post_id))
 
-    def replace(self, post_id, post : Post = None, img : FileStorage = None, img_path : str = ""):
-        index = int(post_id) - 1
-        for post in self.__posts:
-            if post.id == int(post_id)
-        self.__posts[index].auth = post.auth
-        self.__posts[index].title = post.title
-        self.__posts[index].content = post.content
-        self.__posts[index].modified = post.created            
+    def replace(self, post : Post, img : FileStorage):
+        for i in range(0, len(self.__posts)):
+            if self.__posts[i].id == int(post.id):
+                if img:
+                    changed_name = self.images.edit(img, post.img_path)
+                    if changed_name:
+                        self.__posts[i].img_path = changed_name
+                self.__posts[i].auth = post.auth
+                self.__posts[i].title = post.title
+                self.__posts[i].content = post.content
+                self.__posts[i].modified = post.created            
 
     def get_all(self, page = 0, filters : list = [], max = 5):
         result = []

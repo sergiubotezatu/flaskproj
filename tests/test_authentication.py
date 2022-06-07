@@ -6,15 +6,12 @@ from services.interfaces.iusers_repo import IUsersRepo
 from tests.test_helpers import RepoMngr, log_user, configure, create_user, getClient
 
 class AuthenticationTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True, with_orm=False)
-
     USER = {
         "mail" : "JDoe@mail",
         "pwd" : "password1@",
         }
-
-    users = RepoMngr(IUsersRepo)
-
+    
+    
     @getClient
     @configure(False)
     def test_redirects_tosetup_if_notConfig(self, client : FlaskClient = None):
@@ -80,8 +77,7 @@ class AuthenticationTests(unittest.TestCase):
         client.get("/logout")
         login = client.post("/login", data = wrong_pass, follow_redirects=False)
         self.assertIn("Incorrect Password or Email. Please try again", login.data.decode("UTF-8"))
-        self.users.delete(1)
-    
+        
     @getClient
     @configure(True)
     def test_user_displayed_on_navbar(self, client : FlaskClient = None):

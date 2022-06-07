@@ -6,8 +6,7 @@ from services.interfaces.ipost_repo import IPostRepo
 from tests.test_helpers import RepoMngr, log_user, configure, getClient
 
 class PostsTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True, with_orm = False)
-        
+    blog = create_blog(is_test_app = True, with_orm = False)        
     BASE =  "/"
     BASE_POST = "/post/"
     CONFIG_PAGE = "/config"

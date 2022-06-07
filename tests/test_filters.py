@@ -7,8 +7,7 @@ from services.interfaces.iusers_repo import IUsersRepo
 from tests.test_helpers import RepoMngr, configure, getClient
 
 class FiltersTests(unittest.TestCase):
-    blog = create_blog(is_test_app = True, with_orm = False)
-
+    blog = create_blog(is_test_app = True, with_orm = False) 
     users = RepoMngr(IUsersRepo)
     posts = RepoMngr(IPostRepo)
     posts.create_posts_db(3, "John", 1)

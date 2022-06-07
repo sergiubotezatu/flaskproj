@@ -6,7 +6,6 @@ from tests.test_helpers import configure, log_user, RepoMngr, getClient
 
 class AuthorizationTests(unittest.TestCase):
     blog = create_blog(is_test_app = True, with_orm = False)
-
     posts = RepoMngr(IPostRepo)
     posts.create_posts_db(3)
 
@@ -69,4 +68,6 @@ class AuthorizationTests(unittest.TestCase):
     def test_members_can_edit_owned_post(self, client : FlaskClient = None):
         result = client.get("/post/edit/1")
         self.assertIn("Current Title", result.data.decode("UTF-8"))
-        
+
+if __name__ == "__main__":
+    unittest.main()
