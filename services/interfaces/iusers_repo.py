@@ -12,7 +12,7 @@ class IUsersRepo(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def remove(self, user):
+    def remove(self, id):
         pass
 
     @abstractmethod

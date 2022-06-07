@@ -3,7 +3,7 @@ from datetime import datetime
 from models.image import Image
 
 class Post:
-    def __init__(self, auth, title, content, owner_id = 0, date = None, img_path : str = ""):
+    def __init__(self, auth, title, content, owner_id = 0, date = None, img_path : str = None):
         self.auth = auth
         self.title = title
         self.content = content

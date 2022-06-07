@@ -21,7 +21,7 @@ class SqlAlchemy(DataBase, IDataBase):
         super().set_db()
         self.register_sqlalchemy()
         self.load_models()
-
+        
     def register_sqlalchemy(self):
         SQLALCHEMY_DATABASE_URI = self.db_settings.to_DB_URI()
         SqlAlchemy.engine = create_engine(SQLALCHEMY_DATABASE_URI)
