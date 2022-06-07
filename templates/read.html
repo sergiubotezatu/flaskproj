@@ -10,7 +10,7 @@
       <span>Edit post</span>
   </a>              
   <div class="dropdown-content">
-  <a class = "option" href= "/post/create" >Edit content </a>
+  <a class = "option" href= "{{ '/post/edit/%s'%editable|urlencode }}" >Edit content </a>
   <a class = "option" hrelf = "javascript:void(0)" onclick="MessOn('overlay')">Delete post</a>
   </div> 
 </li>
@@ -23,17 +23,6 @@
 <div class = "editDel">
 <a href= "{{ '/post/edit/%s'%editable|urlencode }}" class="editbutton" id = "edit">EDIT CONTENT</a>
 <a href = "javascript:void(0)" class ="editbutton" id = "edit" onclick="MessOn('overlay')">DELETE POST</a>
-</div>
-<div id="pic-overlay">
-  <div id="box">
-    <p id ="mess">Select a new image or go back</p>
-  <form  method = "Post" enctype="multipart/form-data">  
-    <label for="img" id = "clicked">Select image:</label>
-    <input type="file" id="img" name="img" accept="image/*">
-    <input class ="button submit" type="submit" value="Update">
-    <input type="button" class = "button" value ="Back" onclick="MessOff('pic-overlay')">
-  </form>  
-  </div>
 </div>
 <div id="overlay" onclick="MessOff(this.id)">
   <div id="box">
@@ -49,13 +38,8 @@
 <div class="readPost">  
   <div class="read">
     <h2 style ="text-align: center">{{title}}</h2>
-    {%if session["id"] == owner or session["role"] in ("admin", "default")%}
     <div class = "read-img" style = "pointer-events: auto;">
-    {%else%}
-    <div class = "read-img">
-    {%endif%}
-      <button type = "button" class = "button" onclick = "MessOn('pic-overlay')">Change Image</button>
-      <img src = "{{img}}"><img>
+    <img src = "{{img}}">
     </div>
     <h4>Written by:{{auth}}</h4>
     <p>{{content}}</p>

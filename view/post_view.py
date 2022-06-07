@@ -39,15 +39,10 @@ class PostPage:
         email = request.args.get("email")
         selected_post = self.blogPosts.get(post_id, email)
         if request.method == "POST":
-            picture = request.files.get("img")
-            if picture:
-                self.blogPosts.replace(post_id, img = picture, img_path = selected_post.img_path)
-                return redirect(url_for(".read", post_id = post_id))
-            else:
-                to_delete = request.form.get("postID")
-                self.blogPosts.remove(to_delete)
-                flash("Your post has been successfully removed.", "info")
-                return redirect(url_for("home.front_page"))
+            to_delete = request.form.get("postID")
+            self.blogPosts.remove(to_delete)
+            flash("Your post has been successfully removed.", "info")
+            return redirect(url_for("home.front_page"))
         
         return render_template(
             "read.html",
@@ -64,13 +59,14 @@ class PostPage:
     def edit(self, post_id):
         selected_post = self.blogPosts.get(post_id)
         if request.method == "POST":
-            self.edit_post(post_id)
+            self.edit_post(selected_post)
             return redirect(f"/post/read/{post_id}")
         return render_template(
             "edit.html",
             owner = selected_post.auth,
             title = selected_post.title,
-            current = selected_post.content
+            current = selected_post.content,
+            img = selected_post.img_path
             )
 
     def create_new_post(self):
@@ -80,12 +76,16 @@ class PostPage:
         image = request.files.get("img")
         return self.blogPosts.add(Post(author, title, content, owner_id = session["id"]), image)
 
-    def edit_post(self, post_id):
+    def edit_post(self, post : Post):
         author = request.form.get("author")
         title = request.form.get("title")
         content = request.form.get("post")
         editted = Post(author, title, content)
-        self.blogPosts.replace(post_id, post = editted)
+        editted.id = post.id
+        picture = request.files.get("img")
+        if picture:
+            editted.img_path = post.img_path
+        self.blogPosts.replace(editted, picture)
 
     @authorizator.admin_required
     def unarchive(self, **kwargs):
