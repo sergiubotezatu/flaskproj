@@ -1,5 +1,7 @@
 import base64
+from werkzeug.datastructures import FileStorage
 from models.image import Image
+from services.images import Images
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idata_base import IDataBase
 from models.post import Post
@@ -9,6 +11,7 @@ class PostsDb(IPostRepo):
     @Services.get
     def __init__(self, db : IDataBase):
         self.__count = -1
+        self.images = Images()
         self.db = db
         
     @property
@@ -31,37 +34,39 @@ class PostsDb(IPostRepo):
     def add(self, post : Post, img : Image):
         self.count += 1
         id = self.db.perform("""
-        INSERT INTO blog_posts (PostID, Title, Content, Date, OwnerID)     
-        VALUES (DEFAULT, %s, %s, %s, %s)
+        INSERT INTO blog_posts (PostID, Title, Content, Date, OwnerID, image)     
+        VALUES (DEFAULT, %s, %s, %s, %s, %s)
         RETURNING PostID;
-        """, post.title, post.content, post.created, post.owner_id, fetch = "fetchone")[0]
-        self.add_image(img, id)
+        """, post.title, post.content, post.created, post.owner_id, self.get_image(img), fetch = "fetchone")[0]
         return id
 
-    def add_image(self, img : Image, id):
-        self.db.perform("""
-        INSERT INTO post_images
-        VALUES(DEFAULT, %s, %s, %s);""", id, img.mime_type, img.data)
+    def get_image(self, img : FileStorage):
+        if img:
+            return self.images.add(img)
 
-    def replace(self, id, post : Post = None, img : Image = None):
+    def replace(self, post : Post, img : FileStorage):
         if img != None:
-            self.db.perform("""
-            UPDATE post_images
-            SET file_data= %s, mime_type = %s
-            WHERE PostID = %s;""", img.data, img.mime_type, id)
+            changed_name = self.images.edit(img, post.img_path)
+            if changed_name:
+                self.db.perform("""
+                UPDATE blog_posts
+                SET image= %s
+                WHERE PostID = %s;""", changed_name, post.id)
         else:
             self.db.perform("""
                 UPDATE blog_posts
                 SET Title= %s, Content = %s, Date_modified = %s
                 WHERE PostID = %s;
-            """, post.title, post.content, post.created, id)
+            """, post.title, post.content, post.created, post.id)
 
     def remove(self, id):
         self.count -= 1
+        img = self.db.perform(f"SELECT image from blog_posts where PostID = {id}", fetch = "fetchone")[0]
         self.db.perform("""
             DELETE FROM blog_posts
             WHERE PostID = %s;
             """, id)   
+        self.images.remove(img)
     
     def get(self, id, email = None) -> Post:
         displayed = None
@@ -84,13 +89,16 @@ class PostsDb(IPostRepo):
                     u.OwnerID,
                     p.date,
                     p.Date_modified
+                    p.Image
                 FROM
                     blog_users u
                 INNER JOIN blog_posts p
                     ON u.OwnerID = p.OwnerID
                     where p.PostID = %s;
                 """, id, fetch = "fetchone")
-            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4])
+            img = self.get_img(displayed[6])
+            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4], img_path=img)
+            post.id = id
             post.modified = displayed[5]
         return post
 
