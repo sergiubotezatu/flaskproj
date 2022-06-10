@@ -31,12 +31,13 @@ def singleton(cls):
 class Posts(IPostRepo):
     def __init__(self):
         self.page_count = 0
-        self.__posts = []
+        self.__posts : list[Post] = []
         self.count = 0
         self.free_ids = [1]
         self.images = Images()
         
     def add(self, post, img : FileStorage = None):
+        self.__rmv_placeholder()
         self.count += 1
         post.id = self.free_ids[0]
         post.img_path = self.get_img(img)
@@ -102,6 +103,10 @@ class Posts(IPostRepo):
             if page != 0 and posts_count == max + 1:
                 break
         return result
+
+    def __rmv_placeholder(self):
+        if self.count == 1 and self.__posts[0].auth == "Chandler Bing":
+            self.remove(1)
 
     def reflect_user_changes(self, id, new_name):
         for posts in self:

@@ -1,8 +1,7 @@
 from typing import Union
 from unittest import TestCase
-from flask import url_for, current_app
+from flask import url_for
 from flask.testing import FlaskClient
-from __initblog__ import create_blog
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
@@ -16,8 +15,7 @@ class RepoMngr:
     def __init__(self, repo : Union[IPostRepo, IUsersRepo]):
         self.repo = repo
         self.ids = []
-        self.__del_placeholder()
-
+        
     def create_posts_db(self, count : int, name = "John Doe", owner_id = 2):
         for i in range(count):
             post = Post(name, "Generic", f"Test post {str(i + 1)}", owner_id)
@@ -36,35 +34,23 @@ class RepoMngr:
             self.repo.remove(id)
         self.ids = []
 
-    def __del_placeholder(self):
-        if RepoMngr.first_instance and "Posts" in str(type(self.repo)):
-            RepoMngr.first_instance = False
-            self.repo.remove(1)
-
-def getClient(test_func):
-        blog = create_blog(is_test_app = True, with_orm = False)
-        def decorator(instance, **kwargs):
-            kwargs["client"] = blog.test_client()
-            test_func(instance, **kwargs)
-        return decorator
-
 def log_user(id, name, email, role):
     def decorator(test_func):
-        def wrapper(instance : TestCase, **kwargs):
-            with kwargs["client"].session_transaction() as session:
+        def wrapper(client):
+            with client.session_transaction() as session:
                 session["id"] = id
                 session["username"] = name
                 session["email"] = email
                 session["role"] = role
-            return test_func(instance, **kwargs)
+            return test_func(client)
         return wrapper
     return decorator
 
 def configure(is_config : bool):
     def decorator(test_func):
-        def wrapper(instance, **kwargs):
+        def wrapper(client):
             DataBase.config.is_configured = is_config
-            return test_func(instance, **kwargs)
+            return test_func(client)
         return wrapper
     return decorator
 
