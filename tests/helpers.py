@@ -10,7 +10,6 @@ from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.iusers_repo import IUsersRepo
 
 class RepoMngr:
-    first_instance = True
     @Services.get
     def __init__(self, repo : Union[IPostRepo, IUsersRepo]):
         self.repo = repo
@@ -34,6 +33,7 @@ class RepoMngr:
             self.repo.remove(id)
         self.ids = []
 
+        
 def log_user(id, name, email, role):
     def decorator(test_func):
         def wrapper(client):
@@ -54,14 +54,6 @@ def configure(is_config : bool):
         return wrapper
     return decorator
 
-def create_user(client : FlaskClient, name, email):
-        user = {
-                "username" : name,
-                "email" : email,
-                "pwd" : "password1@"
-                }
-        client.post("/signup", data = user, follow_redirects=False)
-
 def create_posts(client : FlaskClient, name, count :int, title = "Generic-1"):
         post = {
         "author" : name,
@@ -71,11 +63,3 @@ def create_posts(client : FlaskClient, name, count :int, title = "Generic-1"):
         for i in range(0, count):
             post["title"] = post["title"].replace(str(i - 1), str(i))
             client.post("/post/create", data = post, follow_redirects=False)
-
-def logout_login(instance : TestCase, mail):
-        user = {
-            "email" : mail,
-            "pwd" : "password1@"
-        }
-        instance.test_app.get(url_for("authentication.log_out"))
-        instance.test_app.post("/login", data = user, follow_redirects=False)
