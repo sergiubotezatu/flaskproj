@@ -17,7 +17,7 @@ class PostPage:
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.creation = self.register("/create",self.create)
         self.reading = self.register("/read/<post_id>/", self.read)
-        self.update = self.register("/edit/<post_id>", self.edit)
+        self.update = self.register("/edit/<post_id>/", self.edit)
         self.activate_deleted = self.register("/unarchive/<id>/<name>/<email>", self.unarchive)
 
     def register(self, link, func):

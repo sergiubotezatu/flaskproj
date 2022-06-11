@@ -3,34 +3,28 @@ from pytest import fixture
 import __init__
 from models.post import Post
 from models.user import User
-from services.interfaces.ipost_repo import IPostRepo
-from services.interfaces.iusers_repo import IUsersRepo
 from services.posts.posts_in_memo import Posts
-from tests.helpers import configure, create_posts, log_user, RepoMngr
+from services.users.users_in_memo import Users
+from tests.helpers import configure, get_url_userid, log_user
 
 BASE_POST = "/post/"
 
 @fixture()
-def app() -> Flask:
-    app = __init__.create_blog(is_test_app=True, with_orm=False)
-    posts = RepoMngr(IPostRepo)
-    users = RepoMngr(IUsersRepo)
-    users.add(User("Mark Doe", "Mdoe@email"))
-    users.add(User("James Doe", "James@mail"))
-    posts.add(Post("Mark Doe", "Generic", "Test post", owner_id = 1))
-    posts.create_posts_db(2, "James Doe", owner_id= 2)
-    yield app
+def client(data_base) -> Flask:
+    return data_base.test_client()
 
-@fixture()
-def client(app):
-    return app.test_client()
-
-@log_user(3, "John Doe", "John@mail", "regular")
+@log_user(2, "John Doe", "John@mail", "regular")
 @configure(True)
 def test_posts_get_ownerId_from_logged_user(client):
-    create_posts(client, "John", 1)
-    posts = Posts().get_all()
-    assert posts[0][1].owner_id == 3
+    post = {
+    "author" : "Mark Doe",
+    "title" : "Generic",
+    "post" : "This is a creation test"
+    }
+    creation = client.post(BASE_POST + "create", data = post, follow_redirects=False)
+    id = get_url_userid(creation)
+    assert Posts().get(id).owner_id == 2
+    client.post(BASE_POST + f"read/{id}/",data = {"postID" : id})
 
 @log_user(3, "John Doe", "John@mail", "regular")
 @configure(True)
@@ -38,21 +32,19 @@ def test_posts_get_name_from_logged_user(client):
     result = client.get("/post/create")
     assert "John Doe" in result.data.decode("UTF-8")
 
-@log_user(1, "Mark Doe", "Mdoe@email", "regular")
+@log_user(1, "Mark Doe", "Mark@mail", "regular")
 @configure(True)
-def test_editting_user_reflects_in_posts(client):
+def test_editting_user_reflects_in_post(client):
     edit = {
     "username" : "Jimmy Doe",
-    "email" : "Mdoe@email",
+    "mail" : "Mark@mail",
     "pwd" : "password1@",
     "oldpass" : ""
     }
-    client.post("/edit/1", data = edit, follow_redirects=True)
-    posts = Posts().get_all()
-    for post in posts:
-        if post[0] == 1:
-            assert "Jimmy Doe", post[1].auth
-
+    client.post("/edit/1", data = edit, follow_redirects=False)
+    assert "Jimmy Doe" in client.get(BASE_POST + "read/1/").data.decode("UTF-8")
+    Users().update(1, User("Mark Doe", "Mark@mail"))
+    
 @log_user(2, "James Doe", "James@mail", "regular")
 @configure(True)
 def test_deleting_user_deletes_owned_posts(client):

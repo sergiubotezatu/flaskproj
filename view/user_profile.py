@@ -145,7 +145,7 @@ class UserProfile:
 
     def __update_info(self, user_id):
         new_name = request.form.get("username")
-        new_mail = request.form.get("email", user_id)
+        new_mail = request.form.get("mail")
         new_password = self.__hash_if_new_pass(request.form.get("pwd"))
         new_role = request.form.get("usr_role")
         if self.active_usr.get_logged_user().id == int(user_id):

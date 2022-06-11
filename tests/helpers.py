@@ -1,6 +1,4 @@
 from typing import Union
-from unittest import TestCase
-from flask import url_for
 from flask.testing import FlaskClient
 from models.post import Post
 from models.user import User
@@ -14,11 +12,11 @@ class RepoMngr:
     def __init__(self, repo : Union[IPostRepo, IUsersRepo]):
         self.repo = repo
         self.ids = []
-        
+                
     def create_posts_db(self, count : int, name = "John Doe", owner_id = 2):
         for i in range(count):
             post = Post(name, "Generic", f"Test post {str(i + 1)}", owner_id)
-            self.repo.add(post)
+            self.add(post)
         
     def delete(self, id = 0):
         self.repo.remove(id)
@@ -26,13 +24,12 @@ class RepoMngr:
 
     def add(self, entity : Union[Post, User]):
         self.repo.add(entity)
-        self.ids.append(entity.id)
+        self.ids.append(entity.id)        
 
     def clear(self):
         for id in self.ids:
             self.repo.remove(id)
         self.ids = []
-
         
 def log_user(id, name, email, role):
     def decorator(test_func):
@@ -54,6 +51,11 @@ def configure(is_config : bool):
         return wrapper
     return decorator
 
+def get_url_userid(result):
+    url = result.location
+    id_index = url.rfind("/") + 1
+    return url[id_index:]
+    
 def create_posts(client : FlaskClient, name, count :int, title = "Generic-1"):
         post = {
         "author" : name,
@@ -62,4 +64,5 @@ def create_posts(client : FlaskClient, name, count :int, title = "Generic-1"):
         }
         for i in range(0, count):
             post["title"] = post["title"].replace(str(i - 1), str(i))
-            client.post("/post/create", data = post, follow_redirects=False)
+            added = client.post("/post/create", data = post, follow_redirects=False)
+            yield get_url_userid(added)

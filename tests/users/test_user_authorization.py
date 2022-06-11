@@ -22,7 +22,7 @@ def client(app):
 @log_user(3, "Admin", "admin@admin", "admin")
 @configure(True)
 def test_admins_can_edit_others(client):
-    result = client.get("/edit/1")
+    result = client.get("/edit/1/")
     assert "Change profile information" in result.data.decode("UTF-8")
     assert "Select new role for the user" in result.data.decode("UTF-8")
     
@@ -63,7 +63,7 @@ def test_edit_delete_button_notallowed_for_others(client):
 @log_user(2, "John Doe", "JDoe@mail", "regular")
 @configure(True)
 def test_members_cannot_edit_others(client):
-    result = client.get("/edit/1")
+    result = client.get("/edit/1/")
     assert "405 - Method Not Allowed" in result.data.decode("UTF-8")
     assert "You do not have necessary authorization for editting" in result.data.decode("UTF-8")
 
