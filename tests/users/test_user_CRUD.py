@@ -3,28 +3,14 @@ from flask import Flask
 from pytest import fixture
 import __init__
 from models.user import User
-from services.interfaces.iusers_repo import IUsersRepo
 from services.users.users_in_memo import Users
-from tests.helpers import configure, log_user, RepoMngr
+from tests.helpers import add_disposable_user, configure, get_url_userid, log_user
 
 BASE_POST = "/post/"
 
 @fixture()
-def app() -> Flask:
-    app = __init__.create_blog(is_test_app=True, with_orm=False)
-    users = RepoMngr(IUsersRepo)
-    users.add(User("Mark Doe", "Mark@mail"))
-    users.add(User("James Doe", "James@mail"))
-    users.add(User("Joey Doe", "Joseph@mail"))
-    users.add(User("Ross Geller", "Ross@museum"))
-    yield app
-        
-def fun (x = 5):
-    return x
-
-@fixture()
-def client(app):
-    return app.test_client()
+def client(data_base : Flask):
+    return data_base.test_client()
 
 @configure(True)
 def test_create_user(client):
@@ -32,35 +18,39 @@ def test_create_user(client):
     "username" : "John Doe",
     "email" : "JDoe@John",
     "pwd" : "password1@"
-    }        
-    
-    creation = client.post("/signup", data = user, follow_redirects=True)
-    page = creation.data.decode("UTF-8")
+    }
+    creation = client.post("/signup", data = user, follow_redirects=False)
+    id = get_url_userid(creation)
+    result = client.get(creation.location)
+    page = result.data.decode("UTF-8")
     assert user["username"] in page
     assert user["email"] in page
+    Users().remove(id)
     
-@log_user(2, "James Doe", "James@mail", "regular")
+@log_user(3, "James Doe", "James@mail", "regular")
 @configure(True)
 def test_delete_user(client):
-    profile_pg = client.get("view/2/?pg=1")
-    result = client.post("view/2/?pg=1", data = {"userID" : "2"}, follow_redirects = False)
-    empty_pg = client.get("view/2/?pg=1")
+    new_id = add_disposable_user()
+    profile_pg = client.get(f"view/{new_id}/?pg=1")
+    result = client.post(f"view/{new_id}/?pg=1", data = {"userID" : new_id}, follow_redirects = False)
+    empty_pg = client.get(f"view/{new_id}/?pg=1")
     assert "/" == urlparse(result.location).path
     assert "James Doe" in profile_pg.data.decode("UTF-8")
     assert "James Doe" not in empty_pg.data.decode("UTF-8")
-        
+    
 @log_user(1, "Mark Doe", "Mark@mail", "regular")
 @configure(True)
 def test_edit_user(client):
     edit = {
     "username" : "Markus",
-    "email" : "MDoe@John",
+    "email" : "Mark@mail",
     "pwd" : "password1@",
     "oldpass" : ""
     }
     client.post("/edit/1", data = edit, follow_redirects=True)
     result = client.get("/view/1/?pg=1")
     assert edit["username"] in result.data.decode("UTF-8")
+    Users().update(1, User("Mark Doe", "Mark@mail"))
     
 @configure(True)
 @log_user(1, "Mark Doe", "Mark@mail", "regular")
@@ -75,20 +65,22 @@ def test_read_user(client):
     assert "Mark Doe" in read_user.data.decode("UTF-8")
 
 @configure(True)
-@log_user(1, "Mark Doe", "MDoe@John", "admin")
+@log_user(3, "Admin", "admin@mail", "admin")
 def test_users_show_in_user_listing(client):
     read_users = client.get("/view/community")
-    assert "Joey Doe" in read_users.data.decode("UTF-8")
+    assert "John Doe" in read_users.data.decode("UTF-8")
+    assert "Mark Doe" in read_users.data.decode("UTF-8")
 
 @configure(True)
-@log_user(1, "Mark Doe", "MDoe@John", "admin")
+@log_user(3, "Admin", "admin@mail", "admin")
 def test_deleted_show_in_user_listing(client):
-    client.post("/view/4/?pg=1", data = {"userID" : "4"})
+    new_id = add_disposable_user()
+    client.post(f"/view/{new_id}/?pg=1", data = {"userID" : new_id})
     read_users = client.get("/view/community")
-    assert "Ross@museum" in read_users.data.decode("UTF-8")
+    assert "James@mail" in read_users.data.decode("UTF-8")
     
 @configure(False)
-@log_user(1, "Mark Doe", "MDoe@John", "admin")
+@log_user(1, "Mark Doe", "Mark@mail", "regular")
 def test_redirects_tosetup_if_notConfig(client):
     result = client.get("/view/1/?pg=1", follow_redirects = True)
     assert "host" in result.data.decode("UTF-8")

@@ -1,11 +1,10 @@
 from flask import Flask
 from pytest import fixture
 import __init__
-from models.post import Post
 from models.user import User
 from services.posts.posts_in_memo import Posts
 from services.users.users_in_memo import Users
-from tests.helpers import configure, get_url_userid, log_user
+from tests.helpers import add_disposable_user, configure, get_url_userid, log_user
 
 BASE_POST = "/post/"
 
@@ -48,7 +47,8 @@ def test_editting_user_reflects_in_post(client):
 @log_user(2, "James Doe", "James@mail", "regular")
 @configure(True)
 def test_deleting_user_deletes_owned_posts(client):
-    client.post("view/2/?pg=1", data = {"userID" : "2"}, follow_redirects = False)
+    id = str(add_disposable_user())
+    client.post(f"view/{id}/?pg=1", data = {"userID" : id}, follow_redirects = False)
     posts = Posts().get_all()
     for post in posts:
         assert "James Doe" != post[1].auth

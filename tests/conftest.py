@@ -2,6 +2,10 @@ import sys
 from os.path import dirname as dir
 from os.path import abspath
 from pytest import fixture
+
+root_dir = dir(dir(abspath(__file__)))
+sys.path.append(root_dir)
+
 from models.post import Post
 from models.user import User
 from flask import Flask
@@ -10,9 +14,6 @@ from services.users.passhash import PassHash
 from services.users.users_in_memo import Users
 import __init__
 
-root_dir = dir(dir(abspath(__file__)))
-sys.path.append(root_dir)
-
 def create_user_db(repo : Users, user_info : list[tuple[str]]):
     for info in user_info:
         user = User(info[0], info[1])
@@ -20,9 +21,11 @@ def create_user_db(repo : Users, user_info : list[tuple[str]]):
         repo.add(user)
 
 def create_posts_db(repo: Posts, user_info : list[tuple[str]], count : int):
+    post_no = 1
     for info in user_info:
         for i in range(count):
-            post = Post(info[0], "Generic", f"Test post {str(i + 1)}", info[2])
+            post = Post(info[0], f"Generic{post_no}", f"Test post {i + 1}", info[2])
+            post_no += 1
             repo.add(post)
 
 @fixture(scope="session")

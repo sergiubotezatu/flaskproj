@@ -1,36 +1,10 @@
-from typing import Union
 from flask.testing import FlaskClient
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
-from services.dependency_inject.injector import Services
-from services.interfaces.ipost_repo import IPostRepo
-from services.interfaces.iusers_repo import IUsersRepo
+from services.posts.posts_in_memo import Posts
+from services.users.users_in_memo import Users
 
-class RepoMngr:
-    @Services.get
-    def __init__(self, repo : Union[IPostRepo, IUsersRepo]):
-        self.repo = repo
-        self.ids = []
-                
-    def create_posts_db(self, count : int, name = "John Doe", owner_id = 2):
-        for i in range(count):
-            post = Post(name, "Generic", f"Test post {str(i + 1)}", owner_id)
-            self.add(post)
-        
-    def delete(self, id = 0):
-        self.repo.remove(id)
-        self.ids.remove(id)
-
-    def add(self, entity : Union[Post, User]):
-        self.repo.add(entity)
-        self.ids.append(entity.id)        
-
-    def clear(self):
-        for id in self.ids:
-            self.repo.remove(id)
-        self.ids = []
-        
 def log_user(id, name, email, role):
     def decorator(test_func):
         def wrapper(client):
@@ -53,6 +27,9 @@ def configure(is_config : bool):
 
 def get_url_userid(result):
     url = result.location
+    query_index = url.rfind("/?")
+    if query_index != -1:
+        url = url.replace(url[query_index:], "")
     id_index = url.rfind("/") + 1
     return url[id_index:]
     
@@ -66,3 +43,10 @@ def create_posts(client : FlaskClient, name, count :int, title = "Generic-1"):
             post["title"] = post["title"].replace(str(i - 1), str(i))
             added = client.post("/post/create", data = post, follow_redirects=False)
             yield get_url_userid(added)
+
+def add_disposable_post():
+    return Posts().add(Post("John Doe", "Generic", "I will be deleted"))
+
+def add_disposable_user():
+    return Users().add(User("James Doe", "James@mail"))
+    

@@ -2,8 +2,6 @@ from urllib.parse import urlparse
 from flask import Flask
 from pytest import fixture
 import __init__
-from services.interfaces.ipost_repo import IPostRepo
-from services.posts.posts_in_memo import Posts
 from tests.helpers import configure, get_url_userid, log_user
 
 BASE_POST = "/post/"
@@ -79,10 +77,8 @@ def test_edit_post(client):
     "title" : "Generic",
     "post" : "This is an edit"
     }
-    post = Posts()
     initial = client.get(BASE_POST + "read/4/")
     assert "Test post 1" in initial.data.decode("UTF-8")
-    bla = BASE_POST + "edit/4/"
     client.post(BASE_POST + "edit/4/", data = edit, follow_redirects=False)
     result = client.get(BASE_POST + "read/4/")
     assert edit["post"] in result.data.decode("UTF-8")
