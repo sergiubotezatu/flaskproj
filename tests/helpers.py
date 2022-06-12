@@ -33,17 +33,6 @@ def get_url_userid(result):
     id_index = url.rfind("/") + 1
     return url[id_index:]
     
-def create_posts(client : FlaskClient, name, count :int, title = "Generic-1"):
-        post = {
-        "author" : name,
-        "title" : title,
-        "post" : "This is a test"
-        }
-        for i in range(0, count):
-            post["title"] = post["title"].replace(str(i - 1), str(i))
-            added = client.post("/post/create", data = post, follow_redirects=False)
-            yield get_url_userid(added)
-
 def add_disposable_post():
     return Posts().add(Post("John Doe", "Generic", "I will be deleted"))
 

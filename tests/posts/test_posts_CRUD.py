@@ -2,7 +2,8 @@ from urllib.parse import urlparse
 from flask import Flask
 from pytest import fixture
 import __init__
-from tests.helpers import configure, get_url_userid, log_user
+from services.posts.posts_in_memo import Posts
+from tests.helpers import add_disposable_post, configure, get_url_userid, log_user
 
 BASE_POST = "/post/"
 CONFIG_PAGE = "/config"
@@ -53,9 +54,9 @@ def test_create_post(client):
     result = client.get(BASE_POST + f"read/{id}/")
     assert post["title"] in result.data.decode("UTF-8")
     assert post["post"] in result.data.decode("UTF-8")
-    client.post(BASE_POST + f"read/{id}/",data = {"postID" : id})
+    Posts().remove(id)
 
-@log_user(2, "James Doe", "John@mail", "regular")   
+@log_user(2, "John Doe", "John@mail", "regular")   
 @configure(True)
 def test_creation_home_print(client):
     post = {
@@ -67,7 +68,7 @@ def test_creation_home_print(client):
     id = get_url_userid(creation)
     result = client.get(BASE)
     assert post["post"] in result.data.decode("UTF-8")
-    client.post(BASE_POST + f"read/{id}/",data = {"postID" : id})
+    Posts().remove(id)
 
 @log_user(2, "John Doe", "John@mail", "regular")
 @configure(True)
@@ -86,30 +87,18 @@ def test_edit_post(client):
 @log_user(2, "John Doe", "John@mail", "regular")
 @configure(True)
 def test_delete_post(client):
-    post = {
-    "author" : "John Doe",
-    "title" : "Generic",
-    "post" : "I will be deleted"
-    }
-    to_delete = client.post(BASE_POST + "create", data = post, follow_redirects=False)
-    id = get_url_userid(to_delete)
+    id = add_disposable_post()
     read = client.get(BASE_POST + f"read/{id}/")
-    assert post["author"] in read.data.decode("UTF-8")
-    assert post["title"] in read.data.decode("UTF-8")
-    assert post["post"] in read.data.decode("UTF-8")
+    assert "John Doe" in read.data.decode("UTF-8")
+    assert "Generic" in read.data.decode("UTF-8")
+    assert "I will be deleted" in read.data.decode("UTF-8")
     result = client.post(BASE_POST + f"read/{id}", data = {"postID" : id})
-    assert post["author"] not in result.data.decode("UTF-8")
+    assert "I will be deleted" not in result.data.decode("UTF-8")
 
 @log_user(2, "John Doe", "Generic", "regular")
 @configure(True)
 def test_redirect_delete(client):
-    post = {
-    "author" : "John Doe",
-    "title" : "Generic",
-    "post" : "I will be deleted"
-    }
-    to_delete = client.post(BASE_POST + "create", data = post, follow_redirects=False)
-    id = get_url_userid(to_delete)
+    id = add_disposable_post()
     result = client.post(
         BASE_POST + f"read/{id}/",
         data = {"postID" : id},

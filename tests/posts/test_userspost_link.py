@@ -23,7 +23,7 @@ def test_posts_get_ownerId_from_logged_user(client):
     creation = client.post(BASE_POST + "create", data = post, follow_redirects=False)
     id = get_url_userid(creation)
     assert Posts().get(id).owner_id == 2
-    client.post(BASE_POST + f"read/{id}/",data = {"postID" : id})
+    Posts().remove(id)
 
 @log_user(3, "John Doe", "John@mail", "regular")
 @configure(True)
