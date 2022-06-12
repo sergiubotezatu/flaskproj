@@ -5,7 +5,7 @@ import os
 class Images:
     def __init__(self):
         self.PATH = "static/images"
-        self.DEFAULT = "/static/images/noimage.jpg"
+        self.DEFAULT = "/static/icons/noimage.jpg"
        
     def add(self, pic : FileStorage):
         just_added = self.__create_name(pic)
