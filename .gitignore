@@ -152,7 +152,7 @@ cython_debug/
 #.idea/
 
 db_file.ini
-static\images
+static/images/
 
 .idea
 
