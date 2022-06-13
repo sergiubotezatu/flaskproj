@@ -8,8 +8,11 @@ from services.auth.authentication import Authentication
 from services.interfaces.idb_upgrade import IDataBaseUpgrade
 from services.auth.authorization import Authorization
 from services.interfaces.ifilters import IFilters
+from services.interfaces.iimages import Iimages
 from services.interfaces.isession_mngr import ISessionMNGR
 from services.posts.filters import Filters
+from services.posts.images.img_inmemo import ImagesInMemo
+from services.posts.images.img_ondisk import ImagesOnDisk
 from services.posts.sqlalchemy_posts import SqlAlchemyPosts
 from services.users.passhash import PassHash
 from services.posts.posts_db_repo import PostsDb
@@ -27,7 +30,7 @@ from services.database.mock_db_config import MockDbConfig, MockUpgrade
 
 class Container:
     dependencies = {
-        IPostRepo : (IDataBase,),
+        IPostRepo : (IDataBase, Iimages),
         IDataBase : (IDataBaseConfig, IDataBaseUpgrade),
         IDataBaseConfig : None,
         IDataBaseUpgrade : (IDataBaseConfig,),
@@ -36,7 +39,8 @@ class Container:
         IAuthorization : (IAuthentication,),
         IPassHash : None,
         ISessionMNGR : None,
-        IFilters : (IPostRepo,)
+        IFilters : (IPostRepo,),
+        Iimages : None
         }
 
     prod_services = {
@@ -49,7 +53,8 @@ class Container:
         IPassHash : PassHash,
         IAuthorization : Authorization,
         ISessionMNGR : SessionMngr,
-        IFilters : Filters
+        IFilters : Filters,
+        Iimages : ImagesOnDisk
         }
 
     test_services = {
@@ -62,7 +67,8 @@ class Container:
         IDataBaseUpgrade : MockUpgrade,
         IAuthorization : Authorization,
         ISessionMNGR : SessionMngr,
-        IFilters : Filters}
+        IFilters : Filters,
+        Iimages : ImagesInMemo}
 
     sql_alchemy_services = {
         IPostRepo : SqlAlchemyPosts,
@@ -77,7 +83,7 @@ class Container:
         if with_orm:
             self.prod_services.update(self.sql_alchemy_services)
         if is_test:
-            self.dependencies[IPostRepo] = None
+            self.dependencies[IPostRepo] = (Iimages,)
             self.dependencies[IUsersRepo] = (IPostRepo,)
             return self.test_services
         return self.prod_services

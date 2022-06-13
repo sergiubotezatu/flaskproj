@@ -1,8 +1,9 @@
 from werkzeug.datastructures import FileStorage
 from models.post import Preview
+from services.dependency_inject.injector import Services
+from services.interfaces.iimages import Iimages
 from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
-from services.posts.images.img_inmemo import ImagesInMemo
 from werkzeug.datastructures import FileStorage
 
 class PostsEnumerator():
@@ -28,12 +29,13 @@ def singleton(cls):
 
 @singleton
 class Posts(IPostRepo):
-    def __init__(self):
+    @Services.get
+    def __init__(self, images : Iimages):
         self.page_count = 0
         self.__posts : list[Post] = []
         self.count = 0
         self.free_ids = [1]
-        self.images = ImagesInMemo()
+        self.images = images
         
     def add(self, post, img : FileStorage = None):
         self.__rmv_placeholder()
@@ -70,7 +72,6 @@ class Posts(IPostRepo):
         self.free_ids.insert(0, int(post_id))
         for i in range (0, self.count):
             if self.__posts[i].id == int(post_id):
-                self.images.remove(self.__posts[i].img_src)
                 self.__posts.remove(self.__posts[i])
                 break
         self.count -= 1
@@ -93,12 +94,16 @@ class Posts(IPostRepo):
         matches_found = 0
         posts_count = 0
         offset = page * max - max
+        post : Post
         for post in self:
             if filter_match(post.owner_id):
                 matches_found += 1
                 if matches_found >= offset + 1:
                     posts_count += 1
-                    result.append((post.id, Preview(post), posts_count))
+                    src = self.images.get(post.img_src)
+                    to_display = Preview(post)
+                    to_display.img_src = src
+                    result.append((post.id, to_display, posts_count))
             if page != 0 and posts_count == max + 1:
                 break
         return result

@@ -1,6 +1,6 @@
 import base64
 from werkzeug.datastructures import FileStorage
-from services.posts.images.img_ondisk import ImagesOnDisk
+from services.interfaces.iimages import Iimages
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idata_base import IDataBase
 from models.post import Post
@@ -8,9 +8,9 @@ from services.dependency_inject.injector import Services
 
 class PostsDb(IPostRepo):
     @Services.get
-    def __init__(self, db : IDataBase):
+    def __init__(self, db : IDataBase, images: Iimages):
         self.__count = -1
-        self.images = ImagesOnDisk()
+        self.images = images
         self.db = db
         
     @property
