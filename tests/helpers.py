@@ -1,9 +1,12 @@
+import io
+from typing import Literal
 from flask.testing import FlaskClient
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
 from services.posts.posts_in_memo import Posts
 from services.users.users_in_memo import Users
+from PIL import Image
 
 def log_user(id, name, email, role):
     def decorator(test_func):
@@ -38,4 +41,19 @@ def add_disposable_post():
 
 def add_disposable_user():
     return Users().add(User("James Doe", "James@mail"))
-    
+
+def add_disposable_img_post(client : FlaskClient, picture : tuple[io.BytesIO, Literal]) -> tuple[str, bytes]:
+    post = {
+        "author" : "Mark Doe",
+        "title" : "Generic",
+        "post" : "This is a test",
+        "img" : picture
+        }
+    creation = client.post("/post/create", data = post, follow_redirects=False)
+    return get_url_userid(creation)
+
+def generate_img():
+    file = Image.new('RGB', (250, 250))
+    byte_file = file.tobytes()
+    img = (io.BytesIO(byte_file), "test.png")
+    return (file, img)

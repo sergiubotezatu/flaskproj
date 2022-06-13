@@ -17,13 +17,14 @@ class Post:
         return date
 
 class Preview():
-    def __init__(self, post):
+    def __init__(self, post : Post):
         self.auth = post.auth
         self.title = post.title
         self.content = self.truncate(post.content)
         self.owner_id = post.owner_id
         self.created = post.created
         self.modified = post.modified
+        self.img_src = post.img_src
         
     def truncate(self, content):
         lines_count = content[:150].count("\n")

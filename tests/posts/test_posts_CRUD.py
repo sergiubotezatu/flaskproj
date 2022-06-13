@@ -39,7 +39,7 @@ def test_create_redirect(client):
     creation = client.post(BASE_POST + "create", data = post, follow_redirects=False)
     id = get_url_userid(creation)
     assert creation.status_code == 302
-    client.post(BASE_POST + f"read/{id}/",data = {"postID" : id})
+    Posts().remove(id)
 
 @log_user(1, "Mark Doe", "Mark@mail", "regular")
 @configure(True)
@@ -70,6 +70,13 @@ def test_creation_home_print(client):
     assert post["post"] in result.data.decode("UTF-8")
     Posts().remove(id)
 
+@configure(True)
+def test_read_post(client):
+    result = client.get(BASE_POST + "read/1/")
+    assert "Written by:Mark Doe" in result.data.decode("UTF-8")
+    assert "Generic1" in result.data.decode("UTF-8")
+    assert "Test post 1" in result.data.decode("UTF-8")
+    
 @log_user(2, "John Doe", "John@mail", "regular")
 @configure(True)
 def test_edit_post(client):
