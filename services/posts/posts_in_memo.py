@@ -3,7 +3,7 @@ from models.image import Image
 from models.post import Preview
 from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
-from services.images import Images
+from services.posts.images.img_ondisk import ImagesOnDisk
 from werkzeug.datastructures import FileStorage
 
 class PostsEnumerator():
@@ -34,13 +34,13 @@ class Posts(IPostRepo):
         self.__posts : list[Post] = []
         self.count = 0
         self.free_ids = [1]
-        self.images = Images()
+        self.images = ImagesOnDisk()
         
     def add(self, post, img : FileStorage = None):
         self.__rmv_placeholder()
         self.count += 1
         post.id = self.free_ids[0]
-        post.img_path = self.get_img(img)
+        post.img_path = self.get_image(img)
         self.__posts.append(post)
         self.free_ids.remove(post.id)
         if not self.free_ids:
@@ -57,7 +57,7 @@ class Posts(IPostRepo):
                 post_copy.id = post.id
                 return post_copy
 
-    def get_img(self, img : FileStorage):
+    def get_image(self, img : FileStorage):
         if img:
             return self.images.add(img)
 

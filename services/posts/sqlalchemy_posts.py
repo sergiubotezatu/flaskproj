@@ -1,6 +1,6 @@
 from sqlalchemy import func
 from services.database.sqlalchemy import SqlAlchemy
-from services.images import Images
+from services.posts.images.img_ondisk import ImagesOnDisk
 from services.interfaces.idata_base import IDataBase
 from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
@@ -11,7 +11,7 @@ class SqlAlchemyPosts(IPostRepo):
     @Services.get
     def __init__(self, orm : IDataBase):
         self.orm = orm
-        self.images = Images()
+        self.images = ImagesOnDisk()
         self.__count = -1
         
     @property

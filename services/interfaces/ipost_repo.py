@@ -25,3 +25,7 @@ class IPostRepo(metaclass = ABCMeta):
     def get_all(self):
         pass
 
+    @abstractmethod
+    def get_image(self, post_id):
+        pass
+

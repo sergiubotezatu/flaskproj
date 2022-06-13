@@ -1,16 +1,17 @@
 import uuid
 from werkzeug.datastructures import FileStorage
 import os
+from services.interfaces.iimages import Iimages
 
-class Images:
+class ImagesOnDisk(Iimages):
     def __init__(self):
         self.PATH = "static/images"
         self.DEFAULT = "/static/icons/noimage.jpg"
        
     def add(self, pic : FileStorage):
-        just_added = self.__create_name(pic)
-        self.__add_on_disk(pic, just_added)
-        return just_added
+        file_name = self.__create_name(pic)
+        self.__add_on_disk(pic, file_name)
+        return file_name
 
     def edit(self, pic : FileStorage, path : str):
         image = pic.read()
