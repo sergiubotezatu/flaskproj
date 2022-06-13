@@ -47,7 +47,7 @@ class PostPage:
         return render_template(
             "read.html",
             editable=post_id,
-            img = selected_post.img_path,
+            img = selected_post.img_src,
             owner = selected_post.owner_id,
             auth = selected_post.auth,
             title = selected_post.title,
@@ -66,7 +66,7 @@ class PostPage:
             owner = selected_post.auth,
             title = selected_post.title,
             current = selected_post.content,
-            img = selected_post.img_path
+            img = selected_post.img_src
             )
 
     def create_new_post(self):
@@ -84,7 +84,7 @@ class PostPage:
         editted.id = post.id
         picture = request.files.get("img")
         if picture:
-            editted.img_path = post.img_path
+            editted.img_src = post.img_src
         self.blogPosts.replace(editted, picture)
 
     @authorizator.admin_required

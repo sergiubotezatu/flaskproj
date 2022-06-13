@@ -47,7 +47,7 @@ class SqlAlchemyPosts(IPostRepo):
                     "content" : post.content,
                     "date_modified" : post.created}
         if img:
-            changed_name = self.images.edit(img, post.img_path)
+            changed_name = self.images.edit(img, post.img_src)
             if changed_name:
                 dict_new.update({"image" : changed_name})
         self.orm.session.query(self.orm.Posts).filter_by(postid = post.id).update(dict_new)
@@ -76,15 +76,12 @@ class SqlAlchemyPosts(IPostRepo):
                         self.orm.Posts.image).\
                         join(SqlAlchemy.Users, SqlAlchemy.Users.ownerid == self.orm.Posts.ownerid).\
                         filter(self.orm.Posts.postid == id).first()
-            img = self.get_img(displayed[6])
-            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4], img_path=img)
+            img = self.images.get(displayed[6])
+            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4], img_src=img)
             post.id = id
             post.modified = displayed[5]
         return post
 
-    def get_img(self, img_name):
-        return self.images.get(img_name)
-        
     def get_all(self, page = 0, filters : list = [], max = 5):
         posts = self.orm.session.query\
             (self.orm.Posts.postid,
@@ -120,7 +117,7 @@ class SqlAlchemyPosts(IPostRepo):
                 count += 1
                 img = self.images.get(post[6])
                 result.append((post[0],
-                Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5], img_path=img),
+                Post(post[1], post[2], self.__cut_poem_newlines(post[3]), owner_id= post[4], date = post[5], img_src=img),
                 count))
         return result
 

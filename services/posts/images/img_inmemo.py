@@ -1,13 +1,15 @@
+import base64
 from werkzeug.datastructures import FileStorage
-from interfaces.iimages import Iimages
+from services.interfaces.iimages import Iimages
 
-class ImagesOnDisk(Iimages):
+class ImagesInMemo(Iimages):
     def __init__(self):
         self.DEFAULT = "/static/icons/noimage.jpg"
         self.pictures = []
        
     def add(self, pic : FileStorage):
-        pass
+        extension = pic.mimetype.partition("/")[2]
+        return (extension, base64.b64encode(pic.read()))
 
     def edit(self, pic : FileStorage, path : str):
         pass

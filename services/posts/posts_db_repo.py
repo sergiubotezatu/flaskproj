@@ -1,6 +1,5 @@
 import base64
 from werkzeug.datastructures import FileStorage
-from models.image import Image
 from services.posts.images.img_ondisk import ImagesOnDisk
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.idata_base import IDataBase
@@ -31,7 +30,7 @@ class PostsDb(IPostRepo):
     def __len__(self):
         return self.count
     
-    def add(self, post : Post, img : Image):
+    def add(self, post : Post, img : FileStorage):
         self.count += 1
         id = self.db.perform("""
         INSERT INTO blog_posts (PostID, Title, Content, Date, OwnerID, image)     
@@ -46,7 +45,7 @@ class PostsDb(IPostRepo):
 
     def replace(self, post : Post, img : FileStorage):
         if img != None:
-            changed_name = self.images.edit(img, post.img_path)
+            changed_name = self.images.edit(img, post.img_src)
             if changed_name:
                 self.db.perform("""
                 UPDATE blog_posts
@@ -96,8 +95,8 @@ class PostsDb(IPostRepo):
                     ON u.OwnerID = p.OwnerID
                     where p.PostID = %s;
                 """, id, fetch = "fetchone")
-            img = self.get_img(displayed[6])
-            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4], img_path=img)
+            img = self.images.get(displayed[6])
+            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4], img_src=img)
             post.id = id
             post.modified = displayed[5]
         return post
@@ -132,12 +131,6 @@ class PostsDb(IPostRepo):
             {limit};
             """, fetch = "fetchall"))
 
-    def get_img(self, post_id):
-        result = self.db.perform("""
-        SELECT * FROM post_images
-        WHERE postid = %s""", post_id, fetch="fetchone")
-        return Image(base64.b64encode(result[1]).decode(). result[0])
-        
     def unarchive_content(self, id, name, email):
         result = self.db.perform("""
         SELECT Content

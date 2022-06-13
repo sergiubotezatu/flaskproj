@@ -1,9 +1,8 @@
 from werkzeug.datastructures import FileStorage
-from models.image import Image
 from models.post import Preview
 from services.interfaces.ipost_repo import IPostRepo
 from models.post import Post
-from services.posts.images.img_ondisk import ImagesOnDisk
+from services.posts.images.img_inmemo import ImagesInMemo
 from werkzeug.datastructures import FileStorage
 
 class PostsEnumerator():
@@ -34,13 +33,13 @@ class Posts(IPostRepo):
         self.__posts : list[Post] = []
         self.count = 0
         self.free_ids = [1]
-        self.images = ImagesOnDisk()
+        self.images = ImagesInMemo()
         
     def add(self, post, img : FileStorage = None):
         self.__rmv_placeholder()
         self.count += 1
         post.id = self.free_ids[0]
-        post.img_path = self.get_image(img)
+        post.img_src = self.get_image(img)
         self.__posts.append(post)
         self.free_ids.remove(post.id)
         if not self.free_ids:
@@ -53,7 +52,7 @@ class Posts(IPostRepo):
             if int(post_id) == post.id:
                 post_copy = Post(post.auth, post.title, post.content, post.owner_id, post.created)
                 post_copy.modified = post.modified
-                post_copy.img_path = self.images.get(post.img_path)
+                post_copy.img_src = self.images.get(post.img_src)
                 post_copy.id = post.id
                 return post_copy
 
@@ -71,7 +70,7 @@ class Posts(IPostRepo):
         self.free_ids.insert(0, int(post_id))
         for i in range (0, self.count):
             if self.__posts[i].id == int(post_id):
-                self.images.remove(self.__posts[i].img_path)
+                self.images.remove(self.__posts[i].img_src)
                 self.__posts.remove(self.__posts[i])
                 break
         self.count -= 1
@@ -80,9 +79,9 @@ class Posts(IPostRepo):
         for i in range(0, len(self.__posts)):
             if self.__posts[i].id == int(post.id):
                 if img:
-                    changed_name = self.images.edit(img, post.img_path)
+                    changed_name = self.images.edit(img, post.img_src)
                     if changed_name:
-                        self.__posts[i].img_path = changed_name
+                        self.__posts[i].img_src = changed_name
                 self.__posts[i].auth = post.auth
                 self.__posts[i].title = post.title
                 self.__posts[i].content = post.content

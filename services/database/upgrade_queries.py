@@ -1,7 +1,5 @@
 from datetime import datetime
-from models.image import Image
 from services.users.passhash import PassHash
-from werkzeug.utils import secure_filename
 
 admin_pass = PassHash.generate_pass('admin1')
 dummy_pass = PassHash.generate_pass('dummy')
