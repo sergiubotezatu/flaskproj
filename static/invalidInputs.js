@@ -216,4 +216,3 @@ function displayPreview()
     });
   }
 }
-  
