@@ -25,10 +25,10 @@ class ImagesOnDisk(Iimages):
         else:
             return None
 
-    def get(self, file_name):
-        if file_name == None:
+    def get(self, file):
+        if file == None:
             return self.DEFAULT
-        pic_path = f"/{self.PATH}/{file_name}"
+        pic_path = f"/{self.PATH}/{file}"
         return pic_path
 
     def remove(self, file_name):

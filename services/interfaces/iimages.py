@@ -11,7 +11,7 @@ class Iimages(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def get(self, file_name):
+    def get(self, file):
         pass
 
     @abstractmethod

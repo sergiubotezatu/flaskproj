@@ -5,23 +5,18 @@ from services.interfaces.iimages import Iimages
 class ImagesInMemo(Iimages):
     def __init__(self):
         self.DEFAULT = "/static/icons/noimage.jpg"
-        self.pictures = []
        
     def add(self, pic : FileStorage):
         extension = pic.mimetype.partition("/")[2]
         return (extension, base64.b64encode(pic.read()))
 
-    def edit(self, pic : FileStorage, path : str):
-        pass
+    def edit(self, pic : FileStorage):
+        return self.add(pic)
 
-    def get(self, file_name):
-        pass
+    def get(self, file):
+        if not file:
+            return self.DEFAULT
+        return f"'data:image/{file[0]};base64,{file[1]}'"
 
     def remove(self, file_name):
-       pass
-
-    def __add_on_disk(self, pic : FileStorage, file_name : str):
-        pass
-
-    def __create_name(self, pic):
-        pass
+       pass   

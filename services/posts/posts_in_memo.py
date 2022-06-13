@@ -79,9 +79,9 @@ class Posts(IPostRepo):
         for i in range(0, len(self.__posts)):
             if self.__posts[i].id == int(post.id):
                 if img:
-                    changed_name = self.images.edit(img, post.img_src)
-                    if changed_name:
-                        self.__posts[i].img_src = changed_name
+                    changed_src = self.images.edit(img)
+                    if changed_src:
+                        self.__posts[i].img_src = changed_src
                 self.__posts[i].auth = post.auth
                 self.__posts[i].title = post.title
                 self.__posts[i].content = post.content
