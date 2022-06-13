@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from services.database.database import DataBase
 from services.interfaces.ifilters import IFilters
-from services.posts.seed import placeholder
 from services.dependency_inject.injector import Services
 
 class Home:
