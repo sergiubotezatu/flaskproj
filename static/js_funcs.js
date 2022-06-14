@@ -224,7 +224,21 @@ function get_post() {
     document.getElementById("id").innerHTML = "";
     return;
   }
-  ajaxRequest = new XMLHttpRequest();
+    try {        
+      ajaxRequest = new XMLHttpRequest();
+        } 
+        catch (e) {
+          try {
+            ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+          } catch (e){
+              try {
+                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+              } catch (e) {
+            alert("Try a different browser");
+            return false; 
+                          }
+                        }
+                      }
   ajaxRequest.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         const display = JSON.parse(this.responseText)
