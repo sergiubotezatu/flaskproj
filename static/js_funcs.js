@@ -217,7 +217,7 @@ function displayPreview()
   }
 }
 
-function showCustomer() {
+function get_post() {
   str = document.getElementById("id").innerText
     var ajaxRequest;    
   if (str == "") {
