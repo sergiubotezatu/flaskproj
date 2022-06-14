@@ -216,3 +216,35 @@ function displayPreview()
     });
   }
 }
+
+function showCustomer() {
+  str = document.getElementById("id").innerText
+    var ajaxRequest;    
+  if (str == "") {
+    document.getElementById("id").innerHTML = "";
+    return;
+  }
+  ajaxRequest = new XMLHttpRequest();
+  ajaxRequest.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        const display = JSON.parse(this.responseText)
+        if (display.date_modified == null)
+        {
+           display.date_modified = "";
+        }
+        var post = `<div class="read">
+                        <h2 style ="text-align: center">${display.title}</h2>
+                          <div class = "read-img" style = "pointer-events: auto;">
+                          <img src = '${display.img_src}'>
+                          </div>
+                        <h4>Written by:${display.auth}</h4>
+                        <p>${display.content}</p>
+                        <p style ="float:right">created:${display.created}<br>updated: ${display.date_modified}
+                        </p>
+                    </div>`
+        document.getElementById("post").innerHTML = post
+    }
+  };
+  ajaxRequest.open("GET", "/api/post/"+ str + "/?loaded=y", true);
+  ajaxRequest.send();
+}
