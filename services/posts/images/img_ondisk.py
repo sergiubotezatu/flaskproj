@@ -6,8 +6,8 @@ from services.interfaces.iimages import Iimages
 class ImagesOnDisk(Iimages):
     def __init__(self):
         self.PATH = "static/images"
-        self.DEFAULT = "/static/icons/noimage.jpg"
-       
+        self.DEFAULT = "static/images/noimage.jpg"
+        
     def add(self, pic : FileStorage):
         file_name = self.__create_name(pic)
         self.__add_on_disk(pic, file_name)
@@ -17,7 +17,7 @@ class ImagesOnDisk(Iimages):
         image = pic.read()
         is_default = "noimage" in path
         name = self.__create_name(pic)
-        new_path = path[1:] if not is_default else self.PATH + f"/{name}"
+        new_path = path if not is_default else self.PATH + f"/{name}"
         with open(new_path, "wb") as writter:
             writter.write(image)
         if is_default:
@@ -28,7 +28,7 @@ class ImagesOnDisk(Iimages):
     def get(self, file):
         if file == None:
             return self.DEFAULT
-        pic_path = f"/{self.PATH}/{file}"
+        pic_path = f"{self.PATH}/{file}"
         return pic_path
 
     def remove(self, file_name):
