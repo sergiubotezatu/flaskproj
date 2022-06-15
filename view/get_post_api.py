@@ -1,5 +1,4 @@
-from flask import request
-from flask import Blueprint, jsonify, render_template
+from flask import Blueprint, jsonify
 from models.posts_schema import PostsJsonSchema
 from services.dependency_inject.injector import Services
 from services.interfaces.ipost_repo import IPostRepo
@@ -17,9 +16,6 @@ class PostApi:
         return self.bp.route(link, methods = ["Get"])(func)
 
     def api_route(self, post_id):
-        if not self.loaded:
-            self.loaded = True
-            return render_template("api_read.html", id = post_id)
         post = self.posts.get(post_id)
         res = self.posts_schema.dump(post)
         data = jsonify(res)

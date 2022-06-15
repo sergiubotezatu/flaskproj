@@ -17,6 +17,7 @@ class PostPage:
         self.to_db_setup = self.bp.before_request(self.goto_db_setup)
         self.creation = self.register("/create",self.create)
         self.reading = self.register("/read/<post_id>/", self.read)
+        self.get_api_route = self.register("/api/<post_id>/", self.client_side_render)
         self.update = self.register("/edit/<post_id>/", self.edit)
         self.activate_deleted = self.register("/unarchive/<id>/<name>/<email>", self.unarchive)
 
@@ -86,6 +87,10 @@ class PostPage:
         if picture:
             editted.img_src = post.img_src
         self.blogPosts.replace(editted, picture)
+
+    def client_side_render(self, post_id):
+        print(post_id)
+        return render_template("api_read.html", read_id = post_id)
 
     @authorizator.admin_required
     def unarchive(self, **kwargs):
