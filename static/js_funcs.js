@@ -217,11 +217,10 @@ function displayPreview()
   }
 }
 
-function get_post() {
-  str = document.getElementById("id").innerText
-    var ajaxRequest;    
-  if (str == "") {
-    document.getElementById("id").innerHTML = "";
+function get_post(id) {
+  var ajaxRequest;    
+  if (id == "") {
+    document.getElementById("post_id").innerHTML = "";
     return;
   }
     try {        
@@ -249,7 +248,7 @@ function get_post() {
         var post = `<div class="read">
                         <h2 style ="text-align: center">${display.title}</h2>
                           <div class = "read-img" style = "pointer-events: auto;">
-                          <img src = '${display.img_src}'>
+                          <img src = '/${display.img_src}'>
                           </div>
                         <h4>Written by:${display.auth}</h4>
                         <p>${display.content}</p>
@@ -259,6 +258,6 @@ function get_post() {
         document.getElementById("post").innerHTML = post
     }
   };
-  ajaxRequest.open("GET", "/api/post/"+ str + "/?loaded=y", true);
+  ajaxRequest.open("GET", "/api/post/"+ id, true);
   ajaxRequest.send();
 }

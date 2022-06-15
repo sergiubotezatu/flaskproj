@@ -4,8 +4,8 @@
   <div class="read" id = "header">
   </div>
 </div>
-<div style = "display:none" id="id">{{id}}</div>
 <script>
- window.onload = get_post() 
+var id = JSON.parse('{{ read_id|tojson }}')
+window.onload = get_post(id) 
 </script>
 {%endblock%}
