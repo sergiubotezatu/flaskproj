@@ -76,10 +76,16 @@ class SqlAlchemyPosts(IPostRepo):
                         self.orm.Posts.image).\
                         join(SqlAlchemy.Users, SqlAlchemy.Users.ownerid == self.orm.Posts.ownerid).\
                         filter(self.orm.Posts.postid == id).first()
-            img = self.images.get(displayed[6])
-            post = Post(displayed[0], displayed[1], displayed[2], owner_id = displayed[3], date = displayed[4], img_src=img)
-            post.id = id
-            post.modified = displayed[5]
+            if displayed:
+                img = self.images.get(displayed[6])
+                post = Post(displayed[0],
+                            displayed[1],
+                            displayed[2],
+                            owner_id = displayed[3],
+                            date = displayed[4],
+                            img_src=img)
+                post.id = id
+                post.modified = displayed[5]
         return post
 
     def get_all(self, page = 0, filters : list = [], max = 5):

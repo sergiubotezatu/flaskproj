@@ -16,6 +16,13 @@ class PostApi:
 
     def api_route(self, post_id):
         post = self.posts.get(post_id)
-        res = self.posts_schema.dump(post)
+        res = None
+        if not post:
+            res = self.__get_error_mess()
+        else:
+            res = self.posts_schema.dump(post)
         data = jsonify(res)
         return data
+
+    def __get_error_mess(self):
+        return {"error" : "404. NOT FOUND"}
