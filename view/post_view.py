@@ -89,7 +89,6 @@ class PostPage:
         self.blogPosts.replace(editted, picture)
 
     def client_side_render(self, post_id):
-        print(post_id)
         return render_template("api_read.html", read_id = post_id)
 
     @authorizator.admin_required

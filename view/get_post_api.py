@@ -10,7 +10,6 @@ class PostApi:
         self.bp = Blueprint("api_route", __name__)
         self.route = self.register("/post/<post_id>/", self.api_route)
         self.posts_schema = PostsJsonSchema()
-        self.loaded = False
         
     def register(self, link, func):
         return self.bp.route(link, methods = ["Get"])(func)
@@ -19,5 +18,4 @@ class PostApi:
         post = self.posts.get(post_id)
         res = self.posts_schema.dump(post)
         data = jsonify(res)
-        self.loaded = False
         return data
