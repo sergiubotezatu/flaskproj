@@ -333,23 +333,23 @@ form{
     }
 }
 
- .read{
-    font-family:cursive;
-    color:black;
-    font-size: 22px;
-    text-align: left;
-    display: block;
-    margin-left: 90px;
-    margin-right: auto;
-    width: 70%;
-    position: relative;
-    right: -100px;
-    top:-100px;
-    white-space: pre-wrap;
-    overflow: hidden;
- }
+.read{
+  font-family:cursive;
+  color:black;
+  font-size: 22px;
+  text-align: left;
+  display: block;
+  margin-left: 90px;
+  margin-right: auto;
+  width: 70%;
+  position: relative;
+  right: -100px;
+  top:-100px;
+  white-space: pre-wrap;
+  overflow: hidden;
+} 
 
- .read > h2
+.read > h2
  {
     position:relative;
     bottom: -50px;
@@ -361,11 +361,6 @@ form{
     background-color: rgb(255, 244, 179);
   }
 
- .readPost > p
- {
-    text-align:justify;
-    text-justify:inter-word;
- }
 
     .editDel {
       width:fit-content;
