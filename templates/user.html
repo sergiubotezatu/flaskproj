@@ -29,6 +29,9 @@
             <p>{%if modified != None and modified != ""%}last update: {{modified}}{%endif%}</p>
             {%if edit_allowed%}
             {%if user_id != email%}
+            <a href = "{{ '/user/statistics/%s'%user_id|urlencode }}">
+                <p style = "margin-bottom:0;display:block;text-align:center;">View monthly statistics</p>
+            </a>
             <a href = "{{ '/edit/%s'%user_id|urlencode }}">
                 <p class = "editbutton" style = "margin-bottom:0;">Edit info</p>
             </a>
