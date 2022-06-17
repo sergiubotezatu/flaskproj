@@ -1,10 +1,4 @@
-import sys
-from os.path import dirname as dir
-from os.path import abspath
 from pytest import fixture
-
-root_dir = dir(dir(abspath(__file__)))
-sys.path.append(root_dir)
 
 from models.post import Post
 from models.user import User
