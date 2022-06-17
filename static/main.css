@@ -720,6 +720,11 @@ form{
         color:rgb(19, 57, 139);
         cursor: pointer; 
     }
+
+    .profileinfo a:visited
+    {
+      color: blue;
+    }
     
     .role-box
     {
@@ -994,4 +999,28 @@ form{
       .img-prev
       {
         width:100%;
+      }
+
+      #statistics {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+        color:white;
+      }
+
+      #statistics td, #statistics th {
+        border: 2px solid rgb(19, 57, 139);
+        padding: 8px;
+      }
+
+      #statistics tr:nth-child(even){background-color: steelblue}
+
+      #statistics tr:hover {background-color: #ddd;}
+
+      #statistics th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: rgb(19, 57, 139);
+        color: white;
       }
