@@ -6,8 +6,6 @@ from models.user import User
 from services.users.users_in_memo import Users
 from tests.helpers import add_disposable_user, configure, get_url_userid, log_user
 
-BASE_POST = "/post/"
-
 @fixture()
 def client(data_base : Flask):
     return data_base.test_client()
