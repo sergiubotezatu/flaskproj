@@ -32,5 +32,7 @@ def create_blog(is_test_app = False, with_orm = True):
     blog.register_blueprint(UserAuthenticate(IAuthentication).bp)
     from view.get_post_api import PostApi
     blog.register_blueprint(PostApi(IPostRepo).bp, url_prefix = "/api")
+    from view.statistics import UserStatistics
+    blog.register_blueprint(UserStatistics(IFilters, IUsersRepo).bp, url_prefix = "/user")
 
     return blog
