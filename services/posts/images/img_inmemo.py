@@ -4,7 +4,7 @@ from services.interfaces.iimages import Iimages
 
 class ImagesInMemo(Iimages):
     def __init__(self):
-        self.DEFAULT = "/static/icons/noimage.jpg"
+        self.DEFAULT = "static/images/noimage.jpg"
        
     def add(self, pic : FileStorage):
         extension = pic.mimetype.partition("/")[2]

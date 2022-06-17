@@ -16,7 +16,7 @@ def client(data_base : Flask):
 @configure(True)
 def test_text_only_posts_display_default_image(client):
     result = client.get(BASE_POST + "read/1/")
-    assert '<img src = "/static/icons/noimage.jpg">' in result.data.decode("UTF-8")  
+    assert '<img src = "/static/images/noimage.jpg">' in result.data.decode("UTF-8")  
 
 @log_user(1, "Mark Doe", "Mark@mail", "regular")
 @configure(True)
@@ -43,7 +43,7 @@ def test_home_displays_images(client):
     displayed = base64.b64encode(pic[0].tobytes())
     result = client.get("/")
     assert displayed in result.data
-    assert "/static/icons/noimage.jpg" in result.data.decode("UTF-8")
+    assert "static/images/noimage.jpg" in result.data.decode("UTF-8")
     Posts().remove(id)
 
 @log_user(1, "Mark Doe", "Mark@mail", "regular")
