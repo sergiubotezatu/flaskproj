@@ -8,10 +8,9 @@ from services.dependency_inject.container import Container
 from services.interfaces.ifilters import IFilters
 from services.interfaces.ipost_repo import IPostRepo
 from services.interfaces.isession_mngr import ISessionMNGR
+from services.interfaces.iuser_statistics import IUserStatistics
 from services.interfaces.iusers_repo import IUsersRepo
 from datetime import timedelta
-
-from services.posts.sqlalchemy_posts import SqlAlchemyPosts
 
 def create_blog(is_test_app = False, with_orm = True):
     blog = Flask(__name__)
@@ -32,7 +31,7 @@ def create_blog(is_test_app = False, with_orm = True):
     blog.register_blueprint(UserAuthenticate(IAuthentication).bp)
     from view.get_post_api import PostApi
     blog.register_blueprint(PostApi(IPostRepo).bp, url_prefix = "/api")
-    from view.statistics import UserStatistics
-    blog.register_blueprint(UserStatistics(IFilters, IUsersRepo).bp, url_prefix = "/user")
+    from view.statistics import Statistics
+    blog.register_blueprint(Statistics(IUserStatistics, IUsersRepo).bp, url_prefix = "/user")
 
     return blog

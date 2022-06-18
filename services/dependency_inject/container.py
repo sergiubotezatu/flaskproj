@@ -10,6 +10,7 @@ from services.auth.authorization import Authorization
 from services.interfaces.ifilters import IFilters
 from services.interfaces.iimages import Iimages
 from services.interfaces.isession_mngr import ISessionMNGR
+from services.interfaces.iuser_statistics import IUserStatistics
 from services.posts.filters import Filters
 from services.posts.images.img_inmemo import ImagesInMemo
 from services.posts.images.img_ondisk import ImagesOnDisk
@@ -24,6 +25,7 @@ from services.interfaces.idatabase_config import IDataBaseConfig
 from services.database.database_config import DataBaseConfig
 from services.interfaces.iusers_repo import IUsersRepo
 from services.users.sqlalchemy_users import SqlAlchemyUsers
+from services.users.statistics import UserStatistics
 from services.users.users_db_repo import UsersDb
 from services.users.users_in_memo import Users
 from services.database.mock_db_config import MockDbConfig, MockUpgrade
@@ -40,7 +42,8 @@ class Container:
         IPassHash : None,
         ISessionMNGR : None,
         IFilters : (IPostRepo,),
-        Iimages : None
+        Iimages : None,
+        IUserStatistics : (IFilters,)
         }
 
     prod_services = {
@@ -54,7 +57,8 @@ class Container:
         IAuthorization : Authorization,
         ISessionMNGR : SessionMngr,
         IFilters : Filters,
-        Iimages : ImagesOnDisk
+        Iimages : ImagesOnDisk,
+        IUserStatistics : UserStatistics
         }
 
     test_services = {
@@ -68,7 +72,8 @@ class Container:
         IAuthorization : Authorization,
         ISessionMNGR : SessionMngr,
         IFilters : Filters,
-        Iimages : ImagesInMemo}
+        Iimages : ImagesInMemo,
+        IUserStatistics : UserStatistics}
 
     sql_alchemy_services = {
         IPostRepo : SqlAlchemyPosts,
