@@ -217,38 +217,33 @@ function displayPreview()
   }
 }
 
-function generate_html(display)
+function generate_html(post)
 {
-  if ("error" in display)
-  {
-    return `<div style = "text-align:center;">
-              <h2>${display.error}</h2>
-              <h3>It seems that there is no post with the specified id.<h3>
-              <h3>If you entered the URL manually, please check the spelling<h3>
-              <h3>or go to front page and select from one of listed posts.</h3>
-            </div>`;
-  }
-  else
-  {
-    var modified = display.date_modified ? `updated: ${display.date_modified}` : "";
+  var modified = post.date_modified ? `updated: ${post.date_modified}` : "";
     return `<div class="read">
-              <h2 style ="text-align: center">${display.title}</h2>
+              <h2 style ="text-align: center">${post.title}</h2>
               <div class = "read-img" style = "pointer-events: auto;">
-                <img src = '/${display.img_src}'>
+                <img src = '/${post.img_src}'>
                 </div>
-              <h4>Written by:${display.auth}</h4>
-              <p>${display.content}</p>
-              <p style ="float:right">created:${display.created}<br>${modified}</p>
+              <h4>Written by:${post.auth}</h4>
+              <p>${post.content}</p>
+              <p style ="float:right">created:${post.created}<br>${modified}</p>
             </div>`;
-  }
 }
 
 function get_post(id)
 { 
   fetch(`/api/post/${id}/`)
     .then(res => res.json())
-    .then(display => {
-      document.getElementById("post").innerHTML = generate_html(display);
+    .then(post => {
+      document.getElementById("post").innerHTML = generate_html(post);
     })
-    .catch(error => alert(error));
+    .catch(error => {
+      error = `<div style = "text-align:center;">
+    <h2>404. NOT FOUND</h2>
+    <h3>It seems that there is no post with the specified id.<h3>
+    <h3>If you entered the URL manually, please check the spelling<h3>
+    <h3>or go to front page and select from one of listed posts.</h3>
+  </div>`;
+    document.getElementById("post").innerHTML = error});
 }

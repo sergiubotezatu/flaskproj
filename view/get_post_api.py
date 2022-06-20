@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify
+from urllib.error import HTTPError
+from flask import Blueprint, jsonify, abort
 from models.posts_schema import PostsJsonSchema
 from services.dependency_inject.injector import Services
 from services.interfaces.ipost_repo import IPostRepo
@@ -16,13 +17,9 @@ class PostApi:
 
     def api_route(self, post_id):
         post = self.posts.get(post_id)
-        res = None
         if not post:
-            res = self.__get_error_mess()
+            abort(404)
         else:
             res = self.posts_schema.dump(post)
-        data = jsonify(res)
-        return data
-
-    def __get_error_mess(self):
-        return {"error" : "404. NOT FOUND"}
+            data = jsonify(res)
+            return data
