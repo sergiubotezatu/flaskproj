@@ -1,12 +1,15 @@
 import io
+from pytest import fixture
+from PIL import Image
 from typing import Literal
+from flask import Flask
 from flask.testing import FlaskClient
 from models.post import Post
 from models.user import User
 from services.database.database import DataBase
 from services.posts.posts_in_memo import Posts
+from services.users.passhash import PassHash
 from services.users.users_in_memo import Users
-from PIL import Image
 
 def log_user(id, name, email, role):
     def decorator(test_func):
@@ -57,3 +60,4 @@ def generate_img():
     byte_file = file.tobytes()
     img = (io.BytesIO(byte_file), "test.png")
     return (file, img)
+

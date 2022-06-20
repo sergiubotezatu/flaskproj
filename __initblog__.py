@@ -1,5 +1,4 @@
 from flask import Flask
-from services.database.sqlalchemy import SqlAlchemy
 from services.interfaces.Ipassword_hash import IPassHash
 from services.interfaces.iauthentication import IAuthentication
 from services.interfaces.idata_base import IDataBase

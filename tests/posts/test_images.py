@@ -3,7 +3,7 @@ from flask import Flask
 from pytest import fixture
 from PIL import Image
 import base64
-import __init__
+
 from services.posts.posts_in_memo import Posts
 from tests.helpers import add_disposable_img_post, configure, generate_img, get_url_userid, log_user
 

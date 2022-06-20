@@ -1,10 +1,6 @@
-import json
-from flask import Flask, request
+from flask import Flask
 from pytest import fixture
-import __init__
-from services.interfaces.ipost_repo import IPostRepo
 from tests.helpers import configure
-from view.get_post_api import PostApi
 
 @fixture()
 def client(data_base : Flask):
@@ -31,8 +27,7 @@ def test_api_route_returns_correct_post(client):
 @configure(True)
 def test_404_if_post_not_found(client):
     result = client.get("/api/post/12/")
-    json = result.json
-    assert "404. NOT FOUND" == json["error"]
+    assert result.status_code == 404
 
 @configure(True)
 def test_html_not_rendered_on_server_side(client):

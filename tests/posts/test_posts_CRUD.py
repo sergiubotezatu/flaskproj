@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 from flask import Flask
 from pytest import fixture
-import __init__
+
 from services.posts.posts_in_memo import Posts
 from tests.helpers import add_disposable_post, configure, get_url_userid, log_user
 

@@ -1,12 +1,12 @@
 from pytest import fixture
-
+import __initblog__
 from models.post import Post
 from models.user import User
 from flask import Flask
 from services.posts.posts_in_memo import Posts
 from services.users.passhash import PassHash
 from services.users.users_in_memo import Users
-import __init__
+
 
 def create_user_db(repo : Users, user_info : list[tuple[str]]):
     for info in user_info:
@@ -24,7 +24,7 @@ def create_posts_db(repo: Posts, user_info : list[tuple[str]], count : int):
 
 @fixture(scope="session")
 def data_base() -> Flask:
-    app = __init__.create_blog(is_test_app=True, with_orm=False)
+    app = __initblog__.create_blog(is_test_app=True, with_orm=False)
     posts_db = Posts()
     users_db = Users()
     users = [("Mark Doe", "Mark@mail", 1), ("John Doe", "John@mail", 2)]

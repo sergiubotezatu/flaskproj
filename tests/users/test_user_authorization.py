@@ -1,6 +1,6 @@
 from flask import Flask
 from pytest import fixture
-import __init__
+
 from tests.helpers import configure, log_user
 
 BASE_POST = "/post/"

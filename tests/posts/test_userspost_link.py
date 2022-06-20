@@ -1,6 +1,6 @@
 from flask import Flask
 from pytest import fixture
-import __init__
+
 from models.user import User
 from services.posts.posts_in_memo import Posts
 from services.users.users_in_memo import Users
