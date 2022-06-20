@@ -24,7 +24,6 @@ list-style-type: none;
 padding: 0;
 overflow: hidden;
 border-bottom: 6px solid rgb(42, 42, 42);
-border-bottom-left-radius: 10px;
 background-image: linear-gradient(to right, steelblue ,rgb(19, 57, 139));            
 position: -webkit-sticky;
 position: sticky;
@@ -38,6 +37,7 @@ margin-bottom:0px;
 li 
 {
     float: left;
+    margin:0px;
 } 
 
 li a 
@@ -48,8 +48,9 @@ li a
     padding: 15px 30px;
     text-decoration: none;
     transition: 0.5s all;
-    font-size: 17px;
     z-index:5;
+    font-size: large;
+    font-weight: bold;
   }
 
 li .option:hover, .dropbtn:hover
@@ -822,12 +823,13 @@ form{
         text-decoration: none;
         color:white;
         background-color: rgb(42, 42, 42);
+        font-size: larger;
     }
 
     .pages
     {
         text-align:center;
-        margin-right:3%;
+        margin-right:2.5%;
     }
 
   #x{

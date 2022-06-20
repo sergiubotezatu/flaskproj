@@ -1,6 +1,6 @@
 {%extends "base.html"%}
 {%block content%}
-<div id="erroroverlay" style = "display:block;height:fit-content;" onclick = "MessOff('erroroverlay')">
+<div id="erroroverlay" style = "display:block;height:fit-content;" onclick = "window.location.href = '/login'">
     <div id="box">
     {%if error == '405'%}
     <h3 id ="mess">405 - Method Not Allowed</h3>
@@ -19,6 +19,6 @@
 <script>
     setTimeout(function(){
         window.location.href = "/login";
-    }, 4500);
+    }, 4000);
 </script>
 {%endblock%}
