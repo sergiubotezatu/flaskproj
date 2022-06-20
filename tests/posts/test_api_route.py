@@ -1,5 +1,6 @@
 from flask import Flask
-from pytest import fixture
+from pytest import fixture, FixtureRequest
+from werkzeug import Request
 from tests.helpers import configure
 
 @fixture()
@@ -32,4 +33,5 @@ def test_404_if_post_not_found(client):
 @configure(True)
 def test_html_not_rendered_on_server_side(client):
     result = client.get("/post/api/1/")
-    assert "Mark Doe" not in result.data.decode("UTF-8")
+    assert "var id = JSON.parse('1')" in result.data.decode("UTF-8")
+    assert "window.onload = get_post(id)" in result.data.decode("UTF-8")
