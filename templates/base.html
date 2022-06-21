@@ -66,9 +66,6 @@
         <ul class = "smallerScreen">
             <li class="dropMenu">
                 <a href="javascript:void(0)" class="dropbtn"> 
-                    <div class ="line"></div>
-                    <div class ="line"></div>
-                    <div class ="line"></div>
                     <span>Menu</span>
                 </a>              
                 <div class="dropdown-content">
@@ -77,7 +74,6 @@
                 {%if "role" in session and session["role"] in ("admin", "default")%}
                 <a class = "option" href="/view/community" >Users</a>
                 <a class = "option" href="/">Create new user</a>
-                </div>
                 {%endif%}
                 {%if "id" in session %}
                 {%set user = session["username"]%}
@@ -88,6 +84,7 @@
                 <a class = "option" href="/login">Log in</a>
                 <a class = "option" href="/signup">Sign up</a>
                 {%endif%}
+            </div>
             </li>
             {%block smallerEdit%}            
             {%endblock%}  

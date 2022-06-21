@@ -125,18 +125,7 @@ nav{
 
 .smallerScreen
 {
-    display:none;
-    background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85, 0.932)); 
-    margin-right: 0px;
-}
-
-.line
-{
-    width:20px;
-    height:3px;
-    background-color:white;
-    margin-bottom: 3px;
-    float: center;
+   display:none;
 }
 
 @media all and (max-width: 900px)
@@ -269,7 +258,7 @@ form{
     background-repeat: no-repeat;
     background-size: auto 50%;
     background-position: top right;
-}
+  }
 
 .post > h4, p
 {
@@ -283,6 +272,18 @@ form{
     width: 100%;
     display: block;
     margin-bottom: 20px;
+  }
+
+    .home-content
+    {
+      width:100%;
+      margin:0;
+      padding:0;
+    }
+
+    .column
+    {
+      margin-left:0;
     }
 }
 
@@ -725,9 +726,9 @@ form{
         font-weight: bold;
         text-align:center;
         color:white;
-        background-color: turquoise;
-        border: 3px solid rgb(42, 42, 42);
-    }
+        background-color: rgb(42, 42, 42);
+        border: 3px solid turquoise;
+      }
 
     .editbutton:hover{
         transform: scale(1.05);
@@ -1027,11 +1028,11 @@ form{
       }
 
       #statistics td, #statistics th {
-        border: 2px solid rgb(19, 57, 139);
+        border: 2px solid rgb(42, 42, 42);
         padding: 8px;
       }
 
-      #statistics tr:nth-child(even){background-color: steelblue}
+      #statistics tr:nth-child(even){background-color: rgb(193, 154, 107);}
 
       #statistics tr:hover {background-color: #ddd;}
 
@@ -1039,7 +1040,7 @@ form{
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
-        background-color: rgb(19, 57, 139);
+        background-color: rgb(42, 42, 42);
         color: white;
       }
 
