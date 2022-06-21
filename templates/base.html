@@ -70,10 +70,10 @@
                 </a>              
                 <div class="dropdown-content">
                 <a class = "option" href="/">Home</a>
-                <a class = "option" href="{{'/%s'%path|urlencode }}">Create new Post</a>
+                <a class = "option" href="/post/create">Create new Post</a>
                 {%if "role" in session and session["role"] in ("admin", "default")%}
                 <a class = "option" href="/view/community" >Users</a>
-                <a class = "option" href="/">Create new user</a>
+                <a class = "option" href = "/create">Create new user</a>
                 {%endif%}
                 {%if "id" in session %}
                 {%set user = session["username"]%}

@@ -332,10 +332,17 @@ form{
       resize:none;
   }
 
+  .write
+  {
+    margin-right:20%;
+    margin-left:20%;
+    text-align:center;
+  }
  @media screen and (max-width: 900px)
 {
    .write{
        justify-content: start;
+       margin:0px;
     }
 }
 
@@ -656,6 +663,8 @@ form{
           height:fit-content;
           width:98%;
         }
+
+        
     }
     
     .tooltiptext {
@@ -840,6 +849,15 @@ form{
         font-size: larger;
     }
 
+    @media screen and (max-width: 800px)
+    {
+      .role-box, .community
+      {
+        width:100%;
+        margin:0;
+      }
+
+    }
     .pages
     {
         text-align:center;
