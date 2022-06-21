@@ -24,9 +24,8 @@ ul
 list-style-type: none;
 padding: 0;
 overflow: auto;
-border-bottom: 5px solid rgb(42, 42, 42);
-border-collapse: collapse;
-background-image: linear-gradient(to right, steelblue ,rgb(19, 57, 139));            
+border-bottom: 1px solid rgb(42, 42, 42);
+background-color: rgb(179, 122, 76);            
 position: -webkit-sticky;
 position: sticky;
 transition-duration: all 0.5s ease-in-out;
@@ -216,7 +215,7 @@ form{
 .home-content
 {
   padding-top:1px;
-  background-image: linear-gradient(to right, steelblue ,rgba(11, 34, 85, 0.932));
+  background-color: rgb(179, 122, 76);
   margin-left:5%;
   padding-bottom:10px;
   padding-left:10px;
@@ -368,21 +367,31 @@ form{
   }
 
 
-    .editDel {
-      width:fit-content;
-      margin-left:10px;
-      margin-top:-40px;
-      position: -webkit-sticky;
-      position:sticky;
-      top:4.5rem;
-      z-index:5;
-    }
+  .editDel {
+    width:fit-content;
+    z-index:4;
+    position:relative;
+    margin-bottom:-2px;
+  }
 
-    #edit
+  #edit
+  {
+    margin-left:0;
+    padding:4px 20px;
+    font-weight: bold;
+    text-align:center;
+    color:white;
+    background-color: rgb(179, 122, 76) ;
+    border: 3px solid rgb(42, 42, 42);
+    display:inline-block;
+    border-top-right-radius: 20px;
+  }
+
+    #edit:hover
     {
-       margin-left:0;
-       padding:4px 20px;
-       
+      height:50px;
+      margin-bottom:-45px; 
+      transform: translateY(-20px);
     }
   
    @media screen and (max-width: 900px)
@@ -422,7 +431,7 @@ form{
       font-size:30px;
       text-align: center;
       bottom: 0;
-      background-color: rgba(46, 53, 110, 0.062);
+      background-color: rgba(46, 53, 110, 0);
       z-index: 10;
       cursor: pointer;
       }
@@ -464,7 +473,7 @@ form{
     {
     padding: 70px 0;
     border: 6px solid rgb(42, 42, 42);
-    background-color:rgb(165, 165, 165);
+    background-color:rgb(255, 253, 209);
     border-radius:10px;
     width: 70%;
     margin-right:auto;
@@ -664,7 +673,7 @@ form{
     }
 
     .community {
-        background-image: linear-gradient(to top, steelblue 70%,rgb(19, 57, 139));
+        background-color: rgb(193, 154, 107);
         border: 6px solid rgb(42, 42, 42);
         border-radius:5px;
         margin-right:100px;
@@ -742,7 +751,7 @@ form{
       text-align:center;
       margin-left:auto;
       margin-right:auto;
-      background-image: linear-gradient(to bottom, steelblue ,rgb(19, 57, 139));
+      background-color: rgb(193, 154, 107);
     }
 
     .role-option {
@@ -785,7 +794,7 @@ form{
     {
       border-bottom:0px;
       background-image: none;
-      background-color: rgb(19, 57, 139);
+      background-color: rgb(193, 154, 107);
     }
     
     .role-option:hover input ~ .select {
@@ -798,7 +807,7 @@ form{
     }
     
     .role-option input:checked ~ .select {
-      background-color: greenyellow;
+      background-color: rgb(212, 202, 163);
     }
     
     .select:after {

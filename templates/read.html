@@ -21,8 +21,8 @@
 {%block content%}
 {%if session["id"] == owner or session["role"] in ("admin", "default")%}
 <div class = "editDel">
-<a href= "{{ '/post/edit/%s'%editable|urlencode }}" class="editbutton" id = "edit">EDIT CONTENT</a>
-<a href = "javascript:void(0)" class ="editbutton" id = "edit" onclick="MessOn('overlay')">DELETE POST</a>
+<a href= "{{ '/post/edit/%s'%editable|urlencode }}" id = "edit">EDIT CONTENT</a>
+<a href = "javascript:void(0)" id = "edit" onclick="MessOn('overlay')">DELETE POST</a>
 </div>
 <div id="overlay" onclick="MessOff(this.id)">
   <div id="box">
