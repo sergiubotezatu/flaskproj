@@ -231,6 +231,16 @@ function generate_html(post)
             </div>`;
 }
 
+function get_404_html()
+{
+    return `<div style = "text-align:center;">
+    <h2>404. NOT FOUND</h2>
+    <h3>It seems that there is no post with the specified id.<h3>
+    <h3>If you entered the URL manually, please check the spelling<h3>
+    <h3>or go to front page and select from one of listed posts.</h3>
+  </div>`;
+}
+
 function get_post(id)
 { 
   fetch(`/api/post/${id}/`)
@@ -239,11 +249,6 @@ function get_post(id)
       document.getElementById("post").innerHTML = generate_html(post);
     })
     .catch(error => {
-      error = `<div style = "text-align:center;">
-    <h2>404. NOT FOUND</h2>
-    <h3>It seems that there is no post with the specified id.<h3>
-    <h3>If you entered the URL manually, please check the spelling<h3>
-    <h3>or go to front page and select from one of listed posts.</h3>
-  </div>`;
+      error = get_404_html()
     document.getElementById("post").innerHTML = error});
 }
