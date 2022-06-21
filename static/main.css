@@ -11,7 +11,7 @@ a
 body 
 {
 
-background-image: linear-gradient(to bottom right, rgb(62, 62, 60), 80%, rgb(131, 131, 125));
+background-image: linear-gradient(to bottom right, rgb(105, 105, 105), 80%, rgb(131, 131, 125));
 background-size:cover;
 background-repeat: no-repeat;
 background-attachment: fixed;
@@ -25,7 +25,7 @@ list-style-type: none;
 padding: 0;
 overflow: auto;
 border-bottom: 1px solid rgb(42, 42, 42);
-background-color: rgb(179, 122, 76);            
+background-color: rgb(193, 154, 107);            
 position: -webkit-sticky;
 position: sticky;
 transition-duration: all 0.5s ease-in-out;
@@ -76,8 +76,8 @@ nav{
         position:relative;
         bottom: 2px;
         right:5px;
-        width:35px;
-        height:39px;
+        width:40px;
+        height:45px;
     }
 
   #arr{
@@ -215,7 +215,7 @@ form{
 .home-content
 {
   padding-top:1px;
-  background-color: rgb(179, 122, 76);
+  background-color: rgb(193, 154, 107);
   margin-left:5%;
   padding-bottom:10px;
   padding-left:10px;
@@ -314,7 +314,7 @@ form{
  }
 
  #postBox::-webkit-scrollbar-thumb {
-    background-color: rgb(24, 148, 80);
+    background-color: #04aa6dc4;
     outline: 1px solid slategrey;
   }
 
@@ -451,7 +451,7 @@ form{
         font-size:large;
         height:50px;
         background-color: rgb(42, 42, 42);
-        border: 4px solid steelblue;
+        border: 4px solid turquoise;
         border-radius: 5px;
         margin-bottom:10px;
     }
@@ -460,7 +460,7 @@ form{
         transform: scale(1.1);
         box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.467);
         transition: all 0.3s ease-in-out;
-        background-color: steelblue;
+        background-color: turquoise;
         cursor: pointer; 
     }
 
@@ -473,7 +473,7 @@ form{
     {
     padding: 70px 0;
     border: 6px solid rgb(42, 42, 42);
-    background-color:rgb(255, 253, 209);
+    background-color:rgb(237, 223, 179);
     border-radius:10px;
     width: 70%;
     margin-right:auto;
@@ -725,7 +725,7 @@ form{
         font-weight: bold;
         text-align:center;
         color:white;
-        background-image: linear-gradient(to right, steelblue ,rgb(19, 57, 139));
+        background-color: turquoise;
         border: 3px solid rgb(42, 42, 42);
     }
 
@@ -734,7 +734,7 @@ form{
         box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.795);
         transition: all 0.3s ease-in-out;
         background-image: none;
-        background-color: steelblue;
+        background-color: turquoise;
         cursor: pointer; 
     }
 
@@ -807,7 +807,7 @@ form{
     }
     
     .role-option input:checked ~ .select {
-      background-color: rgb(212, 202, 163);
+      background-color: rgb(42, 42, 42);
     }
     
     .select:after {
@@ -826,11 +826,11 @@ form{
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background:steelblue;
+      background:turquoise;
     }
     
     .pg-arr{
-        border:2px solid steelblue;
+        border:3px solid turquoise;
         border-radius: 5px;
         padding:3px;
         text-decoration: none;
@@ -961,7 +961,7 @@ form{
         font-size:medium;
         height:40px;
         background-color: rgb(42, 42, 42);
-        border: 2px solid steelblue;
+        border: 2px solid turquoise;
         border-radius: 5px;
         margin-bottom:10px;
       }
@@ -969,7 +969,7 @@ form{
       input[type=file]::file-selector-button:hover {
         box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.467);
         transition: all 0.3s ease-in-out;
-        background-color: steelblue;
+        background-color: turquoise;
         cursor: pointer; 
       }
 
