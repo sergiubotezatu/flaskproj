@@ -15,7 +15,7 @@ class Home:
     def setup_first(self):
         if not DataBase.config.is_configured:
             return redirect(url_for("db_setup.set_database"))
-        
+
     def front_page(self):
         page = self.__get_current_page()
         posts = self.filters.apply(request.args.to_dict(flat = False), page)
