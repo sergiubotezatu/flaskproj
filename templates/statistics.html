@@ -3,17 +3,18 @@
 {%block content%}
 <h3
 style="text-align:center; color:white; text-shadow: 4px 6px 10px black; margin-right:10%;margin-left:10%">
-{{name}}'s posting activity</h3>
+{{table.username}}'s posting activity</h3>
 <br>
 <table id = "statistics" style="width:80%; margin:auto;">
     <tr>
       <th>Date</th>
       <th>No. of posts</th>
     </tr>
-    {%for date in table%}
+    {%for date in table.posts_per_month%}
+    {%set value = table.posts_per_month[date]%}
     <tr>
       <td>{{date}}</td>
-      <td>{{table[date]}}</td>
+      <td>{{value}}</td>
     </tr>
     {%endfor%}
 </table>

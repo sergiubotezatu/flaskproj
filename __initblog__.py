@@ -31,6 +31,6 @@ def create_blog(is_test_app = False, with_orm = True):
     from view.get_post_api import PostApi
     blog.register_blueprint(PostApi(IPostRepo).bp, url_prefix = "/api")
     from view.statistics import Statistics
-    blog.register_blueprint(Statistics(IUserStatistics, IUsersRepo).bp, url_prefix = "/user")
+    blog.register_blueprint(Statistics(IUserStatistics).bp, url_prefix = "/user")
 
     return blog

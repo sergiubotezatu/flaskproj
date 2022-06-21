@@ -43,7 +43,7 @@ class Container:
         ISessionMNGR : None,
         IFilters : (IPostRepo,),
         Iimages : None,
-        IUserStatistics : (IFilters,)
+        IUserStatistics : (IFilters, IUsersRepo)
         }
 
     prod_services = {

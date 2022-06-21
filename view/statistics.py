@@ -10,9 +10,8 @@ class Statistics:
     access = AccessDecorators(IAuthorization, ISessionMNGR)
 
     @Services.get
-    def __init__(self, statistics : IUserStatistics, users : IUsersRepo):
+    def __init__(self, statistics : IUserStatistics):
         self.statistics = statistics
-        self.users = users
         self.bp = Blueprint("statistics",  __name__)
         self.get_statistic = self.register("/statistics/<id>/", self.get_statistic)
         
@@ -21,6 +20,4 @@ class Statistics:
 
     @access.member_required
     def get_statistic(self, id):
-        user = self.users.get_by(id = id)
-        statistics = self.statistics.get_table(user)
-        return render_template("statistics.html", table = statistics, name = user.name)
+        return render_template("statistics.html", table = self.statistics.get(id))
