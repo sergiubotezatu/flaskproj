@@ -729,9 +729,8 @@ form{
      
     .editbutton{
         display: block;
-        padding-top: 2px;
-        margin-right:20px;
-        margin-left:20px;
+        padding: 10px 0px;
+        margin:40px 30px;
         font-weight: bold;
         text-align:center;
         color:white;
