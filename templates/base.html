@@ -1,105 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" type ="text/css"  href='{{ url_for("static", filename="main.css") }}'>
-        <script src= '{{ url_for("static", filename="js_funcs.js") }}'></script>
-        <link rel="icon" type="image/x-icon" href="/static/icons/flask.png">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{%block title%}{%endblock%}</title>
-    </head>
+<head>
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="main.css") }}'>
+    <script src='{{ url_for("static", filename="js_funcs.js") }}'></script>
+    <link rel="icon" type="image/x-icon" href="/static/icons/flask.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block title%}{%endblock%}</title>
+</head>
 
-    <body onresize="hideOptions()" onclick="hideDrop(event)" onscroll="hideGreeting()">
-        <h2 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h2>
-        <ul class = "largerScreen" id ="opaque" >
-            <li ><a class = "option" href="/">
-                <img src = "\static\icons\home.png" class = "icon"></img>
-                Home
-            </a></li>
-            <li><a class = "option" href="/post/create" >
-                <img src = "\static\icons\fountain-pen-close-up.png" class = "icon"></img>
-                Create new Post
-            </a></li>
+<body onresize="hideOptions()" onclick="hideDrop(event)" onscroll="hideGreeting()">
+<h2 style="text-align:center; color:white; text-shadow: 4px 6px 10px black">Flask Blog</h2>
+<ul class="largerScreen" id="opaque">
+    <li><a class="option" href="/">
+        <img src="\static\icons\home.png" class="icon"></img>
+        Home
+    </a></li>
+    <li><a class="option" href="/post/create">
+        <img src="\static\icons\fountain-pen-close-up.png" class="icon"></img>
+        Create new Post
+    </a></li>
+    {%if "role" in session and session["role"] in ("admin", "default")%}
+    <li>
+        <a class="option" href="/create">
+            <img src="/static/icons/create.png" class="icon"></img>
+            Create new user</a>
+    </li>
+    <li>
+        <a class="option" href="/view/community">
+            <img src="\static\icons\team.png" class="icon"></img>
+            Users</a>
+    </li>
+    {%endif%}
+    {%if "id" in session %}
+    {%set user = session["username"]%}
+    {%set id = session["id"]%}
+    <li style="float:right" onclick="showOptions()">
+        <a class="option drop-user" href="javascript:void(0)" id="show">
+            <img src="\static\icons\profile.png" class="icon" id="prfl"></img>
+            {{user}}
+            <img src="\static\icons\downward-arrow.png"
+                 id="arr" class="down"></img></a>
+    </li>
+</ul>
+<ul id="drop-log-sign" style="float:right;width:150px;">
+    <div>
+        <li style="width:100%;margin-bottom:-5px;"><a class="option" href="{{ '/view/%s/?pg=1'%id|urlencode }}">View
+            Profile</a></li>
+    </div>
+    <div>
+        <li style="width:100%;margin-top:-3px;"><a class="option" id="out" href="javascript:void(0)"
+                                                   onclick="MessOn('logoverlay')">Log out</a></li>
+    </div>
+</ul>
+{%else%}
+<li style="float:right">
+    <a class="option drop-user" href="javascript:void(0)" id="show" onclick="showOptions()">
+        <img src="\static\icons\profile.png" class="icon" id="prfl"/>
+        Profile
+        <img src="\static\icons\downward-arrow.png"
+             id="arr" class="down"></img></a>
+</li>
+</ul>
+<ul id="drop-log-sign" style="float:right;width:150px;">
+    <div>
+        <li style="width:100%;"><a class="option" href="/login">Log in</a></li>
+    </div>
+    <div>
+        <li style="width:100%;"><a class="option" href="/signup">Sign up</a></li>
+    </div>
+</ul>
+{%endif%}
+
+<ul class="smallerScreen">
+    <li class="dropMenu">
+        <a href="javascript:void(0)" class="dropbtn">
+            <span>Menu</span>
+        </a>
+        <div class="dropdown-content">
+            <a class="option" href="/">Home</a>
+            <a class="option" href="/post/create">Create new Post</a>
             {%if "role" in session and session["role"] in ("admin", "default")%}
-            <li>
-                <a class = "option" href = "/create" >
-                    <img src = "/static/icons/create.png" class = "icon"></img>
-                    Create new user</a>
-            </li>
-            <li>
-                <a class = "option" href = "/view/community" >
-                    <img src = "\static\icons\team.png" class = "icon"></img>
-                    Users</a>
-            </li>
+            <a class="option" href="/view/community">Users</a>
+            <a class="option" href="/create">Create new user</a>
             {%endif%}
-        {%if "id" in session %}
+            {%if "id" in session %}
             {%set user = session["username"]%}
             {%set id = session["id"]%}
-        <li style = "float:right" onclick = "showOptions()">
-            <a class = "option drop-user"  href="javascript:void(0)" id = "show">            
-            <img src = "\static\icons\profile.png" class = "icon" id = "prfl" ></img>
-            {{user}}
-            <img src = "\static\icons\downward-arrow.png"
-            id = "arr" class="down"></img></a>
-        </li>
-        </ul>
-        <ul id = "drop-log-sign"style = "float:right;width:150px;">
-            <div><li style = "width:100%;margin-bottom:-5px;"><a class = "option" href="{{ '/view/%s/?pg=1'%id|urlencode }}">View Profile</a></li></div>
-            <div><li style = "width:100%;margin-top:-3px;"><a class = "option" id = "out" href="javascript:void(0)"
-                onclick = "MessOn('logoverlay')">Log out</a></li></div>
-        </ul>
-        {%else%}
-        <li style = "float:right">
-            <a class = "option drop-user" href="javascript:void(0)" id = "show" onclick = "showOptions()">            
-            <img src = "\static\icons\profile.png" class = "icon" id = "prfl"/>
-            Profile
-            <img src = "\static\icons\downward-arrow.png"
-                id = "arr" class="down"></img></a>
-        </li>
-        </ul>
-        <ul id = "drop-log-sign"style = "float:right;width:150px;">
-            <div><li style = "width:100%;"><a class = "option" href="/login">Log in</a></li></div>
-            <div><li style = "width:100%;"><a class = "option" href="/signup">Sign up</a></li></div>
-        </ul>
-        {%endif%}
-
-        <ul class = "smallerScreen">
-            <li class="dropMenu">
-                <a href="javascript:void(0)" class="dropbtn"> 
-                    <span>Menu</span>
-                </a>              
-                <div class="dropdown-content">
-                <a class = "option" href="/">Home</a>
-                <a class = "option" href="/post/create">Create new Post</a>
-                {%if "role" in session and session["role"] in ("admin", "default")%}
-                <a class = "option" href="/view/community" >Users</a>
-                <a class = "option" href = "/create">Create new user</a>
-                {%endif%}
-                {%if "id" in session %}
-                {%set user = session["username"]%}
-                {%set id = session["id"]%}
-                <a class = "option" href="{{ '/view/%s/?pg=1'%id|urlencode }}">{{user}}</a>
-                <a class = "option" href="javascript:void(0)" onclick = "MessOn('logoverlay')">Log out</a>
-                {%else%}
-                <a class = "option" href="/login">Log in</a>
-                <a class = "option" href="/signup">Sign up</a>
-                {%endif%}
-            </div>
-            </li>
-            {%block smallerEdit%}            
-            {%endblock%}  
-        </ul>
-        <br id ="space">
-        <div id="logoverlay" onclick="MessOff(this.id)">
-            <div id="box">
-            <p id ="mess">Are you sure you want to logout?</p>
-            <div id = "request" method = "Post">  
-                <a href = "/logout"><input type = "button" class = "button" value ="Yes"></a>
-                <input type="button" class = "button" value ="No" onclick="MessOff('overlay')">
-            </div>
-            </div>
+            <a class="option" href="{{ '/view/%s/?pg=1'%id|urlencode }}">{{user}}</a>
+            <a class="option" href="javascript:void(0)" onclick="MessOn('logoverlay')">Log out</a>
+            {%else%}
+            <a class="option" href="/login">Log in</a>
+            <a class="option" href="/signup">Sign up</a>
+            {%endif%}
         </div>
-        <script>
+    </li>
+    {%block smallerEdit%}
+    {%endblock%}
+</ul>
+<br id="space">
+<div id="logoverlay" onclick="MessOff(this.id)">
+    <div id="box">
+        <p id="mess">Are you sure you want to logout?</p>
+        <div id="request" method="Post">
+            <a href="/logout"><input type="button" class="button" value="Yes"></a>
+            <input type="button" class="button" value="No" onclick="MessOff('overlay')">
+        </div>
+    </div>
+</div>
+<script>
             var path = window.location.pathname;
             var current = document.querySelector("a[href='" + path + "']");
             var notClickable = true;
@@ -121,8 +130,9 @@
                 }
             }
             
-        </script>
-        {%block content%}
-        {%endblock%}                    
-    </body>
+
+</script>
+{%block content%}
+{%endblock%}
+</body>
 </html>

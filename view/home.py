@@ -18,7 +18,7 @@ class Home:
 
     def front_page(self):
         page = self.__get_current_page()
-        posts = self.filters.apply(request.args.to_dict(flat = False), page)
+        posts = self.filters.apply(request.args.to_dict(flat=False), page)
         if request.method == "POST":
             return redirect(self.filters.get_new_querystr())
         next_page : bool = posts[-1][2] > self.PG_LIMIT

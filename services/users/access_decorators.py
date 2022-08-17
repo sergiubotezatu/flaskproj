@@ -25,7 +25,7 @@ class AccessDecorators:
                 if self.authorizator.is_owner_or_admin(instance, **Kwargs):
                     return routing(instance, **Kwargs)
                 else:
-                    return render_template("forbidden.html", error = "405", role = "admins")
+                    return render_template("forbidden.html", error = "401", role = "admins")
         return wrapper
             
     def admin_required(self, routing):

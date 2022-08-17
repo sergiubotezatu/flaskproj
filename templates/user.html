@@ -57,8 +57,8 @@
         {%set id = articles[0]%}\
         {%endif%}
         <a href="{{ '/post/read/%s'%id }}" style ="color:black; text-decoration:none; ">
-        <div class="ownposts" title = "Click to read more" style = "background-image: url('/{{articles[1].img_src}}');">            
-            <h3 class = "item" style ="margin-left:20%;">{{articles[1].title}}</h3>
+        <div class="ownposts" title = "Click to read more" style = "background-image: url('/{{articles[1].img_src}}');">
+            <h3 class = "item" id="title">{{articles[1].title}}</h3>
             <h4 class = "item" class ="higlight">by {{articles[1].auth}}</h4>
             <div class = "item" style ="text-align:justify;">{{articles[1].content}}</div>
             <span class = "item" style = "float: right">{{articles[1].created}}</span>

@@ -30,7 +30,12 @@ class Filters(IFilters):
         query_url = request.full_path
         id = request.form.get("user_id")
         name = request.form.get("name")
+        name = name.replace("-", "%20")
         query_url = query_url.replace(f"user_id={id}&name={name}&", "")
+        print("----->", name, "<-----")
+        print("----->", query_url, "<-----")
+        print("----->", id, "<-----")
+
         self.unfiltered_users.add((id, name))
         return query_url
 

@@ -252,3 +252,4 @@ function get_post(id)
       error = get_404_html()
     document.getElementById("post").innerHTML = error});
 }
+

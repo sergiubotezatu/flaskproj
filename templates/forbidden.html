@@ -2,8 +2,8 @@
 {%block content%}
 <div id="erroroverlay" style = "display:block;height:fit-content;" onclick = "window.location.href = '/login'">
     <div id="box">
-    {%if error == '405'%}
-    <h3 id ="mess">405 - Method Not Allowed</h3>
+    {%if error == '401'%}
+    <h3 id ="mess">401 - Unauthorized</h3>
     <h4>You do not have necessary authorization for editting.</h4>
     <h3>Required roles: Admin, Owner</h3>
     {%else%}

@@ -10,6 +10,7 @@ from models.user import User
 from services.interfaces.Ipassword_hash import IPassHash
 from services.users.access_decorators import AccessDecorators
 
+
 class UserProfile:
     authorizator = AccessDecorators(IAuthorization, ISessionMNGR)
 
